@@ -31,12 +31,17 @@ The familiar names are **recognizable combinations** of these values, not slots 
 | Kind | Selection | Visibility | Effect |
 |---|---|---|---|
 | Public skill | situational | user | action |
+| [Command](/concepts/commands/) | explicit | user | action |
 | [Gateway skill](/concepts/gateway-skill/) | situational or explicit | user | routing |
 | [Persona skill](/concepts/persona/) | explicit | user | stance |
 | [Discipline](/concepts/disciplines/) | event | — | stance |
 | Name-only skill | by-name | agent-only | action or reference |
 
+Every row is a skill. Commands, gateways, personas, and disciplines are not separate artifacts that sit *beside* skills — they are skills whose values on these three axes differ from the default. Three of them also have a non-skill realization: a persona can instead be a subagent definition in `agents/`, a governance can be a file loaded via `governance show`, and a discipline can arrive through `AGENTS.md` or a hook rather than a skill.
+
 **Public skill** is the default — its description states the situations it serves, the agent matches that against the request, and the user can invoke it directly. Everything else is a deviation from it.
+
+**Commands** are skills the user invokes explicitly via `/name`, with automatic invocation suppressed. Use them where accidental auto-invocation would be disruptive — deployments, releases.
 
 **Gateway skills** own the front door of an opt-in workflow: they activate it, gather intent the request did not supply, load the workflow's rules, and route to a narrower skill. What marks a gateway is its behavior when it *cannot* infer intent — it asks, rather than guessing or failing.
 

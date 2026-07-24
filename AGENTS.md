@@ -84,7 +84,9 @@ description: "One sentence trigger description — WHAT it does, WHEN to invoke 
 ...content...
 ```
 
-For **partial skills** (sub-skills — a reusable part of a larger capability, called **by name** by another skill, not triggered by a user situation), set `user-invocable: false` and lead the description with the `"Partial Skill:"` prefix — recommended form `"Partial Skill: invoke by name only — <identity>. <caller>."`. Keep the description minimal and non-trigger-shaped (a partial skill stays `disable-model-invocation: false` so its caller can invoke it by name, so the harness still sees the description). This is distinct from `metadata: internal: true`, which marks a *project-local internal* skill (marketplace visibility) — orthogonal to being a partial.
+For **name-only skills** (loaded **by name** by another skill, never matched to a user situation), set the description to exactly `"By name only"` and nothing else. The minimal description is the mechanism, not a label: the description is the only surface the model matches against, so anything added to it is another handle for a spurious match. Identity — what the skill is, who calls it, what it returns — goes in the body and README.
+
+`user-invocable` is a **visibility** flag only: it controls whether a skill appears in the user's command list and never determines how a skill is selected. A skill may legitimately be `user-invocable: false` and still situationally triggered. Both are distinct from `metadata: internal: true`, which marks a *project-local internal* skill (marketplace visibility). See [ADR-0031](artifacts/adr/0031-selection-is-not-visibility.md).
 
 ## Language
 

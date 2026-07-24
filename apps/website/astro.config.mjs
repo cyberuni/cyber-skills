@@ -75,15 +75,27 @@ export default defineConfig({
 				{
 					label: 'Concepts',
 					items: [
+						{
+							label: 'Skills',
+							items: [
+								{ label: 'Skills', slug: 'concepts/skills' },
+								{ label: 'Commands', slug: 'concepts/commands' },
+								{ label: 'Gateway Skill', slug: 'concepts/gateway-skill' },
+								{ label: 'Persona', slug: 'concepts/persona' },
+								{ label: 'Governances', slug: 'concepts/governances' },
+								{ label: 'Disciplines', slug: 'concepts/disciplines' },
+							],
+						},
+						{ label: 'ADRs', slug: 'concepts/adrs' },
 						{ label: 'Agent Configuration', slug: 'concepts/agent-configuration' },
-						{ label: 'Commands', slug: 'concepts/commands' },
-						{ label: 'Gateway Skill', slug: 'concepts/gateway-skill' },
-						{ label: 'Skills', slug: 'concepts/skills' },
-						{ label: 'Spec-Driven Development', slug: 'concepts/spec-driven-development' },
+						{ label: 'Constraints', slug: 'concepts/constraints' },
+						{ label: 'Glossary', slug: 'concepts/glossary' },
+						{ label: 'Permissions', slug: 'concepts/permissions' },
+						{ label: 'Scenario', slug: 'concepts/scenario' },
 						{ label: 'Spec Dependencies', slug: 'concepts/spec-dependencies' },
+						{ label: 'Spec-Driven Development', slug: 'concepts/spec-driven-development' },
 						{ label: 'Test-Driven Development', slug: 'concepts/test-driven-development' },
 						{ label: 'Use Case', slug: 'concepts/use-case' },
-						{ label: 'Scenario', slug: 'concepts/scenario' },
 					],
 				},
 				{

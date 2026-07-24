@@ -15,9 +15,10 @@ Encode what to decide and how. Do not repeat generic best practices or facts the
 
 ### Narrow and composable
 
-One workflow per skill. User-facing skills match a situation; sub-skills are called explicitly by other skills.
+One workflow per skill. A skill is selected one of three ways — matched against a situation, named by a caller, or fired by an event. Declare that choice in the `description`; never infer it from a visibility flag.
 
-- Partial skills (sub-skills a caller invokes by name) set `user-invocable: false` and lead the `description` with the `"Partial Skill:"` prefix to avoid accidental activation.
+- Name-only skills (loaded by name from another skill) set the `description` to exactly `"By name only"` — nothing else. The minimal description is the mechanism, not a label: it is the only surface the model matches against. Identity goes in the body and README.
+- `user-invocable` is a visibility flag only — it controls command-list presence and never determines how a skill is selected.
 - Neither type should be loaded as ambient context.
 
 ### No baked-in opinions

@@ -31,9 +31,11 @@ Encode what to decide and how. Do not repeat generic best practices, API docs, o
 
 ### Narrow and composable
 
-One workflow per skill. User-facing skills match a situation; sub-skills are called explicitly by other skills.
+One workflow per skill. A skill is selected one of three ways — matched against a situation, named by a caller, or fired by an event. Declare that choice in the `description`; never infer it from a visibility flag.
 
-- **Partial skills** (sub-skills — a reusable part of a larger capability, loaded or invoked **by name** by another skill, never matched to a user situation) have no situational trigger. Set `user-invocable: false` (the classifier) and lead the `description` with the `"Partial Skill:"` prefix, naming the caller — recommended form `"Partial Skill: invoke by name only — <identity>. <caller>."` (e.g. `"Partial Skill: invoke by name only — the skill-audit engine, invoked by improve-skill."`). The prefix is a self-declaration for the reader, not a harness mechanism: a partial skill stays `disable-model-invocation: false` so its caller can invoke it by name, so keep the description minimal and non-trigger-shaped to avoid accidental model activation.
+- **Name-only skills** (loaded by name from another skill, never matched to a user situation) set the `description` to exactly `"By name only"` — nothing else. The minimal description is the mechanism, not a label for it: the `description` is the only surface the model matches against, so every word added to it is another handle for a spurious match. Identity — what the skill is, who calls it, what it returns — belongs in the body and README, which the caller reads after loading it by name.
+- **`user-invocable` is a visibility flag only.** It controls whether a skill appears in the user's command list. It never determines how a skill is selected, and must not be read as one: a skill may legitimately be `user-invocable: false` and still situationally triggered.
+- Whether a skill can run standalone is documentation for its README, not a declared kind. A self-contained engine and a fragment of a larger capability are selected the same way and carry the same minimal description.
 - Neither type should be loaded as ambient context.
 
 ### No baked-in opinions
@@ -100,7 +102,7 @@ When a skill includes `scripts/` or documents CLI commands agents run, load **ag
 ### Frontmatter
 
 - `name` must match the parent directory name exactly.
-- `description` must contain `"Use this skill when"` or `"When to use"` trigger language.
+- `description` must contain `"Use this skill when"` or `"When to use"` trigger language — **unless the skill is name-only**, whose `description` is exactly `"By name only"` and carries no trigger language at all.
 - Keep `description` ≤120 characters — long descriptions are truncated in the agent context window.
 - `compatibility` — optional; declare environment constraints (required tools, network access, OS, runtime version). Include only when the skill has requirements the agent cannot assume.
 - `allowed-tools` — optional, experimental; space-separated list of pre-approved tools the skill may invoke (e.g. `Bash(git:*) Read`). Support varies by platform.
