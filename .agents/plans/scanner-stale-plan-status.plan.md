@@ -17,9 +17,9 @@ todos:
   - content: "Spec gate — cold spec-judge; freeze; gate line"
     status: completed
   - content: "Deliver: wire into doctrine-loop SKILL.md + sdd-scanner.md (+ plan-retirement if option C)"
-    status: in_progress
+    status: completed
   - content: "Impl gate — cold impl-judge; pnpm verify green"
-    status: pending
+    status: in_progress
   - content: "Handoff — PR, followups, warm-unit reset"
     status: pending
 ---
@@ -116,11 +116,36 @@ Self-asserted within `auto-spec` leash, medium blast (per this CR's own pre-clea
 `scanner.feature` stays `@frozen` (additive self-clears). Root `spec.md` status unchanged
 (`implemented`).
 
+## Deliver — done
+
+Wired the derivation into prose (no code changes — `retire-plans.mts` stays a mechanical,
+network-free sweep; the network-touching source-query and the todos-all-done cross-check are the
+Scanner's job, agent-run, not the deterministic script's):
+
+- `plugins/sdd/agents/sdd-scanner.md` — new "Stale plan frontmatter" operating section, ahead of
+  "## Boundaries".
+- `plugins/sdd/skills/doctrine-loop/SKILL.md` — new matching section ahead of "## Plan retirement";
+  the "Plan retirement" section now says the source-cleared set it consumes is the Scanner's
+  *derived* clearance set, not a raw source-only judgment.
+- `plugins/sdd/skills/doctrine-loop/README.md` — one paragraph noting the pass-time derivation.
+- `plugins/sdd/skills/plan-retirement/README.md` + `SKILL.md` — the existing "caller's judgment"
+  language already anticipated `sdd:doctrine-loop`'s Scanner as the standard caller; tightened both
+  to say explicitly that the Scanner only passes a cr-ref through `--retire` when its own
+  cross-check agrees, holding back and flagging a disagreement instead of passing it through on
+  source alone.
+
+`pnpm verify` green (34/34 tasks) at commit before this one; re-verified `check-spec-state.mts
+--root .agents/specs` clean after this round's doc edits (prose-only, no `.feature` touched again).
+
 ## NEXT
 
-Resume at todo 6 (deliver): wire the Scanner-side computation into `plugins/sdd/agents/sdd-scanner.md`
-+ `plugins/sdd/skills/doctrine-loop/{SKILL,README}.md`, and the caller-side clearance derivation
-into `plugins/sdd/skills/plan-retirement/` (README + SKILL, and `scripts/retire-plans.mts`/tests if
-the derivation should be mechanical there rather than agent-run inside the Scanner). Then
-`pnpm verify` green, impl gate, handoff as a direct chore commit (source is a manual finding, not a
-GitHub issue — no CR to link an issue to).
+Resume at todo 7 (impl gate): spawn a cold impl-judge over the frozen `scanner.feature`'s 8 new
+scenarios against the delivered prose in `sdd-scanner.md` + `doctrine-loop/{SKILL,README}.md` +
+`plan-retirement/{README,SKILL}.md` (static-inspection verification — this is agent-behavior prose,
+not runnable code, matching the rest of `doctrine/scanner`'s existing verification pattern). On
+PASS, move to todo 8 (handoff): this CR has no GitHub issue (a manual finding from today's own
+plan-hygiene sweep, per the plan's Request) — check repo convention for un-sourced doctrine CRs
+(how `#376`/similar doctrine chores landed) and land as either a direct chore commit sequence (this
+worktree already lands its own commits per-unit) or a PR, whichever the repo's commit discipline
+calls for at this blast tier; add a changeset if the touched `plugins/sdd` package content counts
+as user-visible (check `pnpm changeset` status — 14 pending changesets noted by the repo hook).
