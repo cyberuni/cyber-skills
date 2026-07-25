@@ -15,9 +15,9 @@ todos:
   - content: "Explore: freeze the chosen stale-plan detection contract in doctrine/scanner/scanner.feature (additive)"
     status: completed
   - content: "Spec gate — cold spec-judge; freeze; gate line"
-    status: in_progress
+    status: completed
   - content: "Deliver: wire into doctrine-loop SKILL.md + sdd-scanner.md (+ plan-retirement if option C)"
-    status: pending
+    status: in_progress
   - content: "Impl gate — cold impl-judge; pnpm verify green"
     status: pending
   - content: "Handoff — PR, followups, warm-unit reset"
@@ -94,21 +94,33 @@ source-done + distilled ("present means resumable; retirement is a deletion, not
 **Owner picked Option C** (derive the retirement clearance set; drop the `status` write). Explore
 landed: `.agents/specs/sdd/doctrine/scanner/scanner.feature` gained a new additive
 `# ---- Stale plan frontmatter ----` band (8 scenarios: agree-terminal feeds the clearance set,
-agree-non-terminal is a no-op, both disagreement directions flag a finding and never autofix, the
-clearance set reuses `plan-retirement`'s existing `--retire` input rather than a new mechanism,
-`source-closed` reuses `plan-retirement`'s own native-query contract, and an explicit
-never-writes-`status` guard scenario). `doctrine/scanner/README.md` gained a Use Cases row plus a
-full "Stale plan frontmatter" section ahead of "Where each strategy entry lands". No enum widening,
-no `provenance-model.md` change — the CR's actual goal (no human needed to notice) rides existing
-`plan-retirement` machinery.
+agree-non-terminal is a no-op, both disagreement directions surface a flagged finding and never
+autofix, a distinguishing scenario pinning the finding's shape (never `kind: strategy`, never
+`kind: report`, distinct from the validated-open-improvement finding), the clearance set reuses
+`plan-retirement`'s existing `--retire` input rather than a new mechanism, `source-closed` reuses
+`plan-retirement`'s own native-query contract, and an explicit never-writes-`status` guard
+scenario). `doctrine/scanner/README.md` gained a Use Cases row plus a full "Stale plan frontmatter"
+section ahead of "Where each strategy entry lands". No enum widening, no `provenance-model.md`
+change — the CR's actual goal (no human needed to notice) rides existing `plan-retirement`
+machinery.
+
+**Spec gate — PASS on iteration 2.** Iter-1 cold spec-judge failed oracle/builder/architect: the
+two disagreement scenarios said the finding surfaces "in its report," colliding with the reserved
+`kind: report` ledger line and this same spec's own frozen Non-goals, and left the finding's shape
+unspecified. Remediated (see ledger `scanner-stale-plan-status.b41e7c.jsonl` seq 2 for the full
+gate line): reworded to "the Scanner's pass summary to the invoking session" (its established
+final-message-only channel, per `sdd-scanner.md` / `doctrine-loop/SKILL.md`), added the
+distinguishing scenario, and a README paragraph giving the flagged finding an explicit
+ephemeral/non-ledger shape. Iter-2: oracle/builder/architect all PASS, ALIGNED true, no blockers.
+Self-asserted within `auto-spec` leash, medium blast (per this CR's own pre-cleared leash line).
+`scanner.feature` stays `@frozen` (additive self-clears). Root `spec.md` status unchanged
+(`implemented`).
 
 ## NEXT
 
-Resume at todo 5 (spec gate): run the cold spec-judge against the `scanner.feature` diff (additive
-per this repo's freeze-reopen rule — modified 0, removed 0, addOnly true expected) and the README
-diff. On PASS, move to todo 6 (deliver): wire the Scanner-side computation into
-`plugins/sdd/agents/sdd-scanner.md` + `plugins/sdd/skills/doctrine-loop/{SKILL,README}.md`, and the
-caller-side clearance derivation into `plugins/sdd/skills/plan-retirement/` (README + SKILL, and
-`scripts/retire-plans.mts`/tests if the derivation should be mechanical there rather than agent-run
-inside the Scanner). Then `pnpm verify` green, impl gate, handoff as a direct chore commit (source
-is a manual finding, not a GitHub issue — no CR to link an issue to).
+Resume at todo 6 (deliver): wire the Scanner-side computation into `plugins/sdd/agents/sdd-scanner.md`
++ `plugins/sdd/skills/doctrine-loop/{SKILL,README}.md`, and the caller-side clearance derivation
+into `plugins/sdd/skills/plan-retirement/` (README + SKILL, and `scripts/retire-plans.mts`/tests if
+the derivation should be mechanical there rather than agent-run inside the Scanner). Then
+`pnpm verify` green, impl gate, handoff as a direct chore commit (source is a manual finding, not a
+GitHub issue — no CR to link an issue to).
