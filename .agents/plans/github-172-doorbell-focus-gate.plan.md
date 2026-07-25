@@ -1,5 +1,5 @@
 ---
-status: active
+status: implemented
 todos:
   - content: "Intake: plan brief, leash line, statusline explore"
     status: completed

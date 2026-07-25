@@ -2,7 +2,7 @@
 cr: github-161-spawn-visible-space
 source: https://github.com/cyberuni/cyberplace/issues/161
 target-spec: packages/cyberlegion/.agents/spec
-status: active
+status: implemented
 todos:
   - content: "intake — CR opened, leash recorded, plan scaffolded"
     status: completed

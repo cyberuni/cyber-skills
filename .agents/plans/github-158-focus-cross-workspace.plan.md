@@ -3,7 +3,7 @@ cr: github-158-focus-cross-workspace
 target-spec: packages/cyberlegion/.agents/spec
 target-suite: packages/cyberlegion/.agents/spec/unit/lifecycle/lifecycle.feature
 source: https://github.com/cyberuni/cyberplace/issues/158
-status: active
+status: implemented
 todos:
   - content: "intake + locate spec (cyberlegion unit/lifecycle); confirm additive edit-class"
     status: completed

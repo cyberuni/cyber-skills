@@ -1,6 +1,6 @@
 ---
 name: at-default-tab
-status: active
+status: implemented
 todos:
   - content: "explore: grill scope — DONE. Decisions: default->tab, herdr honors tab via herdr tab create --no-focus, DROP window (align to canonical Session/Workspace/Tab/Pane vocab), capture concept table in spec+readme+website"
     status: completed
