@@ -1,17 +1,17 @@
 ---
 title: Skills
-description: What skills are — on-demand workflow instructions an agent loads, the axes that distinguish one kind of skill from another, and how they differ from personas and governances.
+description: What skills are — the instructions an agent loads to do a piece of work, the axes that distinguish one kind of skill from another, and the rule for skills triggered by name only.
 ---
 
-**Skills** are on-demand workflow instructions — they encode what to do, not who does it. A skill is a `SKILL.md` file the agent loads when its `description` matches the current situation; unlike a persona, invoking a skill does not spawn a new agent identity, it adds instructions to whichever agent is already running.
+**Skills** are instructions an agent loads on demand to do a piece of work. A skill is a `SKILL.md` file: frontmatter that governs when it loads, and a body the agent follows once it has.
 
-**Tagline:** Skills define what to do. [Personas](/concepts/persona/) define who does it.
+This page is the overview. **Commands, gateway skills, personas, governances, and disciplines are all skills** — they differ only in how they get selected, who is allowed to select them, and what running them changes. Those axes, and the kinds they produce, are below.
 
 ## What a skill encodes
 
 A `SKILL.md` file has two parts:
 
-- **`description` frontmatter** — the only field loaded at startup; it carries the entire triggering burden. A well-formed description states the capability, "Use this skill when…", and at least one implicit phrasing an agent might not otherwise connect to the trigger.
+- **`description` frontmatter** — the only field loaded at startup, and the entire basis on which the model decides whether to load the body. For a situational skill it states the capability, "Use this skill when…", and at least one implicit phrasing an agent might not otherwise connect to the trigger. For a skill that should never be matched, it is kept deliberately empty of anything matchable — see [Name-only skills](#name-only-skills).
 - **Body** — the workflow itself: numbered steps for a process skill, tool usage and guardrails for a tool-based skill, or rules and pass conditions for a standard (tone/format/quality) skill.
 
 Skills stay narrow and composable by design: one workflow per skill.
@@ -100,17 +100,17 @@ A name-only skill whose effect is **reference** is read as criteria rather than 
 
 Placement is orthogonal to kind, as are **distribution** (whether the skill ships to other repos) and **pattern** (the workflow shape of the body: process, tool-based, standard, persona). Every skill has a value on every axis at once — a project-public, process-pattern, situational, user-visible skill with an action effect is just "a normal skill". The names above only get used when something deviates.
 
-## Skills vs Personas vs Governances
+## When a persona or governance is not a skill
 
-These three are often confused:
+Persona and governance each have a second realization that is *not* a skill, and that is the one usually being contrasted with skills:
 
-| | Skill | Persona | Governance |
+| | Skill | Persona as subagent | Governance as file |
 |---|---|---|---|
-| **What it encodes** | What workflow to run | Who the agent is | What correct looks like for a domain |
-| **Activation** | Invoked by the agent matching a situation | Spawned as a new subagent | Loaded on demand, e.g. via `governance show` |
-| **Changes agent identity?** | No — runs in the current agent's context | Yes — a new role, expertise, and capability bundle | No — a reference document, never executed as steps |
+| **Artifact** | `SKILL.md` | an agent definition in `agents/` | `governances/*.md` |
+| **How it loads** | into the context of the agent already running | spawned as a separate agent | read on demand, e.g. via `governance show` |
+| **Changes agent identity?** | No | Yes — a new role, expertise, and capability bundle | No — a reference document, never executed as steps |
 
-A skill can *invoke* a persona (spawning a subagent for part of its workflow) and can *load* a governance (reading its rules before acting), but a skill is neither of those things itself.
+A skill can *spawn* a persona as a subagent, and can *load* a governance file. In those forms they are separate artifacts with their own mechanisms. As a persona **skill** or a governance **skill**, they are rows in the kinds table above — the same `SKILL.md` mechanism, differing only in their values on the three axes.
 
 ## Plugin distribution
 
