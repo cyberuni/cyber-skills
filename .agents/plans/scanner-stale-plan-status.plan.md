@@ -18,10 +18,10 @@ todos:
     status: completed
   - content: "Deliver: wire into doctrine-loop SKILL.md + sdd-scanner.md (+ plan-retirement if option C)"
     status: completed
-  - content: "Impl gate — cold impl-judge; pnpm verify green"
-    status: in_progress
-  - content: "Handoff — PR, followups, warm-unit reset"
-    status: pending
+  - content: "Impl gate — cold impl-judge IMPLEMENTATION_PASS true, all 8 scenarios; pnpm verify green"
+    status: completed
+  - content: "Handoff — direct chore commits to main (no GitHub issue to PR against), changeset, no followups"
+    status: completed
 ---
 
 # scanner-stale-plan-status — Scanner detects plan frontmatter that lags reality
@@ -137,15 +137,32 @@ Scanner's job, agent-run, not the deterministic script's):
 `pnpm verify` green (34/34 tasks) at commit before this one; re-verified `check-spec-state.mts
 --root .agents/specs` clean after this round's doc edits (prose-only, no `.feature` touched again).
 
-## NEXT
+## Impl gate — PASS
 
-Resume at todo 7 (impl gate): spawn a cold impl-judge over the frozen `scanner.feature`'s 8 new
-scenarios against the delivered prose in `sdd-scanner.md` + `doctrine-loop/{SKILL,README}.md` +
-`plan-retirement/{README,SKILL}.md` (static-inspection verification — this is agent-behavior prose,
-not runnable code, matching the rest of `doctrine/scanner`'s existing verification pattern). On
-PASS, move to todo 8 (handoff): this CR has no GitHub issue (a manual finding from today's own
-plan-hygiene sweep, per the plan's Request) — check repo convention for un-sourced doctrine CRs
-(how `#376`/similar doctrine chores landed) and land as either a direct chore commit sequence (this
-worktree already lands its own commits per-unit) or a PR, whichever the repo's commit discipline
-calls for at this blast tier; add a changeset if the touched `plugins/sdd` package content counts
-as user-visible (check `pnpm changeset` status — 14 pending changesets noted by the repo hook).
+Cold impl-judge `IMPLEMENTATION_PASS: true`, all 8 frozen scenarios verified by static inspection
+with cited passages against the delivered prose; no absorption findings, no regressions to sibling
+frozen Non-goals. See ledger `scanner-stale-plan-status.b41e7c.jsonl` seq 3 for the full gate line.
+
+## Handoff
+
+**No GitHub issue exists for this CR** — it originated as a manual finding during today's own
+plan-hygiene sweep (`cr: local-scanner-stale-plan-status`, no `source:` field). Checked repo
+convention: `#376` (a real GitHub issue) landed as PR #379; but `dd1e14ac` (the motivating-evidence
+commit this CR's own Request cites) and its sibling doctrine chores (`89ef3d46`, `5b433721`) landed
+as **direct chore commits straight onto `main`**, no PR — `main` was fast-forward-only at every
+step, confirming that's this repo's convention for a same-session, no-issue, self-contained
+doctrine chore. This CR follows that path: 4 commits (intake+halt, spec-freeze, spec-gate
+remediation, deliver), each its own reviewed unit, land as a fast-forward onto `main`. Added a
+changeset (`cyber-sdd: minor`, matching precedent set by `.changeset/sdd-spec-format-conformance-warning.md`
+for a comparable Scanner-behavior addition).
+
+**No `status:` autofix on this very brief, on purpose.** Dogfooding the contract this CR just
+froze: every todo above is `completed`, but the frontmatter `status:` stays `active` — writing a
+terminal value here would be exactly the anti-pattern this CR exists to stop (see `eb288886`,
+which set `status: complete` on `376-doctrine-validate-before-draft.plan.md`, one of the 12
+off-enum values the Findings above counted). This CR has no `source:` (local-only), so the
+Scanner's `source-closed` signal has nothing to query — retirement of this plan brief is left to a
+later Scanner pass or a manual call once a distilling `strategy` entry exists, not to this handoff.
+
+**No followups filed.** The one architect observation from the spec-judge (S3/S4 `Then`-clause
+asymmetry) is cosmetic, already covered generically by S5/S7, and not worth a tracked issue.
