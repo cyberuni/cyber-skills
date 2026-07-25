@@ -12,12 +12,12 @@ todos:
     status: done
   - content: "spec gate — 4 cold judge rounds, R4 ALIGNED true; Clearance granted live; gate seq 2"
     status: done
-  - content: "deliver — add cyber-mux dep, retarget 14 import sites, delete src/console except doorbell"
-    status: pending
-  - content: "impl gate — per-scenario verification + a REAL tmux spawn round-trip"
-    status: pending
+  - content: "deliver — dep added, imports retargeted, fork deleted; rebased onto main; verify 34/34"
+    status: done
+  - content: "impl gate — 3 cold rounds; R3 PASS, 26/26 mutation-proven; live spawn round-trip verified"
+    status: done
   - content: "handoff — PR against main, Closes #339"
-    status: pending
+    status: in_progress
 ---
 
 # CR github-339 — cyberlegion consumes cyber-mux instead of forking it
@@ -125,7 +125,30 @@ different current namespaces (prose only — that node's `.feature` never named 
 - Pass `from: callerPane(...)` on `pane:*` placements.
 - Delete `src/console/` except `doorbell.ts`; account for every deleted test rather than dropping it.
 
+## Impl gate — passed round 3
+
+Three cold rounds, each finding a gap the previous missed. The middle one is the lesson worth
+carrying:
+
+1. **R1** — two scenarios had no verification: the e2e harness strips every mux variable, so both
+   assertions ran with nothing detected and checked only that a label was present.
+2. **R2** — eight MORE, and the judge *proved* it rather than arguing it: it stubbed the installed
+   `cyber-mux` dist to break real behavior and all 378 tests still passed. Root cause: the fork's 77
+   deleted tests were waved through as "covered upstream by cyber-mux's own suite."
+   ★ **Upstream coverage protects the upstream package's behavior, not this project's frozen
+   contract.** The dependency can move or be re-pinned and the suite stays green through it.
+3. **R3** — all 26 mutation-killed individually; dependency restored byte-for-byte and checksum-
+   verified against the published tarball. PASS.
+
+## Verified beyond the suite
+
+A real `unit spawn` in a scratch tmux server opened a real pane + worktree; `who` listed it; mail
+delivered; `prune` **discriminated** — 0 reaped while the pane lived, 1 once it died. The legacy
+fallback was exercised on this session's own env (herdr, legacy var set, no current var): detection
+reported `via: env`, and dropping the variable flipped it to `via: ancestry`, so the transitional
+read is load-bearing rather than incidental.
+
 ## NEXT
 
-Deliver. Verify a REAL tmux spawn round-trips before the impl gate — unit tests alone do not
-discharge the "the fleet runs live units against this seam" control.
+Push and open the PR against `main` with `Closes #339`. Eight follow-ups are recorded in the ledger
+shard (seq 11-18) and need draining to the issue tracker.
