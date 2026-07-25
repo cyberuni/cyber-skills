@@ -11,11 +11,11 @@ todos:
   - content: "Validate CR premise against current code (#376 doctrine) — REFUTED, see Findings"
     status: completed
   - content: "HALT: needs-input on which realization to spec (three options below)"
-    status: in_progress
+    status: completed
   - content: "Explore: freeze the chosen stale-plan detection contract in doctrine/scanner/scanner.feature (additive)"
-    status: pending
+    status: completed
   - content: "Spec gate — cold spec-judge; freeze; gate line"
-    status: pending
+    status: in_progress
   - content: "Deliver: wire into doctrine-loop SKILL.md + sdd-scanner.md (+ plan-retirement if option C)"
     status: pending
   - content: "Impl gate — cold impl-judge; pnpm verify green"
@@ -89,10 +89,26 @@ source-done + distilled ("present means resumable; retirement is a deletion, not
   contradicts no declared contract, and is genuinely additive to `doctrine/scanner/`.
   Separately proposable: a `check-plan-safety`-style enum guard so the drift cannot recur.
 
+## Resolved decisions
+
+**Owner picked Option C** (derive the retirement clearance set; drop the `status` write). Explore
+landed: `.agents/specs/sdd/doctrine/scanner/scanner.feature` gained a new additive
+`# ---- Stale plan frontmatter ----` band (8 scenarios: agree-terminal feeds the clearance set,
+agree-non-terminal is a no-op, both disagreement directions flag a finding and never autofix, the
+clearance set reuses `plan-retirement`'s existing `--retire` input rather than a new mechanism,
+`source-closed` reuses `plan-retirement`'s own native-query contract, and an explicit
+never-writes-`status` guard scenario). `doctrine/scanner/README.md` gained a Use Cases row plus a
+full "Stale plan frontmatter" section ahead of "Where each strategy entry lands". No enum widening,
+no `provenance-model.md` change — the CR's actual goal (no human needed to notice) rides existing
+`plan-retirement` machinery.
+
 ## NEXT
 
-Blocked on the owner picking A, B, or C. On an answer, resume at todo 4 (explore): draft the
-additive scenarios into `.agents/specs/sdd/doctrine/scanner/scanner.feature` under a new
-`# ---- Stale plan frontmatter ----` band, update `doctrine/scanner/README.md`'s Use Cases
-table, then run the spec gate. Under option C also touch `plugins/sdd/skills/plan-retirement/`
-for the caller-side clearance derivation.
+Resume at todo 5 (spec gate): run the cold spec-judge against the `scanner.feature` diff (additive
+per this repo's freeze-reopen rule — modified 0, removed 0, addOnly true expected) and the README
+diff. On PASS, move to todo 6 (deliver): wire the Scanner-side computation into
+`plugins/sdd/agents/sdd-scanner.md` + `plugins/sdd/skills/doctrine-loop/{SKILL,README}.md`, and the
+caller-side clearance derivation into `plugins/sdd/skills/plan-retirement/` (README + SKILL, and
+`scripts/retire-plans.mts`/tests if the derivation should be mechanical there rather than agent-run
+inside the Scanner). Then `pnpm verify` green, impl gate, handoff as a direct chore commit (source
+is a manual finding, not a GitHub issue — no CR to link an issue to).
