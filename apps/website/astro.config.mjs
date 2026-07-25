@@ -78,7 +78,7 @@ export default defineConfig({
 						{
 							label: 'Skills',
 							items: [
-								{ label: 'Skills', slug: 'concepts/skills' },
+								{ label: 'Overview', slug: 'concepts/skills' },
 								{ label: 'Commands', slug: 'concepts/commands' },
 								{ label: 'Gateway Skill', slug: 'concepts/gateway-skill' },
 								{ label: 'Persona', slug: 'concepts/persona' },
