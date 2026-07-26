@@ -19,10 +19,16 @@ A persona is an agent definition file (`agents/*.md`) with two layers:
 **Capability layer** (what the agent can do and how far it can go):
 - `tools` / `disallowedTools` — [permissions](/concepts/permissions/) for this agent
 - `maxTurns` / `effort` — [constraints](/concepts/constraints/) for this agent
-- `skills` — which skills are available to this agent
+- `skills` — which skills are **preloaded** into this agent at startup
 - `model` — which model this agent uses
 
 The identity layer shapes behavior through instruction. The capability layer shapes behavior through enforcement.
+
+`skills` is a preload list, not an access list. It injects each named skill's full content into the agent's context at startup; it does not gate what the agent may load later, which stays open through the Skill tool unless you remove that tool.
+
+That makes it the right way to carry an identity layer that other callers also need. A voice, a house style, a review standard — write it once as a skill, name it in `skills`, and the same text serves both the spawned agent and any in-session load. Writing it into the agent body instead strands it there: the only ways back to it are spawning the agent or reading its file by path.
+
+A skill named this way must stay model-invocable. `disable-model-invocation: true` blocks preloading, since preloading draws from the same pool the model may invoke.
 
 ## Personas vs Skills vs Subagent definitions
 

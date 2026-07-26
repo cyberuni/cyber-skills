@@ -5,14 +5,12 @@ description: User-invocable slash-command workflows — how they differ from aut
 
 **Commands** are skills invoked explicitly by the user via `/name`, never triggered automatically by the model. Use them for workflows that should only run when you choose — deployments, releases, or any operation where accidental auto-invocation would be disruptive.
 
-## How commands differ from skills
+Regular skills `description` field is used by agents to trigger the skill automatically. Commands suppress that automatic invocation:
 
-Regular skills have a `description` field that agents read to decide when to load the skill automatically. Commands suppress that automatic invocation:
-
-|                        | Auto-invoked by model      | User-invoked via `/name` |
-| ---------------------- | -------------------------- | ------------------------ |
-| **Skill** (`SKILL.md`) | ✅ when description matches | ✅                        |
-| **Command**            | ❌                          | ✅                        |
+|             | Auto-invoked by model       | User-invoked via `/name` |
+| ----------- | --------------------------- | ------------------------ |
+| **Skill**   | ✅ when description matches | ✅                       |
+| **Command** | ❌                          | ✅                       |
 
 ## Two mechanisms
 
@@ -27,6 +25,8 @@ Place a markdown file in `.claude/commands/` (project) or `~/.claude/commands/` 
 ```
 
 The file content is the skill body. Frontmatter (`description`, `allowed-tools`) is supported. The model never auto-invokes these — they are user-only by design.
+
+`allowed-tools` **pre-approves** the tools it lists so the command's turn runs without permission prompts. It does not restrict the command to those tools: everything else stays callable, subject to your normal permission settings. To take a tool away, use `disallowed-tools`.
 
 Claude Code marks `commands/` as deprecated in favor of `SKILL.md` files, but it still works and is the more portable choice today (see [harness compatibility](#harness-compatibility) below).
 
@@ -48,24 +48,24 @@ This prevents automatic loading while keeping the skill accessible via `/deploy`
 
 ### Standalone skills
 
-| Harness                | `disable-model-invocation` in `SKILL.md`                      | `commands/` folder            |
-| ---------------------- | ------------------------------------------------------------- | ----------------------------- |
+| Harness                | `disable-model-invocation` in `SKILL.md`                       | `commands/` folder             |
+| ---------------------- | -------------------------------------------------------------- | ------------------------------ |
 | **Claude Code**        | ✅                                                             | ✅ (deprecated, still works)   |
-| **Cursor**             | ⚠️ bug: hides plugin-delivered skills from `/` menu (Mar 2026) | —                             |
-| **Windsurf**           | ✅                                                             | —                             |
+| **Cursor**             | ⚠️ bug: hides plugin-delivered skills from `/` menu (Mar 2026) | —                              |
+| **Windsurf**           | ✅                                                             | —                              |
 | **GitHub Copilot CLI** | ❌ (skills)                                                    | ✅ (reads `.claude/commands/`) |
-| **Codex CLI**          | ❌ (uses `agents/openai.yaml` instead)                         | —                             |
-| **Gemini CLI**         | ❌                                                             | —                             |
+| **Codex CLI**          | ❌ (uses `agents/openai.yaml` instead)                         | —                              |
+| **Gemini CLI**         | ❌                                                             | —                              |
 
 ### Plugin commands
 
 Inside a [universal plugin](/governances/universal-plugin/), a `commands/` subfolder creates user-invocable slash commands across harnesses:
 
-| Component   | Claude Code      | Cursor   | Codex            |
-| ----------- | ---------------- | -------- | ---------------- |
-| `skills/`   | ✅ native         | ✅ native | ✅ native         |
-| `commands/` | ✅ native         | ✅ native | silently ignored |
-| `agents/`   | ✅ native         | ✅ native | silently ignored |
+| Component   | Claude Code      | Cursor    | Codex            |
+| ----------- | ---------------- | --------- | ---------------- |
+| `skills/`   | ✅ native        | ✅ native | ✅ native        |
+| `commands/` | ✅ native        | ✅ native | silently ignored |
+| `agents/`   | ✅ native        | ✅ native | silently ignored |
 | `rules/`    | silently ignored | ✅ native | silently ignored |
 
 Because Cursor supports `commands/` natively in plugins, and the `disable-model-invocation: true` frontmatter field has a known bug in Cursor (plugin-delivered skills with this flag are hidden from the `/` menu), the `commands/` folder is the safer choice for cross-harness plugin commands targeting both Claude Code and Cursor.

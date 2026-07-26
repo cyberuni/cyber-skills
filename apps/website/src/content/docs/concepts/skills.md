@@ -90,6 +90,45 @@ A caller addresses one by `name`, directly. A caller may also resolve *which* na
 
 A name-only skill whose effect is **reference** is read as criteria rather than executed as steps — producers load it to align, judges load it to grade. See [Governances](/concepts/governances/).
 
+## Runtime fields
+
+The three axes above describe *selection*. A second, independent question is what a skill is allowed to change about the run itself once it loads — the model, the effort level, the tool pool, whether it executes inline or in a subagent.
+
+This is where a stale assumption is common: that a skill is "just instructions" and anything about *how* the agent runs has to be an agent definition. That was true once. It is not the current contract.
+
+| Field | Effect |
+| --- | --- |
+| `model` | Model to use while the skill is active |
+| `effort` | Effort level while the skill is active |
+| `allowed-tools` | **Pre-approves** tools for the invoking turn — does not restrict the pool |
+| `disallowed-tools` | Removes tools from the pool while the skill is active |
+| `context: fork` + `agent` | Run the skill in a subagent, with the body as the task |
+| `paths` | Limit automatic activation to matching files |
+
+Two details worth holding on to, because they are the ones that bite:
+
+- **`allowed-tools` grants, it does not fence.** Listing `Read` does not stop the skill from writing files. Use `disallowed-tools` to take a tool away.
+- **`model` and `effort` on a skill are turn-scoped.** They apply for the rest of the invoking turn and then the session reverts. An agent definition's apply for that subagent's whole life.
+
+### What still requires an agent definition
+
+A skill cannot express a tool **allowlist** — "only these tools, nothing else". `allowed-tools` grants and `disallowed-tools` denies; neither closes the set. Nor can it set `permissionMode`, `maxTurns`, persistent `memory`, `mcpServers`, or worktree `isolation`.
+
+Those are the honest reasons to reach for an agent definition. Wanting a different model or a higher effort level is not one.
+
+### Composing the two
+
+The two artifacts compose in both directions, and the direction you want depends on which one owns the task:
+
+| Direction | System prompt | The task is | Use when |
+|---|---|---|---|
+| Agent definition with `skills:` | the agent's body | the delegation message | the skill is **reference** — a voice, a standard, a convention set |
+| Skill with `context: fork` | the agent type's | the skill body | the skill is a **task** with explicit steps |
+
+`skills:` preloads the full skill content into the subagent at startup — the supported way to keep one body of content and reach it from both an in-session load and a delegated run, with no duplicated text and no reading another file by path.
+
+One trap: a skill marked `disable-model-invocation: true` **cannot be preloaded**, because preloading draws from the same pool the model may invoke. If a skill needs to be both user-only and preloadable, those two requirements conflict — see [Name-only skills](#name-only-skills) for the description-based approach that does not.
+
 ## Placement
 
 | Placement | Location | Use case |
@@ -149,3 +188,5 @@ description: Use this skill when <trigger>. <One-line capability summary.>
 - [Disciplines](/concepts/disciplines/) — always-on behavioral habits
 - [Agent Configuration](/concepts/agent-configuration/) — full picture of what shapes agent behavior
 - [Marketplace](/marketplace/) — the plugins and skills shipped with this repo
+- [Claude Code — skills](https://code.claude.com/docs/en/skills) — frontmatter reference, invocation control, `context: fork`
+- [Claude Code — subagents](https://code.claude.com/docs/en/sub-agents) — agent-definition frontmatter and `skills:` preloading

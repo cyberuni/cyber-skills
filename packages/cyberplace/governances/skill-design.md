@@ -105,7 +105,21 @@ When a skill includes `scripts/` or documents CLI commands agents run, load **ag
 - `description` must contain `"Use this skill when"` or `"When to use"` trigger language — **unless the skill is name-only**, whose `description` is exactly `"By name only"` and carries no trigger language at all.
 - Keep `description` ≤120 characters — long descriptions are truncated in the agent context window.
 - `compatibility` — optional; declare environment constraints (required tools, network access, OS, runtime version). Include only when the skill has requirements the agent cannot assume.
-- `allowed-tools` — optional, experimental; space-separated list of pre-approved tools the skill may invoke (e.g. `Bash(git:*) Read`). Support varies by platform.
+
+#### Runtime fields
+
+Support varies by platform; the notes below are Claude Code's documented behavior. Set none of these unless the skill needs them — each one is a deviation the reader must account for.
+
+| Field | Effect |
+| --- | --- |
+| `allowed-tools` | **Pre-approves** the listed tools for the invoking turn. It does not restrict the tool pool — every other tool stays callable. The grant clears on the user's next message. |
+| `disallowed-tools` | Removes tools from the pool while the skill is active. This is the field that restricts. Also clears on the next message. |
+| `model` | Model to use while the skill is active. Applies for the rest of the current turn only; the session model resumes on the next prompt. |
+| `effort` | Effort level while the skill is active: `low`, `medium`, `high`, `xhigh`, `max`. Same turn-scoped lifetime as `model`. |
+| `context: fork` | Runs the skill in a subagent, with the skill body as the task prompt. Pair with `agent:` to choose the subagent type. Only meaningful for a skill that states a task — a reference or stance skill forked this way receives no actionable prompt and returns nothing useful. |
+| `paths` | Glob patterns limiting automatic activation to matching files. |
+
+A skill cannot express a tool **allowlist** — `allowed-tools` grants and `disallowed-tools` denies, but neither says "only these". A hard allowlist, `permissionMode`, `maxTurns`, persistent `memory`, `mcpServers`, and worktree `isolation` remain agent-definition fields. Reach for an agent definition when one of those is the actual requirement, not for `model` or `effort` alone.
 
 ### skill.json — install-time metadata
 
@@ -204,3 +218,8 @@ npx cyberplace@<version> governance show skill-repo-structure
 npx cyberplace@<version> governance show agent-tool-output
 npx cyberplace@<version> governance show universal-plugin
 ```
+
+Runtime field reference (re-verify before relying on a version-gated field):
+
+- <https://code.claude.com/docs/en/skills> — skill frontmatter, invocation control, `context: fork`
+- <https://code.claude.com/docs/en/sub-agents> — agent-definition frontmatter, `skills:` preloading
