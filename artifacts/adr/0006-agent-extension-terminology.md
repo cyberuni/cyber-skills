@@ -13,7 +13,7 @@ The LAIA SDD ([`docs/specs/2026-05-layered-augmentation-sdd.md`](../specs/2026-0
 
 Both types extend agent behavior beyond what the base model provides. The SDD needs a single neutral term to refer to both without privileging either type.
 
-A [nomenclature survey](../research/2026-05-agent-extension-nomenclature.md) (May 2026) found that the community has settled on a three-layer hierarchy rather than a single unifying term:
+A [nomenclature survey](../../.research/agent-extension-nomenclature/conclusion.md) (May 2026) found that the community has settled on a three-layer hierarchy rather than a single unifying term:
 
 | Term | Layer | Primary users |
 |---|---|---|

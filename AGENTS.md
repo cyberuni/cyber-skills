@@ -30,7 +30,7 @@ This repo is a skill library and CLI tool for AI agents (Claude Code, Cursor, Co
 - `packages/cyberplace/src/` — TypeScript source; domain folders: `audit/`, `awesome/`, `commit/`, `governance/`, `hook/`, `skill/`
 - `packages/cyberplace/governances/` — version-pinned agent-tool contracts shipped with the npm package; load via `cyberplace governance show <name>`
 - `artifacts/adr/` — architecture decision records
-- `docs/research/` — distilled background surveys (`YYYY-MM-<topic>.md`) linked from ADRs and governances (not loaded via CLI); `.research/<topic>/` holds the working dossier (topic/evidence/conclusion) the surveys distill from
+- `.research/<topic>/` — background research dossiers (`topic` / `evidence` / `conclusion` / `changes`) linked from ADRs and governances (not loaded via CLI); `conclusion.md` is the file other documents cite
 - `packages/cyberplace/bin/cyberplace.mjs` — slim tracked shim; delegates to `dist/cli.mjs`
 - `packages/cyberplace/dist/cli.mjs` — single bundled CLI (gitignored, built by tsdown); commands: `audit`, `awesome`, `commit`, `governance`, `hook`, `skill`
 

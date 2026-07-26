@@ -197,4 +197,4 @@ Settled after this survey, recorded on the website at [Skill Kinds](/concepts/sk
 - [ADR-0005: Skill Taxonomy](../../artifacts/adr/0005-skill-taxonomy.md) — placement / pattern / activation axes
 - [ADR-0013: Governance Skills](../../artifacts/adr/0013-governance-skills.md) — the dual-marker decision
 - [ADR-0001: Governance vs Discipline Taxonomy](../../artifacts/adr/0001-governance-vs-discipline-taxonomy.md)
-- [Partial-skill vocabulary](./2026-07-partial-skill-vocabulary.md) — governance vs the neighboring terms
+- [Partial-skill vocabulary](../partial-skill-vocabulary/conclusion.md) — governance vs the neighboring terms

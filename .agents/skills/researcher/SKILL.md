@@ -29,37 +29,22 @@ Spawn a `general-purpose` agent for each distinct research angle when questions 
 
 ## Output
 
-Write a research document to `docs/research/YYYY-MM-<topic>.md` (use today's date for YYYY-MM). Then add a row to the index table in `docs/research/README.md`.
+Write a dossier to `.research/<topic-slug>/` (undated slug — a dossier accretes over time rather than being superseded by a new file). Then add a row to the index table in `.research/README.md`.
 
-Follow this document structure (match the existing files in `docs/research/`):
+Follow this dossier structure (match the existing directories in `.research/`):
 
-```markdown
-# <Topic> (Month YYYY)
+- **`topic.md`** — the question, scope (`In scope:` / `Out of scope:`), and the source angles to sweep.
+- **`evidence.md`** — one numbered entry per claim (`E01`, `E02`, …), each with `claim_id`, `date`, `status` (Confirmed / Refuted / Unverified), `confidence`, `source.label`, `source.url`, `source.type`, and `notes`.
+- **`conclusion.md`** — the verdict. This is the file other documents cite, so it must stand alone: restate the question, give the answer, and carry the tables and source links a reader needs.
+- **`changes.md`** — a dated entry per revision: what changed, why, which conclusions moved, what evidence was added, what triggered it. Skip on the initial pass only if nothing has changed yet.
 
-<One sentence: what question this answers and what decision it informs.>
+If the topic already has a dossier, extend it — add evidence entries, revise `conclusion.md`, and log the revision in `changes.md`. Do not start a second dossier for the same question.
 
-## Question
-
-<The specific question being researched.>
-
-## Findings
-
-<Subsections per theme. Use tables where comparisons are dense. Quote numbers and study names when available.>
-
-## Open questions
-
-<What remains unresolved or needs follow-up.>
-
-## Sources
-
-<Bulleted list of URLs with brief labels.>
-```
-
-After writing the file, always update the index in `docs/research/README.md` — add a row under the `## Index` table.
+After writing, always update the index in `.research/README.md` — add a row under the `## Index` table.
 
 ## Boundaries
 
 - Do not implement solutions — research only.
 - Do not write ADRs or governances — surface findings and leave decisions to the user.
-- Do not save findings only to memory — the file in `docs/research/` is the durable record.
+- Do not save findings only to memory — the dossier in `.research/` is the durable record.
 - Exit the persona once the document is written and the index is updated.

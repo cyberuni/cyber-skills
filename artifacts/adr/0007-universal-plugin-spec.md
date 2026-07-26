@@ -13,7 +13,7 @@ Two governance files covered overlapping concerns with inconsistent field defini
 
 Both described the same plugin system. No formal acceptance criteria existed for plugin tooling. The exact transformation rules from canonical source-of-truth to each vendor-specific manifest were undocumented as machine-verifiable rules.
 
-Key research findings (`.research/plugin-schema/`, `docs/research/2026-05-universal-plugin-cursor-claude.md`):
+Key research findings (`.research/plugin-schema/`, `.research/universal-plugin/`):
 
 1. No vendor treats `.plugin/plugin.json` as its primary manifest path today; each uses a vendor-specific directory (`.claude-plugin/`, `.cursor-plugin/`, `.codex-plugin/`)
 2. The true cross-vendor portable surface is component content (`skills/`, `.mcp.json`, `commands/`, `agents/`) — not the manifest

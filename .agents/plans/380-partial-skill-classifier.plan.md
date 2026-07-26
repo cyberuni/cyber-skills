@@ -73,7 +73,7 @@ Additive scenarios covering the hidden-but-situational case self-clear.
 ## Landed so far
 
 - `ac24e0be` — concepts/skills.md absorbs the axes + name-only rule; corpus survey in
-  `docs/research/2026-07-skill-kind-axes.md`.
+  `.research/skill-kind-axes/conclusion.md`.
 - `3c758995` — skill-design governance, ADR-0031, ADR-0013 superseded-in-part, ADR index (0030 was
   also missing), AGENTS.md, website governance + aced/define-governance, sidebar grouping.
 

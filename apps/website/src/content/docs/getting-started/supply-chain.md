@@ -64,4 +64,4 @@ The `init-commit-discipline` skill resolves the current npm version and writes i
 
 ## Threat model
 
-The full supply chain threat model is documented in [`docs/research/2026-05-cyberplace-supply-chain-threat-model.md`](https://github.com/cyberuni/cyberplace/blob/main/docs/research/2026-05-cyberplace-supply-chain-threat-model.md) in the source repository.
+The full supply chain threat model is documented in [`.research/supply-chain-threat-model/`](https://github.com/cyberuni/cyberplace/blob/main/.research/supply-chain-threat-model/conclusion.md) in the source repository.

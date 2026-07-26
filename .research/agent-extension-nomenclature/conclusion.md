@@ -1,6 +1,6 @@
 # Agent Extension Nomenclature Survey (May 2026)
 
-Background research for [ADR-0006](../adr/0006-agent-extension-terminology.md). Surveyed terminology used across major AI agent platforms for add-ons that extend agent behavior.
+Background research for [ADR-0006](../../artifacts/adr/0006-agent-extension-terminology.md). Surveyed terminology used across major AI agent platforms for add-ons that extend agent behavior.
 
 ---
 

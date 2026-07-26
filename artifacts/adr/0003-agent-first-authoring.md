@@ -70,7 +70,7 @@ Adopt **agent-first authoring** for all Governance, Discipline, and Skill docume
 | **Discipline** | AGENTS.md sections (e.g. `## Commit Discipline`) | Habitual rules in body; commit-helper skill names and `governance show` one-liners in `### References`. **No repository file links.** Never paste full governance bodies. |
 | **Skill** | `SKILL.md` (public `skills/`) | Workflow in body; `reference.md` / `examples.md` (same skill folder) and `governance show` commands in `## References` only. **No links to other repository files.** |
 
-**Out of scope for agent-first restructuring:** ADRs and `docs/research/` remain contributor-facing evidence and decisions (per ADR-0001). Repo-internal skills under `.agents/skills/` are not updated by this ADR.
+**Out of scope for agent-first restructuring:** ADRs and `.research/` remain contributor-facing evidence and decisions (per ADR-0001). Repo-internal skills under `.agents/skills/` are not updated by this ADR.
 
 ## Rationale
 
@@ -100,7 +100,7 @@ Option 3 separates the **why** (ADR) from the **what** (governances, init skills
 - Update `skills/init-commit-discipline/SKILL.md`, `skills/init/SKILL.md`, and `src/commit/content.ts` for Discipline section shape.
 - Align [ADR-0001](0001-governance-vs-discipline-taxonomy.md) governance content boundaries with this ADR (no ADR/research path links in governances).
 - Add governance load tests and audit-skill Q13 to catch rationale sections in shipped artifacts.
-- Cross-link from `governances/README.md`, `AGENTS.md`, and `docs/research/README.md`.
+- Cross-link from `governances/README.md`, `AGENTS.md`, and `.research/README.md`.
 
 ## Related Decisions
 

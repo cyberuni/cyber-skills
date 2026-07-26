@@ -6,4 +6,4 @@ Replaces a standing `AGENTS.md` bullet that told every session to read the resea
 
 ## Maintenance
 
-Paired with `docs/research/2026-07-agent-harness-landscape.md`, which holds the sourced 2026-07 sweep and the citations behind each tier. The skill carries the decision (who's in, who's out, how to frame the comparison); the research file carries the evidence. When the set changes, update both.
+Paired with the `.research/agent-harness-landscape/` dossier, which holds the sourced 2026-07 sweep and the citations behind each tier. The skill carries the decision (who's in, who's out, how to frame the comparison); the dossier carries the evidence. When the set changes, update both.

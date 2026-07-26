@@ -2,7 +2,7 @@
 
 Background research for install, pinning, and runtime trust boundaries when consumers use cyberplace skills and CLI. Normative install guidance lives in the [README](../../readme.md) and init skills; this document records threats, mitigations, and gaps.
 
-**Related:** [Skill ecosystem landscape](2026-05-skill-ecosystem-landscape.md), [ADR-0002](../adr/0002-external-governance-federation.md), `skill-repo-structure` governance.
+**Related:** [Skill ecosystem landscape](../skill-ecosystem-landscape/conclusion.md), [ADR-0002](../../artifacts/adr/0002-external-governance-federation.md), `skill-repo-structure` governance.
 
 ## Scope
 

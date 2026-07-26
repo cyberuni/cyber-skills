@@ -4,8 +4,8 @@ Informs the `skill-repo-structure` governance and a potential proposal to `verce
 
 **Related:**
 
-- [ADR-0002: External governance federation](../adr/0002-external-governance-federation.md)
-- [Skill ecosystem landscape](2026-05-skill-ecosystem-landscape.md)
+- [ADR-0002: External governance federation](../../artifacts/adr/0002-external-governance-federation.md)
+- [Skill ecosystem landscape](../skill-ecosystem-landscape/conclusion.md)
 - Governance: `governance show skill-repo-structure`
 
 ---

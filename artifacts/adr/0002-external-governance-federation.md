@@ -21,7 +21,7 @@ Both approaches fail without a **stable install artifact**:
 
 The [Agent Skills](https://agentskills.io) ecosystem is converging on **manifest + packaged artifacts + digest pinning** ([agentskills#255](https://github.com/agentskills/agentskills/issues/255), [PR #254](https://github.com/agentskills/agentskills/pull/254)) rather than ad hoc filesystem layout. Maintainers closed [packaging guidance #338](https://github.com/agentskills/agentskills/issues/338) without endorsing a single package manager — ecosystem convergence first.
 
-Background survey: [docs/research/2026-05-skill-ecosystem-landscape.md](../research/2026-05-skill-ecosystem-landscape.md).
+Background survey: [.research/skill-ecosystem-landscape/](../../.research/skill-ecosystem-landscape/conclusion.md).
 
 ## Decision Drivers
 
@@ -111,5 +111,5 @@ Option 4 is valuable later if cyberplace adopts clibuilder broadly; it is not re
 ## Related Decisions
 
 - [ADR-0001](0001-governance-vs-discipline-taxonomy.md) — governance vs discipline taxonomy
-- Research: [2026-05-skill-ecosystem-landscape.md](../research/2026-05-skill-ecosystem-landscape.md)
+- Research: [2026-05-skill-ecosystem-landscape.md](../../.research/skill-ecosystem-landscape/conclusion.md)
 - Governance: `skill-repo-structure` — repo layout including optional `governances/`
