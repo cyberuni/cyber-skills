@@ -1,0 +1,1 @@
+- website context must not reference files in other directories directly. They are not reachable.
