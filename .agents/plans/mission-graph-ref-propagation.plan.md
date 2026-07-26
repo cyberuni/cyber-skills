@@ -10,10 +10,10 @@ todos:
     status: done
   - content: "explore — spike verified 8 git facts; sync contract + scenarios; README/SKILL/ADR/RUNBOOK reconciled"
     status: done
-  - content: "spec gate — R1..R8 FAIL; install-refspec cut (R5); migrate seed-retirement added (R8 fixpoint); R9 pending"
-    status: in_progress
+  - content: "spec gate — R1..R8 FAIL; install-refspec cut (R5); migrate seed-retirement added (R8 fixpoint); R9 PASS/ALIGNED, gate approved (by: agent, auto-spec leash)"
+    status: done
   - content: "deliver — engine sync verb + migrate seed-retirement + tests; pnpm verify GREEN"
-    status: pending
+    status: in_progress
   - content: "impl gate — cold impl-judge, one verification per frozen scenario"
     status: pending
   - content: "handoff — PR against main; no source issue to close"
@@ -129,17 +129,18 @@ is **staged, not committed**; the migration does not reach other clones until th
 
 ## NEXT — resume here
 
-**Do this first:** re-run the cold spec-judge (round 9) over the current tree — spawn
-`sdd:sdd-spec-judge` scoped to the 5 tracked modifications in `git diff HEAD`. R9 was attempted three
-times and died on API 529 each time; nothing about the tree is known-bad. Everything R8 raised is fixed
-and pre-verified (below), so R9 is a confirmation round, not a fix round.
+**The spec gate is CLOSED.** Round 9 returned oracle/builder/architect all PASS, `ALIGNED: true`,
+zero new findings — it confirmed rounds 2–8's fixes actually landed in the tree rather than raising
+anything. The gate is written: `approval.spec` (`by: agent`, four-dimension `why`) on root `spec.md`
+with `status: approved`, and the `gate` line at seq 2 of shard
+`.agents/specs/sdd/ledger/mission-graph-ref-propagation.4a9e55.jsonl`. The suite never unfroze.
+`check-spec-state --root .` → **0 findings under `.agents/specs/sdd`** with the gate in place.
 
-On a PASS: freeze the suite (`@frozen` already sits on the file — it never unfroze), write the
-`approval.spec` block + the `gate` ledger line to shard
-`.agents/specs/sdd/ledger/mission-graph-ref-propagation.4a9e55.jsonl`, set root `spec.md`
-`status: approved`, then start **deliver**.
+One judge observation, recorded not acted on: `PRODUCER_GOVERNANCES_DECLARED` was not relayed in R9's
+task packet, so preflight PASS was *inferred* from log seq 2 rather than read from the field. Relay it
+explicitly at the impl gate.
 
-**Deliver is untouched and is the larger half.** `plugins/sdd/skills/mission-graph/scripts/mission-graph.mts`
+**Do this first: deliver. It is untouched and is the larger half.** `plugins/sdd/skills/mission-graph/scripts/mission-graph.mts`
 needs two new behaviors, neither written yet:
 1. a `sync` verb (fetch+push by explicit refspec, fast-forward only, the 7-case partition, the two
    prechecks in order: backend then reachability);
