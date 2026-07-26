@@ -182,6 +182,7 @@ description: Use this skill when <trigger>. <One-line capability summary.>
 
 ## Related
 
+- [Responsibility](/concepts/responsibility/) — the Required / Optional / Delegated axis, orthogonal to kind
 - [Gateway Skill](/concepts/gateway-skill/) — workflow entrypoints that route an opt-in workflow
 - [Persona](/concepts/persona/) — bundled agent identity a skill can invoke as a subagent
 - [Governances](/concepts/governances/) — normative rules a skill loads to stay aligned

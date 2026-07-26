@@ -84,7 +84,9 @@ export default defineConfig({
 							label: 'Skills',
 							items: [
 								{ label: 'Overview', slug: 'concepts/skills' },
+								{ label: 'Responsibility', slug: 'concepts/responsibility' },
 								{ label: 'Commands', slug: 'concepts/commands' },
+								{ label: 'Direct Invocation Skill', slug: 'concepts/direct-skill' },
 								{ label: 'Gateway Skill', slug: 'concepts/gateway-skill' },
 								{ label: 'Persona', slug: 'concepts/persona' },
 								{ label: 'Governances', slug: 'concepts/governances' },

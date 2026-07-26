@@ -7,18 +7,22 @@ description: What gateway skills are — user-invoked workflow entrypoints that 
 
 They are for workflows that should not be always on, but need more than a single narrow command once invoked.
 
-## What gateway skills do
+## Responsibilities
 
-A gateway skill owns the front door of a workflow:
+A gateway skill's job splits along the [Required / Optional / Delegated](/concepts/responsibility/) axis.
+
+**Required** — the front door of the workflow:
 
 - **Activation** — the user explicitly invokes the workflow, such as `$sdd` or "use SDD for this feature"
-- **Intake** — when the request is underspecified, the skill asks what kind of work the user wants to do
+- **Intake** — when the request is underspecified, the skill asks what kind of work the user wants to do, against its own fixed operation menu
 - **Context loading** — the skill loads the rules, constraints, and terms needed for the workflow
 - **Routing** — the skill sends the work to a narrower skill, tool, or implementation path
 
-The gateway may continue to shape the current work after routing. It is still scoped to the user's requested workflow, not global agent behavior.
+**Optional** — continuing to shape the current work after routing; still scoped to the requested workflow, not global agent behavior.
 
-A gateway skill should stay at the user-facing boundary. It should not own the workflow's internal delegate selection, detailed lifecycle transitions, or artifact-specific correctness rules unless those are themselves part of the user-facing intake surface.
+**Delegated** — voice and judgment during intake and routing. A gateway does not own its own tone: it tries to load a persona by name and falls back to a bundled default if the consumer hasn't supplied one. That's what lets a consumer change how the gateway sounds without forking its operation menu — see the [worked example](/concepts/responsibility/#worked-example-a-gateway-delegates-its-voice-to-a-persona).
+
+A gateway skill should stay at the user-facing boundary: it does not own the workflow's internal delegate selection, detailed lifecycle transitions, or artifact-specific correctness rules unless those are themselves part of the user-facing intake surface.
 
 ## Why not use always-on configuration
 
@@ -28,12 +32,17 @@ Spec-Driven Development is a good example: not every edit in a repository needs 
 
 ## Gateway Skill vs Other Concepts
 
-| Concept | When active | Purpose |
+A gateway skill is close kin to a [Command](/concepts/commands/) — both are meant to be reached by the user, not fired on stray context — but they differ on two of the three axes that distinguish any skill (see [Skills](/concepts/skills/#kinds-of-skill)):
+
+| Concept | Selection | Effect |
 |---|---|---|
-| Gateway skill | User-invoked, per workflow | Open, guide, and route an opt-in workflow |
-| Skill | On demand when triggered | Perform a reusable workflow or task |
-| Governance | Loaded on demand | Define what is correct for a domain |
-| Discipline | Always on | Shape habitual behavior across work |
+| Gateway skill | situational or explicit — `$sdd` or "use SDD for this feature" name it directly; a description match on an unlabeled request for a governed, spec-first change catches it situationally | routing — hands off to a narrower skill or action |
+| Command | explicit only — `/name`, never auto-matched | action — the command itself is the work |
+| Skill (default) | situational | action |
+| Governance | by-name | reference |
+| Discipline | event | stance |
+
+A Command's whole point is that auto-invocation is suppressed — that's what makes it safe for deployments and releases. A gateway skill keeps the situational path open: it can still activate from a description match, because its job is to catch the user before they've named the workflow, not just to wait until they do. What it never does is perform the work itself — it routes, the way a Command acts.
 
 ## Example: SDD
 
@@ -55,7 +64,9 @@ The agent should ask what SDD work the user wants to do: create a new feature, b
 
 ## Related
 
-- [Skills](/concepts/skills/) — on-demand workflows
+- [Skills](/concepts/skills/) — on-demand workflows; Selection, Visibility, and Effect axes
+- [Responsibility](/concepts/responsibility/) — Required / Optional / Delegated, and the gateway-persona seam
+- [Commands](/concepts/commands/) — the explicit-only, action-effect counterpart
 - [Governances](/concepts/governances/) — domain rules loaded on demand
 - [Disciplines](/concepts/disciplines/) — always-on behavioral habits
 - [Spec-Driven Development](/concepts/spec-driven-development/) — the workflow `$sdd` activates
