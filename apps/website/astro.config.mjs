@@ -80,6 +80,7 @@ export default defineConfig({
 				{
 					label: 'Concepts',
 					items: [
+						{ label: 'Agent Configuration', slug: 'concepts/agent-configuration' },
 						{
 							label: 'Skills',
 							items: [
@@ -94,7 +95,6 @@ export default defineConfig({
 							],
 						},
 						{ label: 'ADRs', slug: 'concepts/adrs' },
-						{ label: 'Agent Configuration', slug: 'concepts/agent-configuration' },
 						{ label: 'Constraints', slug: 'concepts/constraints' },
 						{ label: 'Glossary', slug: 'concepts/glossary' },
 						{ label: 'Permissions', slug: 'concepts/permissions' },

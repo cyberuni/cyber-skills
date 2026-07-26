@@ -3,53 +3,46 @@ title: Agent Configuration
 description: What agent configuration is — the collective term for all instructions an agent runtime loads to shape behavior.
 ---
 
-**Agent configuration** is the collective term for all the instructions an agent runtime loads to shape how it behaves. A change to any of these artifacts changes how the agent responds, decides, and acts — making them the primary unit of quality control in agentic workflows.
+**Agent configuration** is the collective term for all the instructions an agent runtime loads to shape how it behaves. A change to any of these files changes how the agent responds, decides, and acts — making them the primary unit of quality control in agentic workflows.
 
-## Concepts
+## Kinds of file
 
-Agent configuration is organized around distinct concepts, each with a different scope and delivery mechanism:
+Agent configuration is not one file format — it is several, each with its own location, distribution path, and dedicated doc:
 
-| Concept | What it defines | When active |
-| ------- | --------------- | ----------- |
-| **[Skills](/concepts/skills/)** | On-demand workflows — scaffolding, review, publishing | Loaded when agent matches a situation |
-| **[Governances](/concepts/governances/)** | Normative standards for a specific domain — what correct looks like | Loaded on demand via `governance show` CLI |
-| **[Disciplines](/concepts/disciplines/)** | Cross-cutting behavioral habits — always commit atomically, always brief subagents | Always-on via `AGENTS.md` and SessionStart hooks |
-| **[Permissions](/concepts/permissions/)** | Tool capability boundaries — what the agent can and cannot invoke | Enforced by harness on every tool call |
-| **[Constraints](/concepts/constraints/)** | Hard behavioral limits — max turns, guardrails, escalation triggers | Structural: harness-enforced. Behavioral: via discipline |
-| **[Persona](/concepts/persona/)** | Agent identity — role, expertise, bundled permissions and constraints | Active whenever that subagent is spawned |
-| **[Commands](/concepts/commands/)** | Named slash-command entries that trigger a specific workflow | Invoked explicitly by user |
+| File | Distribution | Doc |
+| ---- | ------------- | --- |
+| **`AGENTS.md`** (repo root) | Repo-local. The one canonical file this repo edits directly | [Disciplines](/concepts/disciplines/) |
+| **`CLAUDE.md`** (repo root) | Repo-local. A symlink to `AGENTS.md`, not a second source of truth — Claude Code reads `CLAUDE.md` by convention, so the repo points it at the real file instead of duplicating content | [Disciplines](/concepts/disciplines/) |
+| **`SKILL.md`** | Repo-local (`.agents/skills/`, `skills/`) or plugin-shipped via the `skills` field | [Skills](/concepts/skills/) |
+| **`agents/*.md`** | Repo-local or plugin-shipped via the `agents` field | [Persona](/concepts/persona/) |
+| **`.cursor/rules/*.mdc`** | Cursor's own always-on mechanism — the rough equivalent of an `AGENTS.md` section, but Cursor-native and `alwaysApply`-gated. Repo-local or plugin-shipped via the `rules` field (Cursor-only; other harnesses ignore it) | [Disciplines](/concepts/disciplines/) |
+| **`governances/*.md`** | Repo-local; loaded out-of-band via the `governance show` CLI, never auto-loaded by the harness | [Governances](/concepts/governances/) |
+| **`settings.json`** | Repo-local, harness-specific | [Permissions](/concepts/permissions/) |
+| **`commands/*.md`** | Repo-local or plugin-shipped via the `commands` field | [Commands](/concepts/commands/) |
 
-Together these concepts define the *behavior surface* of an agentic system. Skills, governances, and commands are loaded on demand. Disciplines, permissions, and constraints are always active. Persona bundles the last three into a named, distributable unit.
+Two root files, one source of truth: never edit `AGENTS.md` and `CLAUDE.md` as if they were independent — edit `AGENTS.md` and let the symlink carry it to Claude Code.
 
-## Artifacts
-
-The concepts above map to concrete file artifacts:
-
-| Artifact | Concepts it carries |
-| -------- | ------------------- |
-| **`AGENTS.md` section** | Disciplines, soft constraints (guardrails) |
-| **`SKILL.md`** | Skills |
-| **`agents/*.md`** | Persona, permissions, constraints |
-| **`governances/*.md`** | Governances |
-| **`settings.json`** | Project-scoped permissions, hook registration |
-| **Commands (`commands/*.md`)** | Commands |
+Each file kind's own doc covers what it encodes, when it activates, and how it distributes. This page stays at the index level — see [Related](#related) for the full set.
 
 ## Plugin distribution
 
-Plugins are the distribution unit for agent configuration. A plugin can provide any combination of concepts:
+Plugins are the distribution unit for agent configuration. A plugin can provide any combination of file kinds:
 
-| Plugin field | Concepts distributed |
+| Plugin field | File kind distributed |
 |---|---|
-| `skills` | Skills |
-| `commands` | Commands |
-| `agents` | Persona (bundled with permissions + constraints) |
-| `hooks` | Disciplines (via SessionStart), constraint enforcement (via PermissionRequest) |
+| `skills` | `SKILL.md` |
+| `commands` | `commands/*.md` |
+| `agents` | `agents/*.md` |
+| `rules` | `.cursor/rules/*.mdc` — Cursor-only; silently ignored by other harnesses |
+| `hooks` | Hook registrations (SessionStart, PermissionRequest) |
 | `mcpServers` | Tool contracts (typed tool schemas) |
-| *(no field — CLI)* | Governances — loaded out-of-band via `governance show` |
+| *(no field — CLI)* | `governances/*.md` — loaded out-of-band via `governance show` |
+
+There is no plugin field for `AGENTS.md`/`CLAUDE.md` content itself — a plugin can ship disciplines via `rules` or `hooks`, but the repo's own root file is authored once, locally, not distributed.
 
 **Cross-plugin patterns:** One plugin's persona can be consumed as a subagent by another plugin's skills. Example: the `sdd` plugin provides `sdd-judge`; the `aced` plugin spawns `sdd-judge` to evaluate spec quality. Neither plugin has a hard `dependency` on the other — the integration is a workflow convention, not a schema constraint.
 
-**Open Plugin Spec** adds a `rules` field that directly maps to governances — the closest analog to `governance show` at the schema level. Claude Code does not have a native governance field; governances travel via CLI convention instead.
+**Open Plugin Spec** defines `rules` as its schema-level name for the same Cursor-style always-on rule file (`.mdc`, with `description`/`alwaysApply`/`globs`). Cursor implements it; Claude Code does not, despite the spec naming Claude Code a conformant host. No spec or harness has a schema-level equivalent to `governance show` — governances travel via CLI convention only, on every harness.
 
 ## Why it matters
 
@@ -66,19 +59,21 @@ Unlike code, agent configuration has no type-checker, no linter, and no test run
 
 [ACED (Agent Config Evaluation System)](/aced/overview/) provides layered evaluation for agent configuration:
 
-1. **Structural** — does the artifact have the required fields and format?
-2. **Trigger** — does the agent correctly identify when to invoke this artifact?
+1. **Structural** — does the file have the required fields and format?
+2. **Trigger** — does the agent correctly identify when to invoke this file?
 3. **Behavior** — when invoked, does the agent follow the steps and rules?
 4. **Quality** — is the output the agent produces actually good?
 
 ## Related
 
-- [ACED Overview](/aced/overview/) — eval system for agent configuration
-- [Governances](/concepts/governances/) — normative domain standards
-- [Disciplines](/concepts/disciplines/) — always-on behavioral habits
-- [Permissions](/concepts/permissions/) — tool capability boundaries
+- [Skills](/concepts/skills/) — `SKILL.md`, on-demand workflows
+- [Governances](/concepts/governances/) — `governances/*.md`, normative domain standards
+- [Disciplines](/concepts/disciplines/) — always-on behavioral habits in `AGENTS.md`
+- [Permissions](/concepts/permissions/) — tool capability boundaries in `settings.json`
 - [Constraints](/concepts/constraints/) — hard behavioral limits and guardrails
-- [Persona](/concepts/persona/) — bundled agent identity + permissions + constraints
+- [Persona](/concepts/persona/) — `agents/*.md`, bundled agent identity + permissions + constraints
+- [Commands](/concepts/commands/) — `commands/*.md`, explicit slash-command entries
 - [Commit Discipline](/disciplines/commit-discipline/) — example of an always-on discipline
+- [ACED Overview](/aced/overview/) — eval system for agent configuration
 - the `init` skill (`cyberspace` plugin) — sets up `AGENTS.md` for a repo
 - [Spec Dependencies](/concepts/spec-dependencies/) — why `AGENTS.md` is the composition root for cross-references
