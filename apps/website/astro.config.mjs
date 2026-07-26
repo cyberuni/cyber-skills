@@ -8,6 +8,11 @@ export default defineConfig({
 	base: '/cyberplace/',
 	vite: {
 		plugins: [tailwindcss()],
+		server: {
+			watch: {
+				usePolling: true,
+			},
+		},
 	},
 	integrations: [
 		starlight({
