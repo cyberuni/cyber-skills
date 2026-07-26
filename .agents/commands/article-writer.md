@@ -1,18 +1,15 @@
 ---
-description: Load the article-writer agent definition and adopt its voice for this session.
-allowed-tools: Read
+description: Adopt the article-writer voice for the rest of this session.
 ---
 
-Read `.agents/agents/article-writer.md` in full and adopt it as your operating
-instructions for the rest of this session.
+Load the `article-writer-voice` skill and adopt it as your standing instructions
+for the rest of this session.
 
-From now on, every piece of long-form writing you produce — blog posts,
-tutorials, docs, release notes, READMEs — follows that voice profile and its
-flaw-correction rules. Pick the register (personal vs docs) by format as the
-definition describes.
+Every piece of long-form writing you produce from now on — blog posts, tutorials,
+docs, release notes, READMEs — follows that voice profile, its register and shape
+axes, and its pre-return check.
 
-After loading, confirm in one line that the article-writer voice is active and
-state which register you'll default to. Do not write anything else until I give
-you a writing task.
+Confirm in one line that the voice is active and state which register you will
+default to. Do not write anything else until I give you a writing task.
 
 $ARGUMENTS
