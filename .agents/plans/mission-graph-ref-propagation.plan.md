@@ -14,13 +14,13 @@ todos:
     status: done
   - content: "deliver — engine sync verb + migrate seed-retirement + tests; pnpm verify GREEN (34/34, reproduced by conductor)"
     status: done
-  - content: "impl gate — cold impl-judge, one verification per frozen scenario"
-    status: in_progress
+  - content: "impl gate — R1 PASS 17/17 (mutation-probed); scratch-ref observation fixed in-CR by e11fa29c; R2 re-grade PASS; ratified by: unional"
+    status: done
+  - content: "handoff — followups filed to the ledger shard, seq 4-8: refspec re-home, incomplete-node, test-discrimination, prune-window, off-enum cause"
+    status: done
   - content: "handoff — PR against main; no source issue to close"
-    status: pending
-  - content: "handoff — file `followup` ledger line: re-home the opt-in fetch refspec to sdd:init (separate CR)"
-    status: pending
-  - content: "handoff — file `followup`: node lacks ## What / ## Control Flow / ## Scenario map (incomplete-node); cost hit twice at gate"
+    status: in_progress
+  - content: "handoff — resync the local plugin marketplace so the sync verb is live in installed sessions"
     status: pending
 ---
 
@@ -128,6 +128,36 @@ seed whose lines the ref does not already carry, and repairing a pre-fix project
 is **staged, not committed**; the migration does not reach other clones until that commit lands.
 
 ## NEXT — resume here
+
+**Both gates are CLOSED. Only handoff remains: open the PR against `main`, then resync the local
+plugin marketplace.** Everything below this block is the mission's record, not open work.
+
+The impl gate ran twice and passed both times, with the finding from round 1 fixed in-CR rather than
+deferred (owner's call). Delivery is three commits on top of the spec gate `ca4529f5`:
+`0c0eb574` (migrate retires its seed), `182e0cd5` (the `sync` verb), `e11fa29c` (scratch ref dropped
+for a destination-less fetch). Root `pnpm verify` 34/34, suite 111/111, both reproduced by the
+conductor AND independently by the judge. Five followups are filed at seq 4–8 of the ledger shard.
+
+**Do not re-open on the two accepted residuals** — both are recorded followups, judged non-blocking
+with evidence, not oversights:
+1. Two of the three "both refs differ" tests do not discriminate the object-delivery mechanism. The
+   judge proved it by deleting the destination-less fetch outright: only the fast-forward test
+   failed. Two confounds stack — a `git clone` of a LOCAL PATH hardlinks the whole object store
+   regardless of ref filtering, so the object is already there; and `isAncestor`'s blanket
+   catch-to-false makes a missing object indistinguishable from a genuine not-an-ancestor answer, so
+   both land on `refuse`. The suggested fix (assert `git cat-file -e <remoteHead>` fails pre-sync)
+   **cannot hold until the fixtures move to `clone --no-hardlinks`** — that is why it was filed, not
+   done inline.
+2. The fetched-but-unreferenced object is prune-eligible immediately, where the removed scratch ref
+   was a real GC root for the duration of the check. `FETCH_HEAD` is confirmed NOT a gc root. Default
+   `gc --auto`'s two-week grace protects it; only an explicit aggressive prune racing the same
+   sub-second window would not. Narrower than the collision case the change eliminated.
+
+Also settled, do not redo: the added scratch-ref test was **ablated and does not bind** — it passes
+against the old implementation too, since that cut deleted its ref in a `finally` on this same path.
+It was kept as a forward guard with an honest-scope comment; the judge independently reproduced the
+ablation and concurred with keeping it. The motivating properties (crash mid-path, concurrent
+collision) are structurally eliminated by the design rather than left to runtime proof.
 
 **The spec gate is CLOSED.** Round 9 returned oracle/builder/architect all PASS, `ALIGNED: true`,
 zero new findings — it confirmed rounds 2–8's fixes actually landed in the tree rather than raising
