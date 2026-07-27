@@ -12,10 +12,10 @@ todos:
     status: done
   - content: "spec gate — R1..R8 FAIL; install-refspec cut (R5); migrate seed-retirement added (R8 fixpoint); R9 PASS/ALIGNED, gate approved (by: agent, auto-spec leash)"
     status: done
-  - content: "deliver — engine sync verb + migrate seed-retirement + tests; pnpm verify GREEN"
-    status: in_progress
+  - content: "deliver — engine sync verb + migrate seed-retirement + tests; pnpm verify GREEN (34/34, reproduced by conductor)"
+    status: done
   - content: "impl gate — cold impl-judge, one verification per frozen scenario"
-    status: pending
+    status: in_progress
   - content: "handoff — PR against main; no source issue to close"
     status: pending
   - content: "handoff — file `followup` ledger line: re-home the opt-in fetch refspec to sdd:init (separate CR)"
@@ -140,7 +140,35 @@ One judge observation, recorded not acted on: `PRODUCER_GOVERNANCES_DECLARED` wa
 task packet, so preflight PASS was *inferred* from log seq 2 rather than read from the field. Relay it
 explicitly at the impl gate.
 
-**Do this first: deliver. It is untouched and is the larger half.** `plugins/sdd/skills/mission-graph/scripts/mission-graph.mts`
+**Deliver is DONE.** Two commits on top of the gate:
+- `0c0eb574` — `migrate` retires the in-tree seed once carried (guarded by `seedFullyCarried`,
+  idempotent, staged not committed). Realizes 4 scenarios.
+- `182e0cd5` — `syncStore()` + the CLI `sync` verb: two ordered prechecks (backend, then
+  reachability), then the 7-case partition. Realizes the other 13.
+
+`pnpm verify` 34/34 green from the repo root, **reproduced by the conductor**, not taken from the
+producer. Mission-graph suite is 110 tests. Scope confirmed clean: only the engine and its test file
+changed since the gate — the `@frozen` suite, README, `SKILL.md`, ADR-0026 and the RUNBOOK are all
+untouched.
+
+**Do this first: the impl gate.** A cold `sdd:sdd-impl-judge` re-derives all 17 oracles independently
+(ADR-0016). Two things it must verify rather than accept:
+
+1. **A throwaway temp ref, not named in the spec.** Divergence detection needs the remote commit
+   object locally, so the implementation fetches into `refs/mission-graph-sync/remote-tmp` and
+   deletes it after. Check cleanup on *every* error path and on refusal, collision with a concurrent
+   `sync`, and whether it can leak state a later run misreads.
+2. **One pre-existing test was modified** (`resolveBackend: an existing orphan ref wins over a
+   leftover in-tree file`). Its assertion is unchanged; only the fixture construction moved off
+   `migrate()`, which was forced — `migrate` now retires exactly the leftover it used to build with.
+   The conductor verified this; the judge should confirm it and check the other deleted lines
+   (15 total in the diff) weakened nothing.
+
+`PRODUCER_GOVERNANCES_DECLARED` was relayed to the impl judge **accurately and unusually: none.** The
+impl-producer was a general-purpose subagent briefed directly with the frozen suite, the README, and
+the invariants — not routed through `impl-producer-governance` / `builder-impl-governance` /
+`architect-impl-governance` by name. Conformance to those bars is therefore the judge's to establish,
+not to assume. This is the fix for the R9 spec-judge observation. `plugins/sdd/skills/mission-graph/scripts/mission-graph.mts`
 needs two new behaviors, neither written yet:
 1. a `sync` verb (fetch+push by explicit refspec, fast-forward only, the 7-case partition, the two
    prechecks in order: backend then reachability);
