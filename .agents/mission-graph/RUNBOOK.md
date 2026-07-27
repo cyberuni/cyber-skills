@@ -16,16 +16,34 @@ The store is the git orphan ref `refs/sdd/mission-graph` (append-only; migrated 
 `events.jsonl` seed). Each `mg append` commits straight into that ref — it is **not** a working-tree
 change, so there is nothing to `git commit` after an append.
 
+> **`git pull` does not carry the list — `mg sync` does.** `refs/sdd/*` sits outside `refs/heads/*`,
+> which git's default refspec alone copies, so the ref is shared automatically only between the
+> **worktrees of one clone**. A clone that has never synced **reads the list as empty and warns about
+> nothing** — indistinguishable from a project with no work planned. `mg sync` is therefore **part of
+> the loop below, not a one-time setup step**: it runs before you read and after you append, every
+> cycle. It needs no setup and changes no git settings — it names the ref on its own command line.
+> **Reads are local and work offline** (`mg ready` / `mg cycles` never touch the network); only `mg sync`
+> does, and it stops with an error rather than reporting an empty list when it cannot reach the remote.
+> If it **refuses**, the list was appended to from two places — reconcile by hand (see the spec node's
+> *Getting out of a refusal*); never force it.
+
 > If you drive via the marketplace-installed SDD skills rather than the loop below, first run the
 > `resync-local-plugins` skill so they reflect merged HEAD. Not needed to run the engine directly.
 
 ## The loop — once per mission
+
+**0. Pick up anything other clones published:**
+
+```bash
+mg sync      # collect / publish; stops loudly if the remote is unreachable or the list diverged
+```
 
 **1. Retire what just landed.** After a mission's PR merges, mark its node retired (M2 = `op1-m2` is
 the first to close):
 
 ```bash
 mg append node --id op1-m2 --status retired
+mg sync                                    # publish the append so other clones see it
 ```
 
 **2. Ask what can start now:**
@@ -41,6 +59,7 @@ to lower.)
 
 ```bash
 mg append node --id op2-m1 --status claimed
+mg sync                                    # publish the claim — an unpublished claim lets another clone claim it too
 ```
 
 **4. Run the SDD mission** on that work, in a Claude Code session:
