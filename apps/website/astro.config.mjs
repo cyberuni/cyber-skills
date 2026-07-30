@@ -94,7 +94,6 @@ export default defineConfig({
 								{ label: 'Disciplines', slug: 'concepts/disciplines' },
 							],
 						},
-						{ label: 'ADRs', slug: 'concepts/adrs' },
 						{ label: 'Constraints', slug: 'concepts/constraints' },
 						{ label: 'Instruction Purpose', slug: 'concepts/instruction-purpose' },
 						{ label: 'Glossary', slug: 'concepts/glossary' },
