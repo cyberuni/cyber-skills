@@ -73,4 +73,4 @@ Unlike code, agent configuration has no type-checker, no linter, and no test run
 - [Commit Discipline](/disciplines/commit-discipline/) — example of an always-on discipline
 - [ACED Overview](/aced/overview/) — eval system for agent configuration
 - the `init` skill (`cyberspace` plugin) — sets up `AGENTS.md` for a repo
-- [Spec Dependencies](/concepts/spec-dependencies/) — why `AGENTS.md` is the composition root for cross-references
+- [Spec Dependencies](/sdd/spec-dependencies/) — why `AGENTS.md` is the composition root for cross-references
