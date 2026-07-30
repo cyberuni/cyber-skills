@@ -41,6 +41,8 @@ Every row is a skill. Commands, gateways, personas, and disciplines are not sepa
 
 **Public skill** is the default — its description states the situations it serves, the agent matches that against the request, and the user can invoke it directly. Everything else is a deviation from it.
 
+**Private skill** is not another row in the kinds table — it is a Public skill's *marketplace-visibility* counterpart, declared by `metadata: internal: true` in frontmatter rather than by any Selection/Visibility/Effect value. It says "not shipped via `npx skills add`," nothing about how or by whom the skill gets selected. A private skill still defaults to situational/user/action; the flag changes distribution, not kind — see [Placement](#placement).
+
 **Commands** are skills the user invokes explicitly via `/name`, with automatic invocation suppressed. Use them where accidental auto-invocation would be disruptive — deployments, releases.
 
 **Gateway skills** own the front door of an opt-in workflow: they activate it, gather intent the request did not supply, load the workflow's rules, and route to a narrower skill. What marks a gateway is its behavior when it *cannot* infer intent — it asks, rather than guessing or failing.
@@ -134,7 +136,7 @@ One trap: a skill marked `disable-model-invocation: true` **cannot be preloaded*
 | Placement | Location | Use case |
 | --------- | -------- | -------- |
 | **User** | `~/.agents/skills/<name>/` | Personal skills across all projects |
-| **Project private** | `.agents/skills/<name>/` | Contributor tooling scoped to one repo |
+| **Project private** | `.agents/skills/<name>/`, `metadata: internal: true` required | Contributor tooling scoped to one repo |
 | **Project public** | `skills/<name>/` | Shipped with a package; users install via `npx skills add` |
 
 Placement is orthogonal to kind, as are **distribution** (whether the skill ships to other repos) and **pattern** (the workflow shape of the body: process, tool-based, standard, persona). Every skill has a value on every axis at once — a project-public, process-pattern, situational, user-visible skill with an action effect is just "a normal skill". The names above only get used when something deviates.
