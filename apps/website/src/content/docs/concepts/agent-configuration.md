@@ -7,22 +7,19 @@ description: What agent configuration is — the collective term for all instruc
 
 ## Kinds of file
 
-Agent configuration is not one file format — it is several, each with its own location, distribution path, and dedicated doc:
+Every agent harness natively supports a small set of file kinds, independent of anything this repo layers on top:
 
-| File | Distribution | Doc |
-| ---- | ------------- | --- |
-| **`AGENTS.md`** (repo root) | Repo-local. The one canonical file this repo edits directly | [Disciplines](/concepts/disciplines/) |
-| **`CLAUDE.md`** (repo root) | Repo-local. A symlink to `AGENTS.md`, not a second source of truth — Claude Code reads `CLAUDE.md` by convention, so the repo points it at the real file instead of duplicating content | [Disciplines](/concepts/disciplines/) |
-| **`SKILL.md`** | Repo-local (`.agents/skills/`, `skills/`) or plugin-shipped via the `skills` field | [Skills](/concepts/skills/) |
-| **`agents/*.md`** | Repo-local or plugin-shipped via the `agents` field | [Persona](/concepts/persona/) |
-| **`.cursor/rules/*.mdc`** | Cursor's own always-on mechanism — the rough equivalent of an `AGENTS.md` section, but Cursor-native and `alwaysApply`-gated. Repo-local or plugin-shipped via the `rules` field (Cursor-only; other harnesses ignore it) | [Disciplines](/concepts/disciplines/) |
-| **`governances/*.md`** | Repo-local; loaded out-of-band via the `governance show` CLI, never auto-loaded by the harness | [Governances](/concepts/governances/) |
-| **`settings.json`** | Repo-local, harness-specific | [Permissions](/concepts/permissions/) |
-| **`commands/*.md`** | Repo-local or plugin-shipped via the `commands` field | [Commands](/concepts/commands/) |
+| File kind | What it configures | When active |
+| --------- | ------------------- | ----------- |
+| **Persistent instructions** (`AGENTS.md`, `CLAUDE.md`, always-on rules like `.cursor/rules/*.mdc`) | Always-on project context and behavioral habits | Every session, every subagent |
+| **Skills** (`SKILL.md`) | On-demand workflow instructions | Loaded when a situation matches, or a caller names it |
+| **Commands** (`commands/*.md`, or a skill with auto-invocation disabled) | Explicit, user-triggered workflow | Invoked by the user via `/name` only |
+| **Subagent definitions** (`agents/*.md`) | A separate agent: identity, tools, limits, preloaded skills | Whenever spawned by a parent agent |
+| **Settings** (`settings.json`) | Tool permissions and hook registration for the main agent | Enforced on every tool call or lifecycle event |
 
 Two root files, one source of truth: never edit `AGENTS.md` and `CLAUDE.md` as if they were independent — edit `AGENTS.md` and let the symlink carry it to Claude Code.
 
-Each file kind's own doc covers what it encodes, when it activates, and how it distributes. This page stays at the index level — see [Related](#related) for the full set.
+This repo draws further distinctions *within* these primitives — [governance](/concepts/governances/) (a reference doc loaded via CLI convention, not a harness file kind of its own), [discipline](/concepts/disciplines/) (a name for the persistent-instructions row above), [permissions](/concepts/permissions/) and [constraints](/concepts/constraints/) (capabilities expressed through subagent-definition frontmatter and settings), and [persona](/concepts/persona/) (the concept a subagent definition encodes). Each has its own page; this page stays at the harness-primitive level.
 
 ## Plugin distribution
 
