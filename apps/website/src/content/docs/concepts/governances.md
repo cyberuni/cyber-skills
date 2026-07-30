@@ -52,6 +52,6 @@ Both governance and discipline are verified the same way: give the agent a scena
 ## Related
 
 - [ADRs](/concepts/adrs/) — why the rules are what they are
-- [Discipline](/concepts/glossary/#discipline) — always-on behavioral habits
+- [Discipline](/glossary/#discipline) — always-on behavioral habits
 - [Governances overview](/governances/overview/) — CLI usage and authoring rules
 - [Agent Configuration](/concepts/agent-configuration/) — where always-on rules live

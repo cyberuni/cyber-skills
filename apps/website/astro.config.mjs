@@ -96,7 +96,6 @@ export default defineConfig({
 						},
 						{ label: 'Constraints', slug: 'concepts/constraints' },
 						{ label: 'Instruction Purpose', slug: 'concepts/instruction-purpose' },
-						{ label: 'Glossary', slug: 'concepts/glossary' },
 						{ label: 'Permissions', slug: 'concepts/permissions' },
 						{ label: 'Scenario', slug: 'concepts/scenario' },
 						{ label: 'Spec Dependencies', slug: 'concepts/spec-dependencies' },
@@ -105,6 +104,7 @@ export default defineConfig({
 						{ label: 'Use Case', slug: 'concepts/use-case' },
 					],
 				},
+				{ label: 'Glossary', slug: 'glossary' },
 				{
 					label: 'ACED',
 					items: [
