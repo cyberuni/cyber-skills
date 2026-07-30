@@ -96,6 +96,7 @@ export default defineConfig({
 						},
 						{ label: 'ADRs', slug: 'concepts/adrs' },
 						{ label: 'Constraints', slug: 'concepts/constraints' },
+						{ label: 'Instruction Purpose', slug: 'concepts/instruction-purpose' },
 						{ label: 'Glossary', slug: 'concepts/glossary' },
 						{ label: 'Permissions', slug: 'concepts/permissions' },
 						{ label: 'Scenario', slug: 'concepts/scenario' },
