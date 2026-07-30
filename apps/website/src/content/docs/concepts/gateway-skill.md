@@ -69,4 +69,4 @@ The agent should ask what SDD work the user wants to do: create a new feature, b
 - [Commands](/concepts/commands/) — the explicit-only, action-effect counterpart
 - [Governances](/concepts/governances/) — domain rules loaded on demand
 - [Disciplines](/concepts/disciplines/) — always-on behavioral habits
-- [Spec-Driven Development](/concepts/spec-driven-development/) — the workflow `$sdd` activates
+- [Spec-Driven Development](/sdd/spec-driven-development/) — the workflow `$sdd` activates
