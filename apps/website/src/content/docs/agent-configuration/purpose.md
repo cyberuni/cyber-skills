@@ -1,9 +1,9 @@
 ---
-title: Instruction Purpose
+title: Purpose
 description: What a block of instruction is for — procedure, criteria, policy, reference, menu, or voice — and why separating them makes instructions composable.
 ---
 
-**Instruction purpose** answers what a block of instruction is _for_: steps to execute, conditions to be measured against, rules to conform to, material to consult, options to choose among, or a way to sound.
+**Agent Instruction purpose** answers what a block of instruction is _for_: steps to execute, conditions to be measured against, rules to conform to, material to consult, options to choose among, or a way to sound.
 
 By identifying them, we can separate them cleanly to create composable and reusable instructions.
 
@@ -53,4 +53,4 @@ Strip the loading behavior from commit discipline and its body reads like any go
 - [Governances](/concepts/governances/) — artifacts that are almost entirely Policy
 - [Persona](/concepts/persona/) — where Voice separates from expertise
 - [Gateway Skill](/concepts/gateway-skill/) — the clearest Menu example
-- [Agent Configuration](/concepts/agent-configuration/) — which file kinds carry these
+- [Agent Configuration](/agent-configuration/overview/) — which file kinds carry these

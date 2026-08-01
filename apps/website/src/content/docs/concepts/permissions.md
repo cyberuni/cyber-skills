@@ -51,4 +51,4 @@ Permissions bundled in an agent definition travel with the agent — installing 
 
 - [Constraints](/concepts/constraints/) — behavioral limits that complement permissions
 - [Persona](/concepts/persona/) — the agent definition that bundles permissions
-- [Agent Configuration](/concepts/agent-configuration/) — full picture of what shapes agent behavior
+- [Agent Configuration](/agent-configuration/overview/) — full picture of what shapes agent behavior

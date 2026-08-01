@@ -74,6 +74,6 @@ Because Cursor supports `commands/` natively in plugins, and the `disable-model-
 
 ## Related
 
-- [Agent Configuration](/concepts/agent-configuration/) — the full picture of skills, commands, and rules
+- [Agent Configuration](/agent-configuration/overview/) — the full picture of skills, commands, and rules
 - [Universal Plugin governance](/governances/universal-plugin/) — plugin component table and distribution
 - [Claude Code skills docs](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill) — `disable-model-invocation` reference

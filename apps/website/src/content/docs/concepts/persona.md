@@ -89,4 +89,4 @@ You are a [role framing here]...
 - [Skills](/concepts/skills/) — on-demand workflows a persona can invoke
 - [Responsibility](/concepts/responsibility/) — Required / Optional / Delegated; a persona as the usual delegate
 - [Gateway Skill](/concepts/gateway-skill/) — the typical delegator
-- [Agent Configuration](/concepts/agent-configuration/) — full picture of what shapes agent behavior
+- [Agent Configuration](/agent-configuration/overview/) — full picture of what shapes agent behavior

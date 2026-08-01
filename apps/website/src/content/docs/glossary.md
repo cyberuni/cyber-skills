@@ -15,7 +15,7 @@ A model augmented with tools and instructions that can take actions — read fil
 
 ## Agent harness
 
-The application or CLI that wraps the model and makes it an agent — Claude Code, Cursor, Codex CLI, Windsurf. The harness provides the tool set, loads [agent configuration](/concepts/agent-configuration/), manages the session, and surfaces the interface to the user.
+The application or CLI that wraps the model and makes it an agent — Claude Code, Cursor, Codex CLI, Windsurf. The harness provides the tool set, loads [agent configuration](/agent-configuration/overview/), manages the session, and surfaces the interface to the user.
 
 Different harnesses support different features. A skill that works in Claude Code may behave differently in Cursor. See [Commands](/concepts/commands/) for a harness compatibility example.
 
@@ -29,7 +29,7 @@ One continuous conversation between a user and an agent harness. Sessions start 
 
 ## Context window
 
-The total amount of text (measured in tokens) the model can see at once — the conversation history, loaded instructions, tool results, and current message. When the window fills, older content is summarized or dropped. Keeping [agent configuration](/concepts/agent-configuration/) concise preserves space for actual work.
+The total amount of text (measured in tokens) the model can see at once — the conversation history, loaded instructions, tool results, and current message. When the window fills, older content is summarized or dropped. Keeping [agent configuration](/agent-configuration/overview/) concise preserves space for actual work.
 
 ## Token
 

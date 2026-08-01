@@ -184,13 +184,13 @@ description: Use this skill when <trigger>. <One-line capability summary.>
 
 ## Related
 
-- [Instruction Purpose](/concepts/instruction-purpose/) — what a *section* is for: procedure, criteria, policy, reference, menu, voice
+- [Purpose](/agent-configuration/purpose/) — what a *section* is for: procedure, criteria, policy, reference, menu, voice
 - [Responsibility](/concepts/responsibility/) — the Required / Optional / Delegated axis, orthogonal to kind
 - [Gateway Skill](/concepts/gateway-skill/) — workflow entrypoints that route an opt-in workflow
 - [Persona](/concepts/persona/) — bundled agent identity a skill can invoke as a subagent
 - [Governances](/concepts/governances/) — normative rules a skill loads to stay aligned
 - [Disciplines](/concepts/disciplines/) — always-on behavioral habits
-- [Agent Configuration](/concepts/agent-configuration/) — full picture of what shapes agent behavior
+- [Agent Configuration](/agent-configuration/overview/) — full picture of what shapes agent behavior
 - [Marketplace](/marketplace/) — the plugins and skills shipped with this repo
 - [Claude Code — skills](https://code.claude.com/docs/en/skills) — frontmatter reference, invocation control, `context: fork`
 - [Claude Code — subagents](https://code.claude.com/docs/en/sub-agents) — agent-definition frontmatter and `skills:` preloading

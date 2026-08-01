@@ -63,4 +63,4 @@ Structural constraints (`maxTurns`, `effort`) are bundled in the agent definitio
 - [Permissions](/concepts/permissions/) — tool-level capability boundaries
 - [Disciplines](/concepts/disciplines/) — always-on behavioral habits that encode soft guardrails
 - [Governances](/concepts/governances/) — normative standards for specific domains
-- [Agent Configuration](/concepts/agent-configuration/) — full picture of what shapes agent behavior
+- [Agent Configuration](/agent-configuration/overview/) — full picture of what shapes agent behavior

@@ -26,7 +26,7 @@ A gateway skill should stay at the user-facing boundary: it does not own the wor
 
 ## Why not use always-on configuration
 
-Always-on [agent configuration](/concepts/agent-configuration/) is appropriate when a rule should apply to every task in a repo. A gateway skill is appropriate when the workflow is optional.
+Always-on [agent configuration](/agent-configuration/overview/) is appropriate when a rule should apply to every task in a repo. A gateway skill is appropriate when the workflow is optional.
 
 Spec-Driven Development is a good example: not every edit in a repository needs SDD, but once the user opts in, the SDD workflow beneath the gateway needs the lifecycle, gate, and freeze rules in context.
 
