@@ -44,6 +44,21 @@ The distinction that matters is the recipient's standing mission. A brief become
 
 Every purpose applies within both forms. A brief carries Procedure (what to do) and Reference (context to load), while a piece of mail may be pure Reference (a status update) or a Menu (a decision the recipient must choose from, such as an approve-or-reject verdict at a gate).
 
+## Keeping targets apart within one session
+
+A single session usually serves more than one target in turn: a reply, then a file, then a brief. Configuration bound to one target tends to carry into the next, and the drift runs in a predictable direction, toward whichever target the agent has been serving most.
+
+The mechanism is accumulation rather than misunderstanding. Every reply the agent writes becomes an example of how it writes, and those examples carry no label recording which target they were for. A scope statement made once, where the instruction is loaded, competes against a growing body of unlabeled demonstrations. The longer the session runs, the weaker its position.
+
+Four arrangements keep the targets apart, in decreasing order of separation and increasing order of convenience.
+
+1. **Produce the artifact in a separate session.** A freshly spawned agent has accumulated nothing, so nothing bleeds. This is the only arrangement that separates by construction rather than by instruction. Its cost is that the new session begins with no context, which makes it a poor fit when the artifact is itself the residue of a long discussion, because the brief would have to reconstruct that discussion.
+2. **Restate the target at the moment of production.** Naming the intended register immediately before the artifact is written re-establishes the boundary where it matters, at the cost of having to remember.
+3. **Produce the artifact early**, before much output for another target has accumulated.
+4. **Scope the instruction itself**, so its rules state which target they describe. This is the weakest of the four, because it is the statement that accumulation erodes, but it is the only one that asks nothing of the author at the time of writing.
+
+A reasonable default is to produce in a separate session when the artifact can be specified in a brief, and to restate the target when it cannot.
+
 ## Naming a target does not change the purpose
 
 A Procedure remains a set of ordered steps to execute, whether those steps are meant for the user's own turn, a subagent's brief, or a Python module. Purpose describes the job a value performs, and Target describes who receives it.
