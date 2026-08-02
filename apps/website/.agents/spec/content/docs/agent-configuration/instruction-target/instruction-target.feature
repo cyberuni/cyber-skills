@@ -9,6 +9,12 @@ Feature: instruction-target — the "Target" article
 
   # ── A1 — Decide whether to split a file ──
 
+  Scenario: the article stands alone without prerequisite reading
+    Given a reader who has read the section's entry page and nothing else
+    When the article is read end to end
+    Then every term it relies on is defined within it or linked at its first use
+    And no section directs the reader to read another document first
+
   Scenario: the article names separation by target as the seam that splits config
     Given an author holding one config file that shapes several kinds of output
     When the article is read

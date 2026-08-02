@@ -38,6 +38,25 @@ This is the same thesis the sibling **Purpose** article carries — separate cle
 freely. Purpose splits by *what a block is for*; Target splits by *who reads it*. Neither axis is
 useful alone, which is why each article must state the shared payoff rather than assume it.
 
+### Doc type: explanation
+
+The reader is **building understanding, not performing a task**. Success is that they can make a
+decision they could not make before — whether to split a config file, whether two units will fight.
+
+This sets the bar and rules two others out. It is **not a how-to**: it must not degrade into a
+procedure for configuring one harness. It is **not a reference**: it names Cursor's `globs:` and
+Copilot's `applyTo:` as *evidence that a mechanism exists*, never as a settings table to keep current.
+The most likely way this article decays is drifting toward reference as harnesses are added to it.
+
+### Prerequisites
+
+The reader should know **what agent configuration is** — that a harness loads instruction files that
+shape behavior. That is the section's entry page, `/agent-configuration/overview/`.
+
+Nothing else is assumed. In particular, the sibling **Purpose** article is **complementary, not
+prerequisite**: the two axes are orthogonal, so Target must stand alone for a reader who has not read
+Purpose. The article may link Purpose freely; it may not depend on it.
+
 ### North star
 
 > A reader finishes able to say, of any instruction, **who eventually reads it** — and to act on
@@ -86,9 +105,14 @@ The article is incomplete without each of these. The scenarios below check them.
 | T13 | **The four arrangements** | separate session / restate at production / produce early / scope the instruction — ranked by separation strength, each with its cost |
 | T14 | **Orthogonality to Purpose** | naming a target does not change what purpose a block serves |
 
-**Non-goals.** Teaching Purpose (its own article), persona design, or any harness's configuration
-reference. The article names concrete harness mechanisms (Cursor `globs:`, Copilot `applyTo:`) only
-as evidence that a mechanism exists — it is not a settings reference and does not track releases.
+**Non-goals** — each with where it lives instead, so a reader who wants it is not simply left:
+
+| Not covered here | Lives at |
+|---|---|
+| what a block of instruction is *for* (the other axis) | [Purpose](/agent-configuration/instruction-purpose/) |
+| where Tone and Structure separate from expertise | [Persona](/concepts/persona/) |
+| which file kinds carry instructions in each harness | [Agent Configuration](/agent-configuration/overview/) |
+| a harness's settings reference (`globs:`, `applyTo:`, permissions, hooks) | that harness's own documentation — this article names such fields only as evidence a mechanism exists, and does not track releases |
 
 ## Use Cases
 
@@ -117,7 +141,8 @@ half of the article they need.
 
 ```mermaid
 graph TD
-  S[reader arrives] --> R{authoring config, or combining installed config?}
+  S[reader arrives] --> A{does the article require prior reading?}
+  A -- "no — for every reader, whatever they have read" --> R{authoring config, or combining installed config?}
 
   R -- combining --> Z{do the two units govern the same output?}
   Z -- "different outputs" --> Z1[safe to enable together: the contradiction never meets]
@@ -152,6 +177,7 @@ graph TD
 
 | Edge | Path (Given) | Scenario |
 |---|---|---|
+| `A` | any reader, whatever they have read before *(convergence — the outcome does not vary)* | `the article stands alone without prerequisite reading` |
 | `R:authoring` | an author holding one file that shapes several outputs | `the article names separation by target as the seam that splits config` |
 | `K:yes` | a file holding content governed by more than one target | `a mixed-target file routes to splitting or prose matching` |
 | `B:no → C1` | an author unfamiliar with the term | `the article defines Target before naming any mechanism` |

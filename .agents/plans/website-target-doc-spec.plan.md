@@ -99,7 +99,17 @@ occasion to decide whether it has.
 - **Two audiences named, and the CFG branches on them first:** `agent config author` (splitting —
   use-cases A1–A3) and `agent config user` (combining — C1–C2).
 
-## The contract does not yet hold — 4 of 19 scenarios fail
+## Conforms to quill-builder-spec
+
+The spec was brought up to the Quill Builder bar (`quill:quill-builder-spec`, added in a sibling CR)
+after that bar was defined. All seven required `## What` elements present and verified: audience
+table, **doc type (explanation)**, north star + failure mode, why it exists, key points, non-goals
+**with forwarding addresses**, **prerequisites**. Added by that pass: the doc-type declaration (with
+the decay warning that this article's likely failure is drifting toward reference as harnesses
+accumulate), the prerequisites element (only the section entry page; Purpose is complementary, not
+prerequisite), and a 20th scenario asserting self-containment as a convergence shape.
+
+## The contract does not yet hold — 4 of 20 scenarios fail
 
 Measured against the live article, not assumed. The **entire config-user audience is unserved**:
 `compose` occurs once in the whole document (a link label), and `reusable`, `independently`,

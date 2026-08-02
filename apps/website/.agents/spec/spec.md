@@ -129,7 +129,7 @@ project adopted on the shape it has.
 ## Behavioral nodes
 
 All are **stubs** — `## Use Cases` present, no `.feature`, no authored control flow — **except**
-`content/docs/agent-configuration/instruction-target/`, which is authored (19 scenarios across 5
+`content/docs/agent-configuration/instruction-target/`, which is authored (20 scenarios across 5
 use-cases spanning two audiences, scenario map 1:1). Filling the rest is the per-unit explore grill.
 
 | Node | Subject |
