@@ -38,7 +38,7 @@
 					},
 					"governances": {
 						"oracle-spec": null,
-						"builder-spec": null,
+						"builder-spec": "quill-builder-spec",
 						"builder-impl": null,
 						"architect-spec": null,
 						"architect-impl": null
