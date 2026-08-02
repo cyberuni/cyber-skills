@@ -108,6 +108,10 @@
 	background: rgba(255, 255, 255, 0.03);
 	border: 1px solid var(--linear-border-strong);
 	color: var(--sl-color-white);
+	/* Starlight's minimal variant ships as a plain text link (padding: 15px 0);
+	   this repo re-skins it as a bordered pill, so it needs the same horizontal
+	   padding as the primary action. */
+	padding-inline: 20px;
 }
 
 :root[data-theme='light'] .hero .actions a.minimal {
