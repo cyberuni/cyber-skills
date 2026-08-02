@@ -8,7 +8,7 @@ project-path: apps/website
 
 > Root project spec — the **descriptive** top index for the `website` project (the Astro site at
 > `apps/website`). Backfilled onto an existing site. One node
-> (`content/docs/agent-configuration/`) is authored and carries a `.feature`; the rest are **stubs**
+> (`content/docs/agent-configuration/instruction-target/`) is authored and carries a `.feature`; the rest are **stubs**
 > still awaiting their explore grill. No suite is frozen — no gate has run.
 
 ## What this is
@@ -47,19 +47,26 @@ navigates by code finds the spec node in the same shape.
 
 | Source | Spec node |
 |---|---|
-| `src/content/docs/<section>/` | `content/docs/<section>/` — one behavioral leaf per doc section |
+| `src/content/docs/<section>/<page>.md` | `content/docs/<section>/<page>/` — one behavioral leaf per **page** |
 | `src/components/<X>.astro` | `components/<x>/` — one behavioral leaf per component |
 | `src/styles/**` | [`styles/`](./styles/README.md) |
 | `astro.config.mjs`, `package.json`, `public/` | `tooling/` |
 
 The mirror keeps **every segment** of the source path, so the spec tree and the source tree read the
-same. `content/` and `content/docs/` are **descriptive groupings**, not nodes; the behavioral leaf is
-the section.
+same. `content/`, `content/docs/`, and each `content/docs/<section>/` are **descriptive groupings**,
+not nodes; the behavioral leaf is the **page**.
+
+**A document is the unit of contract.** Each page's node states its **north star** (the understanding
+a reader leaves with), its **required coverage** (the claims the document is incomplete without), and
+the **reader questions it must route**. It freezes what the document must land, never its section
+order or wording. This is the granularity quill is built for — it treats a document as an
+implementation artifact with verifiable structure, checked by static inspection against a frozen
+suite.
 
 ### Depth: this project mirrors past two levels — deliberately
 
 The SDD layout law caps a node at `<capability>/<unit>` — two levels. This project's content tree
-sits at **three** (`content/docs/<section>/`), which is a declared departure, not an oversight.
+sits at **four** (`content/docs/<section>/<page>/`), which is a declared departure, not an oversight.
 
 The reason is that collapsing a level would break the mirror the strategy exists to provide:
 dropping `content/` or `docs/` leaves a spec path that matches no source path, and merging them into
@@ -67,8 +74,10 @@ one folder invents a name the source does not have. Under `mirror-source`, fidel
 path is the whole value; a cap that forces a divergence defeats it.
 
 What the cap protects is the mission scheduler's node↔capability alignment, and that is **intact
-here**: one section is still exactly one node, and the two extra segments are groupings that own no
-behavior and can never be the unit of a change. Nothing is smeared across nodes.
+here** — arguably sharper than the cap would give: one **page** is exactly one node, which is the
+finest true unit of change in a documentation corpus (a doc is edited as a whole; two people editing
+one page collide for real). The three extra segments are groupings that own no behavior and can never
+be the unit of a change. Nothing is smeared across nodes.
 
 This is judged, not linted — `check-spec-structure` enforces no depth rule (breadth-vs-depth is
 Warden judgment). A formation Warden pass may therefore contest it; this section is the standing
@@ -78,10 +87,13 @@ answer.
 
 Slot here; do not invent placement:
 
-- **a new documentation page** → the section's node, `content/docs/<section>/` (the leaf owns its
-  section's pages; do **not** create a node per page)
-- **a new documentation section** → a new `content/docs/<section>/` leaf, when its contract is worth
-  freezing — otherwise it stays in the backfill gap
+- **a new documentation page** → its own leaf, `content/docs/<section>/<page>/`, when its contract is
+  worth freezing — otherwise it stays in the backfill gap
+- **a new documentation section** → a new `content/docs/<section>/` descriptive grouping, plus a leaf
+  per page inside it
+- **a property spanning two pages** (a hub reaching its axis pages, one page citing another) → the
+  node of the page that **owns the relationship**, not a node of its own; if it holds across every
+  section, it is a rule → `design/`
 - **a new interactive component** (`src/components/<X>.astro`) → a new `components/<x>/` leaf
 - **a change to theming, typography, or the color system** → `styles/`
 - **a change to the sidebar / information architecture** → `tooling/navigation/`
@@ -117,12 +129,12 @@ project adopted on the shape it has.
 ## Behavioral nodes
 
 All are **stubs** — `## Use Cases` present, no `.feature`, no authored control flow — **except**
-`content/docs/agent-configuration/`, which is authored (CFG drawn from source, 8 scenarios, scenario
-map 1:1). Filling the rest is the per-unit explore grill.
+`content/docs/agent-configuration/instruction-target/`, which is authored (14 scenarios across 4
+reader use-cases, scenario map 1:1). Filling the rest is the per-unit explore grill.
 
 | Node | Subject |
 |---|---|
-| [`content/docs/agent-configuration/`](./content/docs/agent-configuration/README.md) | the instruction-writing section — reachability and cross-reference integrity **(authored — the only node with a `.feature`)** |
+| [`content/docs/agent-configuration/instruction-target/`](./content/docs/agent-configuration/instruction-target/README.md) | the "Target" article — north star, required coverage, reader routing **(authored — the only node with a `.feature`)** |
 | [`components/marketplace-search/`](./components/marketplace-search/README.md) | browsing and filtering the skill marketplace |
 | [`components/tavern-storefront/`](./components/tavern-storefront/README.md) | browsing the crew storefront |
 | [`components/mermaid/`](./components/mermaid/README.md) | rendering Mermaid diagrams in docs pages |
@@ -136,18 +148,25 @@ map 1:1). Filling the rest is the per-unit explore grill.
 Two gaps are **declared**, not silently omitted:
 
 1. **Seven of eight nodes are stubs.** The site is fully implemented and deployed; only
-   `content/docs/agent-configuration/` is captured as an authored contract. Each remaining node needs
-   its explore grill to produce `## What` / `## Use Cases` / `## Control Flow` / `## Scenario map`
-   and a `.feature`. On backfill the CFG is **drawn from the source**, not stopped at Use Cases.
+   `content/docs/agent-configuration/instruction-target/` is captured as an authored contract. Each
+   remaining node needs its explore grill to produce `## What` / `## Use Cases` / `## Control Flow` /
+   `## Scenario map` and a `.feature`. On backfill the CFG is **drawn from the source**, not stopped
+   at Use Cases.
 
-2. **15 of 16 doc sections are unspecified.** Sections earn a node one at a time. Specified so far:
-   `agent-configuration` (3 pages). Outstanding — `aced` (12 pages), `concepts` (11),
-   `motive-model` (9), `sdd` (8), `governances` (6), `cli` (5), `cyberfleet` (5),
+2. **75 of 76 pages are unspecified.** A page earns a node when its contract is worth freezing.
+   Specified so far: `agent-configuration/instruction-target`. Outstanding — the two remaining
+   `agent-configuration` pages (`overview`, `instruction-purpose`), then `aced` (12 pages),
+   `concepts` (11), `motive-model` (9), `sdd` (8), `governances` (6), `cli` (5), `cyberfleet` (5),
    `universal-plugin` (5), `getting-started` (3), `quill` (2), `cyberlegion` (2), `disciplines` (1),
-   `marketplace` (1), `tavern` (1), plus 2 root pages — **73 pages** in total. Each is a future
-   change request, opened when that section's contract is worth freezing. The repo registers
-   **quill** for the `documentation` / `guide` / `reference` artifact types, so each runs its
-   production chain (`quill-spec-writer` → `quill-doc-writer` → `quill-judge`).
+   `marketplace` (1), `tavern` (1), plus 2 root pages. Each is a future change request. The repo
+   registers **quill** for the `documentation` / `guide` / `reference` artifact types, so each runs
+   its production chain (`quill-spec-writer` → `quill-doc-writer` → `quill-judge`).
+
+   **Two section-level defects are recorded but unowned** — `overview.md` never links the Target
+   page, and it carries a broken relative link to `../instructions.md`. Both are the hub's contract
+   to hold, so they are parked in
+   [`content/docs/agent-configuration/`](./content/docs/agent-configuration/README.md) until
+   `overview` is specified.
 
 Not a gap, but worth stating because it reads like one: the `marketplace/` and `tavern/` content
 sections are **absent from the sidebar by design**. The site's information architecture is
@@ -164,9 +183,9 @@ flag them.
 | Concept | Facets |
 |---|---|
 | `build` | `tooling/site-config/` (behavior) |
-| `docs` | `components/mermaid/` (behavior) · `content/docs/agent-configuration/` (behavior) |
+| `docs` | `components/mermaid/` (behavior) · `content/docs/agent-configuration/instruction-target/` (behavior) |
 | `marketplace` | `components/marketplace-search/` (behavior) · `components/tavern-storefront/` (behavior) |
-| `navigation` | `components/site-title/` (behavior) · `content/docs/agent-configuration/` (behavior) · `tooling/navigation/` (behavior) |
+| `navigation` | `components/site-title/` (behavior) · `tooling/navigation/` (behavior) |
 | `theming` | `components/mermaid/` (behavior) · `components/site-title/` (behavior) · `styles/` (behavior) |
 
 <!-- END generated: by-concept -->

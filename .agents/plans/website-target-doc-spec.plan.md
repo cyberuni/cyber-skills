@@ -75,28 +75,34 @@ occasion to decide whether it has.
 
 ## Settled (explore)
 
-- **Granularity:** section-level nodes, mirroring **every** source path segment —
-  `content/docs/<section>/`. `content/` and `content/docs/` are descriptive groupings; the section is
-  the behavioral leaf. Chosen by the user over the two-level-cap alternative.
+- **Granularity: one page, one node** — `content/docs/<section>/<page>/`. `content/`,
+  `content/docs/`, and each section folder are descriptive groupings; the **page** is the behavioral
+  leaf. *(Corrected mid-mission: a first pass specified the section's navigation. The user's intent
+  is a per-document content contract — north star, required coverage, reader routing — which is
+  quill's own model. The section-level `.feature` was removed.)*
+- **A page node freezes** what the document must land: its north star, its required coverage, and the
+  reader questions it must route. It freezes neither section order nor wording.
 - **Depth departure declared** in the root `spec.md` (`### Depth: this project mirrors past two
-  levels`). Not linted — `check-spec-structure` enforces no depth rule (breadth-vs-depth is Warden
-  judgment) — so a formation Warden pass may contest it; that section is the standing answer.
-- **Node authored:** `content/docs/agent-configuration/` — `spec-type: behavioral`,
-  `concept: [docs, navigation]`, 3 use-case groups, CFG drawn from source, 8 boolean scenarios,
-  scenario map 1:1. All six `check:spec` checks green; root `pnpm verify` 35/35.
+  levels`) — now **four** levels. Not linted — `check-spec-structure` enforces no depth rule
+  (breadth-vs-depth is Warden judgment) — so a formation Warden pass may contest it; that section is
+  the standing answer. The argument strengthened under per-page nodes: a page is the finest *true*
+  unit of change in a corpus, so node↔unit alignment is sharper than the cap would give.
+- **Node authored:** `content/docs/agent-configuration/instruction-target/` —
+  `spec-type: behavioral`, `concept: [docs]`, 12 required-coverage topics (T1–T12), 4 reader
+  use-cases, reader-decision CFG, 14 boolean scenarios, scenario map 1:1. All six `check:spec` checks
+  green; root `pnpm verify` 35/35.
 
-## Findings the spec surfaced (not yet fixed — deliberately)
+## Findings parked (unowned — no node covers them)
 
-Two real defects in the section, now specified rather than silently carried. Both are **impl** work
-against the contract, so they belong to deliver, not to explore:
+Two real defects surfaced while specifying. Both are **cross-page**, so no single page's contract
+catches them; they are recorded in the section grouping README until `overview` is specified, since
+the hub is the page that owns the relationship:
 
 1. **`overview.md` never links the Target page.** Its instruction-topics table lists Purpose (linked)
-   plus five inline topics, and predates Target existing — so the section's only route to Target is
-   the sidebar. Scenario: `every axis page is reachable from the hub` (edge `B:no`).
+   plus five inline topics, and predates Target existing — so the sidebar is the only in-site route
+   to Target.
 2. **`overview.md` links `../instructions.md`, which does not exist.** It is also the section's only
-   relative-path internal link; every other one uses route form. Scenarios: `a relative link whose
-   target is missing is broken` (`D:no → E:no`) and `a relative link is flagged even when its target
-   exists` (`D:no → E:yes`).
+   relative-path internal link; every other one uses route form.
 
 ## NEXT
 
