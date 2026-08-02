@@ -52,6 +52,8 @@ A section is **Tone** or **Structure** if you could replace it with a different 
 
 That separability is the point — it is what lets a tone or a response format ship as a standalone, user-chosen set of instructions rather than being welded into the workflow that uses it.
 
+A section titled _Voice_ is the usual place these two get conflated. "Voice" names the pair, not one half of it: register and word choice are Tone, while "tables over paragraphs" and "bold the key term, then define it" are Structure. Classify each rule by what it governs, not by the heading it sits under.
+
 Note that Tone and Structure sections often _read_ like policy ("cap lists at five items", "no preamble"). Genre is set by what the rules govern, not their grammar. Rules governing manner or shape are Tone/Structure; rules governing what counts as correct work are Policy.
 
 A persona is usually **not** pure Tone or Structure. Its Domain, Decisions, and Boundaries sections change what the agent concludes, not just how it sounds or how it's laid out — those are Reference and Policy. Only the delivery layer — Tone and Structure — is what a caller can delegate.

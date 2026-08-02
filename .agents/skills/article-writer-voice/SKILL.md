@@ -1,6 +1,6 @@
 ---
 name: article-writer-voice
-description: 'Shape the tone when writing or polishing prose — blog posts, tutorials, guides, release notes, READMEs, newsletter issues, project docs. Trigger on "write a post", "draft an article", or any prose longer than a paragraph where voice consistency matters.'
+description: 'Shape the tone and formatting when writing or polishing prose — blog posts, tutorials, guides, release notes, READMEs, newsletter issues, project docs. Trigger on "write a post", "draft an article", or any prose longer than a paragraph where voice consistency matters.'
 metadata:
   internal: true
 ---
