@@ -1,41 +1,40 @@
 Feature: instruction-target — the "Target" article
 
-  A reader finishes the article able to say, of any instruction they are about to write, who
-  eventually reads it — and knowing which mechanism binds it there. The article's reason to
-  exist is resolving why two contradictory instructions can both be correct.
+  Target exists to make agent configuration composable. An author splits config into
+  single-target units that do not fight; a user combines those units freely, because values
+  contradicting on paper coexist when they govern different outputs.
 
-  Scenarios assert the claims the article must land and the reader questions it must route.
-  They freeze neither section order nor wording.
+  Scenarios assert the claims the article must land and the reader questions it must route,
+  for both audiences. They freeze neither section order nor wording.
 
-  # ── U1 — Orient ──
+  # ── A1 — Decide whether to split a file ──
+
+  Scenario: the article names separation by target as the seam that splits config
+    Given an author holding one config file that shapes several kinds of output
+    When the article is read
+    Then it states that separating instructions by target makes them reusable independently
+    And it states that mixing targets in one unit is what forces it to be adopted whole
+
+  Scenario: a mixed-target file routes to splitting or prose matching
+    Given a file holding content governed by more than one target
+    When the article's guidance on mixed-target files is read
+    Then it states that a path binds at file granularity while the targets vary inside the file
+    And it directs that case to prose matching
 
   Scenario: the article defines Target before naming any mechanism
-    Given a reader unfamiliar with the term Target
+    Given an author unfamiliar with the term Target
     When the article is read from the top
     Then the opening states that Target is which of the agent's outputs an instruction governs
     And it states that this determines who eventually reads the instruction
     And the definition appears before any mechanism is named
 
   Scenario: the opening motivates Target with two values that contradict
-    Given a reader who doubts that two contradictory instructions can both be correct
+    Given an author who doubts that two contradictory instructions can both be correct
     When the article's opening is read
     Then it presents two instruction values that cannot both be one house style
     And it states that assigning them to separate targets lets them coexist
 
-  Scenario: each of the three targets has its own section
-    Given a reader who already knows what Target means
-    When the article's headings are listed
-    Then there is a section covering the Artifact target
-    And there is a section covering the User target
-    And there is a section covering the Agent target
-
-  # ── U2 — Choose a mechanism ──
-
-  Scenario: a mixed-target file routes to prose matching
-    Given a file holding content governed by more than one target
-    When the article's guidance on choosing a mechanism is read
-    Then it directs that case to prose matching
-    And it states that a path binds at file granularity while the targets vary inside the file
+  # ── A2 — Bind a unit to its target ──
 
   Scenario: a glob-capable harness routes to file type matching
     Given a single-target file on a harness that supports path globs
@@ -53,8 +52,6 @@ Feature: instruction-target — the "Target" article
     When the table is inspected
     Then it lists file type matching, description matching, and prose matching
     And each row states where the target lives, who decides it, and what it settles
-
-  # ── U3 — Identify the target ──
 
   Scenario: the Artifact section states it is the only target with a path
     Given an instruction governing content written to a file
@@ -74,10 +71,10 @@ Feature: instruction-target — the "Target" article
     Then it states that a brief becomes the recipient's mission
     And it states that mail arrives at an agent that already has a mission
 
-  # ── U4 — Stop the bleed ──
+  # ── A3 — Stop a unit bleeding ──
 
   Scenario: the article attributes drift to accumulation of unlabeled examples
-    Given a reader whose instruction is being ignored late in a session
+    Given an author whose instruction is being ignored late in a session
     When the section on keeping targets apart is read
     Then it states that produced output accumulates as unlabeled examples
     And it states that drift runs toward whichever target was served most
@@ -98,3 +95,38 @@ Feature: instruction-target — the "Target" article
     Then it presents four arrangements
     And they are ordered by how strongly each separates the targets
     And each carries the cost of adopting it
+
+  # ── C1 — Predict whether two configs will fight ──
+
+  Scenario: the article addresses the user combining units, not only the author writing them
+    Given a reader who enables existing configuration rather than writing it
+    When the article is read
+    Then it states that units governing different targets can be enabled together
+    And it gives that reader a way to tell whether two units govern the same output
+
+  Scenario: two units on different targets are shown coexisting
+    Given two configuration units whose stated values contradict each other
+    And the two units govern different targets
+    When the article's treatment of coexistence is read
+    Then it names a concrete pair of units in that position
+    And it states that both may be in force at once
+
+  Scenario: two units on the same target are named a real conflict
+    Given two configuration units whose stated values contradict each other
+    And the two units govern the same target
+    When the article's treatment of coexistence is read
+    Then it states that this case is a genuine conflict rather than a coexistence
+
+  # ── C2 — Diagnose over-reach ──
+
+  Scenario: each of the three targets has its own section
+    Given a user whose enabled unit shapes output they did not intend
+    When the article's headings are listed
+    Then there is a section covering the Artifact target
+    And there is a section covering the User target
+    And there is a section covering the Agent target
+
+  Scenario: the article states that Target is orthogonal to Purpose
+    Given a user checking what an enabled unit actually governs
+    When the article's closing section on purpose is read
+    Then it states that naming a target does not change the purpose a block serves

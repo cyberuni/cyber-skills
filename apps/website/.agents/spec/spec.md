@@ -129,8 +129,8 @@ project adopted on the shape it has.
 ## Behavioral nodes
 
 All are **stubs** — `## Use Cases` present, no `.feature`, no authored control flow — **except**
-`content/docs/agent-configuration/instruction-target/`, which is authored (14 scenarios across 4
-reader use-cases, scenario map 1:1). Filling the rest is the per-unit explore grill.
+`content/docs/agent-configuration/instruction-target/`, which is authored (19 scenarios across 5
+use-cases spanning two audiences, scenario map 1:1). Filling the rest is the per-unit explore grill.
 
 | Node | Subject |
 |---|---|
@@ -183,6 +183,7 @@ flag them.
 | Concept | Facets |
 |---|---|
 | `build` | `tooling/site-config/` (behavior) |
+| `composition` | `content/docs/agent-configuration/instruction-target/` (behavior) |
 | `docs` | `components/mermaid/` (behavior) · `content/docs/agent-configuration/instruction-target/` (behavior) |
 | `marketplace` | `components/marketplace-search/` (behavior) · `components/tavern-storefront/` (behavior) |
 | `navigation` | `components/site-title/` (behavior) · `tooling/navigation/` (behavior) |

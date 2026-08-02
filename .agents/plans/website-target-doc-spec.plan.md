@@ -88,9 +88,33 @@ occasion to decide whether it has.
   the standing answer. The argument strengthened under per-page nodes: a page is the finest *true*
   unit of change in a corpus, so node↔unit alignment is sharper than the cap would give.
 - **Node authored:** `content/docs/agent-configuration/instruction-target/` —
-  `spec-type: behavioral`, `concept: [docs]`, 12 required-coverage topics (T1–T12), 4 reader
-  use-cases, reader-decision CFG, 14 boolean scenarios, scenario map 1:1. All six `check:spec` checks
-  green; root `pnpm verify` 35/35.
+  `spec-type: behavioral`, `concept: [docs, composition]`, 14 required-coverage topics (T1–T14),
+  **two audiences**, 5 use-cases, reader-decision CFG, 19 boolean scenarios, scenario map 1:1. All
+  six `check:spec` checks green; root `pnpm verify` 35/35.
+- **The article's reason to exist is composition.** Target is the seam config splits on: an author
+  separates config into single-target units; a user combines them freely, because contradictory
+  values coexist when they govern different outputs. Same thesis as the sibling Purpose article
+  (separate cleanly to compose freely) — Purpose splits by *what a block is for*, Target by *who
+  reads it*.
+- **Two audiences named, and the CFG branches on them first:** `agent config author` (splitting —
+  use-cases A1–A3) and `agent config user` (combining — C1–C2).
+
+## The contract does not yet hold — 4 of 19 scenarios fail
+
+Measured against the live article, not assumed. The **entire config-user audience is unserved**:
+`compose` occurs once in the whole document (a link label), and `reusable`, `independently`,
+`install`, `combine` occur zero times. Same-target conflict is never discussed.
+
+| Scenario | Group | Why it fails |
+|---|---|---|
+| `the article names separation by target as the seam that splits config` | A1 | the article scopes instructions but never says separation makes units **reusable independently** — it stops at "reach nothing else" |
+| `the article addresses the user combining units, not only the author writing them` | C1 | written author-first throughout; no guidance for someone enabling existing config |
+| `two units on different targets are shown coexisting` | C1 | the targets table names `article-writer-voice` and `i-have-adhd` separately, but never pairs them as simultaneously in force |
+| `two units on the same target are named a real conflict` | C1 | the coexistence claim has no stated boundary — same-target contradiction is not addressed |
+
+These are **impl** work (revise the article), owed to deliver, not explore. They are the payoff of
+specifying: the gap was invisible while reading the article, because what is missing is an audience,
+not a sentence.
 
 ## Findings parked (unowned — no node covers them)
 
