@@ -5,8 +5,8 @@ description: Where an instruction's output goes — into a produced artifact, th
 
 **Target** identifies where an instruction's output goes, and therefore who eventually reads it. You may want the agent to reply to you in a **caveman** tone, but write documentation that is **welcoming** and **inclusive**.
 
-| Target       | Where the output goes            | Example                                                                       |
-| ------------ | -------------------------------- | ----------------------------------------------------------------------------- |
+| Target       | Where the output goes                 | Example                                                                        |
+| ------------ | ------------------------------------- | ------------------------------------------------------------------------------ |
 | **Artifact** | Into a file that outlives the session | `article-writer` shapes a draft's voice without changing how the agent replies |
 | **User**     | Into this session's conversation      | `i-have-adhd` shapes how the agent talks without touching anything it produces |
 | **Agent**    | Into another agent's context          | a subagent brief, or cyberlegion mail sent to a peer session                   |
@@ -17,26 +17,22 @@ A single request routinely involves more than one target, each with its own valu
 
 ## Artifact: purpose values vary by kind of content
 
-Naming the target does not finish the job. A Python module, a test file, a Storybook story, and a markdown document each follow their own conventions, so the same purpose takes a different value in each.
+When the target is a specific kind of artifact — a given programming language, tests, Storybook stories, documentation, agent configuration — agent harnesses provide two mechanisms.
 
-No harness offers a way to declare an instruction's target. What they offer is two ways to decide whether an instruction loads at all, and both are approximations of it.
-
-The first is **path matching**, which suits the Artifact target because the variation follows the file rather than the request. Conventions load with the content they govern instead of applying everywhere. Harnesses differ in what they match on.
+The first is **file type matching**. The kind of artifact is inferred from the file being worked on, so a set of conventions loads with the content it governs instead of applying everywhere. Harnesses differ in what they actually match on.
 
 - **Cursor** matches a glob. A rule in `.cursor/rules/` carries a `globs:` field in its frontmatter, set with `alwaysApply: false`, and activates only when matching files enter context.
 - **GitHub Copilot** also matches a glob, through an `applyTo:` field on a file in `.github/instructions/`.
 - **Claude Code** matches a subtree. A `CLAUDE.md` in a subdirectory is discovered but not loaded at startup; it enters context when files beneath it are read.
 - **Codex** matches the working directory. It concatenates every `AGENTS.md` from the git root down to the current directory, with the closest file taking precedence.
 
-When the binding is evaluated is what separates them. A glob or a subtree is resolved as files are touched, so it tracks the content the agent is actually working on. A directory chain is resolved from wherever the session is rooted, which is coarser and does not change as the agent moves between kinds of content inside that tree.
+When the match is evaluated is what separates them. A glob or a subtree resolves as files are touched, so it tracks the content the agent is actually working on. A directory chain resolves from wherever the session is rooted, which is coarser and does not change as the agent moves between kinds of content inside that tree.
 
-A path still says nothing about who reads the output. It works as a proxy: file type stands in for kind of content, and kind of content is what decides the value.
+The second is **description matching**. An instruction file carries a description, and the agent judges from it whether the current situation calls for loading that file. It is the only mechanism available when the kind of artifact is not evident from a path, and the only one available for the User and Agent targets, which correspond to no file at all. It is a semantic judgment rather than a rule the tool evaluates.
 
-The second mechanism is **description matching**. An instruction file carries a description, and the agent judges from it whether the current situation calls for loading the file. This is what remains for the User and Agent targets, since neither corresponds to a path, and for artifacts whose kind is not evident from a file extension. It is a semantic guess rather than a rule the tool evaluates.
+Neither mechanism declares a target. Both decide whether an instruction loads, not what it governs once loaded: a rule selected by a glob still has to state that it describes files rather than replies, and a skill selected by its description carries no scope from having been selected. The target has to be written into the instruction body, because it is not something the harness can be configured to enforce.
 
-Both mechanisms decide loading, not governing. Neither says what a loaded instruction applies to once it is in context: a rule selected by a glob still has to state that it describes files rather than replies, and a skill selected by its description carries no scope from having been selected. The target therefore has to be written into the instruction body. It is not something the harness can be configured to enforce.
-
-Every purpose varies this way, not only voice.
+Naming the target does not finish the job either. A Python module, a test file, a Storybook story, and a markdown document each follow their own conventions, so the same purpose takes a different value in each.
 
 | Purpose            | Python module                                | Test file                               | Storybook story                           | Markdown doc                                    |
 | ------------------ | -------------------------------------------- | --------------------------------------- | ----------------------------------------- | ----------------------------------------------- |
