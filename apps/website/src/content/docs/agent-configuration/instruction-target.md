@@ -1,24 +1,23 @@
 ---
 title: Target
-description: Who or what consumes an instruction's output — the user, a subagent, a peer agent, or a produced artifact. Every purpose can carry a different value per target.
+description: Who or what consumes an instruction's output — a produced artifact, the user, or another agent. Every purpose can carry a different value per target.
 ---
 
-**Target** answers who or what consumes an instruction's output. You may want the agent to reply to you in a **caveman** tone, but write documentation that is **welcoming** and **inclusive**.
+**Target** identifies who or what consumes an instruction's output. You may want the agent to reply to you in a **caveman** tone, but write documentation that is **welcoming** and **inclusive**.
 
-| Target         | Consumer                           | Example                                                                                                    |
-| -------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **Reply**      | The user, this session             | `i-have-adhd` — shapes how the agent talks, touches nothing it produces                                    |
-| **Brief**      | A subagent, at spawn time          | the delegation message a parent hands a subagent: context, why, what done looks like                       |
-| **Agent Mail** | A peer agent, asynchronously       | cyberlegion's inter-agent mail — what has to cross the boundary vs. what stays in the sender's own session |
-| **Artifact**   | A third party, via a produced file | `article-writer` — shapes a draft's voice, never touches how the agent replies while drafting it           |
+| Target       | Consumer                                         | Example                                                                                  |
+| ------------ | ------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| **Artifact** | A third party, through a file the agent produces | `article-writer` shapes a draft's voice without changing how the agent replies            |
+| **User**     | The person in this session                       | `i-have-adhd` shapes how the agent talks without touching anything it produces            |
+| **Agent**    | Another agent that will act on the output        | a subagent brief, or cyberlegion mail sent to a peer session                              |
 
-These four are the targets that come up most often, not a closed set. Target is an axis to identify in a given setup, not a list to work through — anything that consumes an agent's output can be one.
+Each of the three consumers expects something different. The three kinds are stable, but the forms within each kind are not. The Artifact target covers every kind of content the agent can write. The User target covers both a live reply and a question that must carry its own reasoning. The Agent target covers a spawn-time brief as well as mail sent to a peer session.
 
-A single request routinely needs more than one target at once, each with its own value: reply tersely to the user while briefing a subagent with full context, or draft a formal document while sending a terse status mail to a peer agent.
+A single request routinely involves more than one target, each with its own value. The agent may reply tersely to the user while briefing a subagent with full context, or draft a formal document while sending a short status message to a peer agent.
 
-## The same purpose lands differently per kind of content
+## Artifact: purpose values vary by kind of content
 
-Naming the target doesn't finish the job. A Python module, a test file, a Storybook story, and a markdown doc each follow their own conventions, so the _same_ purpose takes a different value in each:
+Naming the target does not finish the job. A Python module, a test file, a Storybook story, and a markdown document each follow their own conventions, so the same purpose takes a different value in each.
 
 | Purpose            | Python module                                | Test file                               | Storybook story                           | Markdown doc                                    |
 | ------------------ | -------------------------------------------- | --------------------------------------- | ----------------------------------------- | ----------------------------------------------- |
@@ -28,23 +27,26 @@ Naming the target doesn't finish the job. A Python module, a test file, a Storyb
 | **Policy**         | no bare `print` in production code           | no snapshot tests without a description | no hard-coded prod URLs in args           | no bare URLs, no rationale prose                |
 | **Tone/Structure** | docstring register, import ordering          | comment style, describe/it nesting      | control naming, story ordering            | prose register, section ordering                |
 
-These four columns are an illustration, not an inventory — any kind of content with conventions of its own fills the same rows differently. The point is that Target alone doesn't fix a value; it says who receives the output, and the content's own conventions do the rest.
+These four columns are an illustration rather than an inventory. Any kind of content that has conventions of its own will fill the same rows differently. Target alone does not fix a value: it identifies who receives the output, and the conventions of that content determine the rest.
 
-## Brief and Agent Mail aren't Reply, even though both look like talking
+## User: more than tone
 
-A Brief and a piece of Agent Mail both read like conversation, the same way a Reply does — but the consumer is different, and so is what belongs in each:
+Because the user shares the whole session's context, it is tempting to treat this target as a matter of voice alone. Shared context, however, is not shared reasoning. An instruction such as "when you need user input, state the reasoning that led to the question" targets the user and is pure Procedure, because it spares the user from reconstructing the question's origin out of the session history.
 
-- **Reply** is live back-and-forth with the user, who already shares the whole session's context — though shared context is not shared reasoning. "When you need user input, state the reasoning that led to the question" targets Reply: it saves the user from reconstructing the question's origin out of session history.
-- **Brief** hands a subagent everything it needs to act with no prior context — the task, the why, what done looks like — written once, at spawn time; the subagent can't ask the briefer to clarify mid-brief.
-- **Agent Mail** crosses between two already-running sessions that don't share context by default: a decision, a status, a question — never the sender's full reasoning trail.
+## Agent: briefs and mail are not interchangeable
 
-Agent Mail also arrives at an agent that already has a mission of its own, so it competes for attention rather than setting the agenda. What crosses has to stand on its own — a request, a report, or a question carrying enough for the recipient to act on it without the sender's session.
+A brief and a piece of mail both read like conversation, but they reach agents in different states.
 
-Every purpose still applies within each: a Brief carries Procedure (what to do) and Reference (context to load); a piece of Agent Mail might be pure Reference (a status update) or Menu (a decision the recipient must pick from, like an approve/reject gate verdict).
+- A **brief** gives a subagent everything it needs in order to act without prior context: the task, the reason for it, and what a finished result looks like. It is written once, at spawn time, and the subagent cannot ask the briefer to clarify it.
+- **Agent mail** passes between two running sessions that do not share context by default. It carries a decision, a status, or a question, but never the sender's full reasoning trail.
 
-## Naming a target doesn't change the purpose
+The distinction that matters is the recipient's standing mission. A brief becomes the subagent's mission, because the subagent has none of its own. Mail arrives at an agent that already has a mission, so it competes for attention instead of setting the agenda. Mail must therefore stand on its own and carry enough context for the recipient to act without access to the sender's session.
 
-A Procedure is still "ordered steps to execute" whether the steps are for the user's own turn, a subagent's brief, or a Python module. Purpose says what job a value is doing; Target says who receives it.
+Every purpose applies within both forms. A brief carries Procedure (what to do) and Reference (context to load), while a piece of mail may be pure Reference (a status update) or a Menu (a decision the recipient must choose from, such as an approve-or-reject verdict at a gate).
+
+## Naming a target does not change the purpose
+
+A Procedure remains a set of ordered steps to execute, whether those steps are meant for the user's own turn, a subagent's brief, or a Python module. Purpose describes the job a value performs, and Target describes who receives it.
 
 ## Related
 
