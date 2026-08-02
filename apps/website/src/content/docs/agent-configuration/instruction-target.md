@@ -19,6 +19,19 @@ A single request routinely involves more than one target, each with its own valu
 
 Naming the target does not finish the job. A Python module, a test file, a Storybook story, and a markdown document each follow their own conventions, so the same purpose takes a different value in each.
 
+Because that variation follows the file rather than the request, several harnesses provide a way to bind a set of instructions to a kind of content, so conventions load with the content they govern instead of applying everywhere. They differ in what they match on.
+
+- **Cursor** matches a glob. A rule in `.cursor/rules/` carries a `globs:` field in its frontmatter, set with `alwaysApply: false`, and activates only when matching files enter context.
+- **GitHub Copilot** also matches a glob, through an `applyTo:` field on a file in `.github/instructions/`.
+- **Claude Code** matches a subtree. A `CLAUDE.md` in a subdirectory is discovered but not loaded at startup; it enters context when files beneath it are read.
+- **Codex** matches the working directory. It concatenates every `AGENTS.md` from the git root down to the current directory, with the closest file taking precedence.
+
+When the binding is evaluated is what separates them. A glob or a subtree is resolved as files are touched, so it tracks the content the agent is actually working on. A directory chain is resolved from wherever the session is rooted, which is coarser and does not change as the agent moves between kinds of content inside that tree.
+
+None of these is a Target declaration in the strict sense, because a path says nothing about who reads the output. They work as a proxy: file type stands in for kind of content, and kind of content is what decides the value. Where a harness offers one, it is the sturdiest way to keep artifact conventions attached to the artifacts they describe, because the binding is evaluated by the tool rather than remembered by the agent.
+
+Every purpose varies this way, not only voice.
+
 | Purpose            | Python module                                | Test file                               | Storybook story                           | Markdown doc                                    |
 | ------------------ | -------------------------------------------- | --------------------------------------- | ----------------------------------------- | ----------------------------------------------- |
 | **Procedure**      | define types, functions, docstrings          | arrange-act-assert, mock setup          | define args, controls, render function    | front matter, headings, body                    |
@@ -28,14 +41,6 @@ Naming the target does not finish the job. A Python module, a test file, a Story
 | **Tone/Structure** | docstring register, import ordering          | comment style, describe/it nesting      | control naming, story ordering            | prose register, section ordering                |
 
 These four columns are an illustration rather than an inventory. Any kind of content that has conventions of its own will fill the same rows differently. Target alone does not fix a value: it identifies where the output goes, and the conventions of that content determine the rest.
-
-### Harnesses can bind instructions to a kind of content
-
-Because this variation follows the file rather than the request, several harnesses let an instruction file declare which files it governs, so a set of conventions loads with the content it applies to instead of applying everywhere.
-
-Cursor scopes a rule in `.cursor/rules/` through a `globs:` field in its frontmatter, set alongside `alwaysApply: false` so the rule activates only when matching files enter context. GitHub Copilot scopes a file in `.github/instructions/` through an `applyTo:` glob. Harnesses without a glob field generally scope by placement instead, treating an instruction file in a subdirectory as governing the files beneath it.
-
-A glob says nothing about who reads the output, so it is not a Target declaration in the strict sense. It is a proxy: file type stands in for kind of content, and kind of content is what decides the value. Where a harness offers this, it is the most reliable way to keep artifact conventions attached to the artifacts they describe, because the binding is evaluated when the file is touched rather than remembered by the agent.
 
 ## User: more than tone
 
