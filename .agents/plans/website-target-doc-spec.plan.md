@@ -109,22 +109,23 @@ the decay warning that this article's likely failure is drifting toward referenc
 accumulate), the prerequisites element (only the section entry page; Purpose is complementary, not
 prerequisite), and a 20th scenario asserting self-containment as a convergence shape.
 
-## The contract does not yet hold — 4 of 20 scenarios fail
+## The contract now holds — the 4 gaps are closed
 
-Measured against the live article, not assumed. The **entire config-user audience is unserved**:
-`compose` occurs once in the whole document (a link label), and `reusable`, `independently`,
-`install`, `combine` occur zero times. Same-target conflict is never discussed.
+The spec found 4 failures against the live article; all four were the composition payoff, and three
+of them were the **config-user audience being entirely unserved** (`compose` occurred once in the
+whole document, as a link label). Closed in deliver by revising the article:
 
-| Scenario | Group | Why it fails |
+| Scenario | Group | Fix |
 |---|---|---|
-| `the article names separation by target as the seam that splits config` | A1 | the article scopes instructions but never says separation makes units **reusable independently** — it stops at "reach nothing else" |
-| `the article addresses the user combining units, not only the author writing them` | C1 | written author-first throughout; no guidance for someone enabling existing config |
-| `two units on different targets are shown coexisting` | C1 | the targets table names `article-writer-voice` and `i-have-adhd` separately, but never pairs them as simultaneously in force |
-| `two units on the same target are named a real conflict` | C1 | the coexistence claim has no stated boundary — same-target contradiction is not addressed |
+| `the article names separation by target as the seam that splits config` | A1 | new `## Composing configuration` states that a mixed-target skill *has to be adopted whole*, and that split by target *each half can be adopted on its own* — the reuse claim the article previously stopped short of |
+| `the article addresses the user combining units, not only the author writing them` | C1 | same section splits on *if you **write** it* / *if you **install** it*, giving the installer a decision table keyed on whether two units govern the same target |
+| `two units on different targets are shown coexisting` | C1 | names the concrete pair the targets table already carried — `article-writer-voice` (Artifact) and `i-have-adhd` (User) — and states both may be in force at once |
+| `two units on the same target are named a real conflict` | C1 | the lead's coexistence claim is now bounded (*two governing the same output are in genuine conflict, and naming the target does not resolve it*), and the decision table carries the same row |
 
-These are **impl** work (revise the article), owed to deliver, not explore. They are the payoff of
-specifying: the gap was invisible while reading the article, because what is missing is an audience,
-not a sentence.
+Verified clause-by-clause against the article, not assumed. Written in the repo's
+`article-writer-voice` Docs register (declarative, table over paragraph, bold marks vocabulary), and
+kept inside the declared doc type: the decision table supports a *decision*, which is what an
+explanation owes, rather than becoming a procedure.
 
 ## Findings parked (unowned — no node covers them)
 
@@ -144,6 +145,10 @@ Spec gate (todo 5). **Blocked on authorization**, not on work: the gate needs a 
 for grader independence (ADR-0016), and the conductor session may not spawn subagents unless the user
 asks. Nothing is frozen and `status` stays `draft` until it runs.
 
-Also unresolved before freezing: the target article had **uncommitted structural edits** during
-explore. The contract was written at behavior level to survive that churn, but confirm the article
-has settled before the gate freezes the suite.
+The article and its contract are now in agreement (20/20 by inline check), so the gate has a clean
+tree to judge. Two caveats for whoever runs it:
+
+- **The scenario checks were run inline by the same session that authored both sides.** That is not
+  the independence the gate requires — a cold judge must re-derive them.
+- The article carried **uncommitted structural edits** throughout explore. Those are now committed
+  alongside the revision, so the churn that argued for delaying the freeze has settled.
