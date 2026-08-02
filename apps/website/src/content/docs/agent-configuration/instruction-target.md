@@ -19,14 +19,12 @@ A single request routinely involves more than one target, each with its own valu
 
 When the target is a specific kind of artifact — a given programming language, tests, Storybook stories, documentation, agent configuration — agent harnesses provide two mechanisms.
 
-The first is **file type matching**. The kind of artifact is inferred from the file being worked on, so a set of conventions loads with the content it governs instead of applying everywhere. Harnesses differ in what they actually match on.
+The first is **file type matching**. The kind of artifact is inferred from the file being worked on, so a set of conventions loads with the content it governs instead of applying everywhere. The match is evaluated by the harness as files are touched, which means it tracks the content the agent is actually working on rather than depending on the agent to notice.
 
-- **Cursor** matches a glob. A rule in `.cursor/rules/` carries a `globs:` field in its frontmatter, set with `alwaysApply: false`, and activates only when matching files enter context.
-- **GitHub Copilot** also matches a glob, through an `applyTo:` field on a file in `.github/instructions/`.
-- **Claude Code** matches a subtree. A `CLAUDE.md` in a subdirectory is discovered but not loaded at startup; it enters context when files beneath it are read.
-- **Codex** matches the working directory. It concatenates every `AGENTS.md` from the git root down to the current directory, with the closest file taking precedence.
+- **Cursor** — a rule in `.cursor/rules/` carries a `globs:` field in its frontmatter, set with `alwaysApply: false`, so it activates only when matching files enter context.
+- **GitHub Copilot** — a file in `.github/instructions/` carries an `applyTo:` glob.
 
-When the match is evaluated is what separates them. A glob or a subtree resolves as files are touched, so it tracks the content the agent is actually working on. A directory chain resolves from wherever the session is rooted, which is coarser and does not change as the agent moves between kinds of content inside that tree.
+Not every harness offers this. Where it is missing, instructions cannot be bound to a kind of content at all, and the second mechanism carries the work alone.
 
 The second is **description matching**. An instruction file carries a description, and the agent judges from it whether the current situation calls for loading that file. It is the only mechanism available when the kind of artifact is not evident from a path, and the only one available for the User and Agent targets, which correspond to no file at all. It is a semantic judgment rather than a rule the tool evaluates.
 
