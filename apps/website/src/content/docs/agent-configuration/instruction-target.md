@@ -17,42 +17,50 @@ A single request routinely involves more than one target, each with its own valu
 
 Separating the targets is what lets those values contradict each other safely. Caveman and careful English cannot both be one house style; as values on two targets, they coexist.
 
-## Artifact: purpose values vary by kind of content
+## Artifact: matching an instruction to a kind of content
 
-Here the target is a specific kind of artifact: a given programming language, tests, Storybook stories, documentation, or agent configuration.
+Here the target is a specific kind of content: a given programming language, tests, Storybook stories, documentation, or agent configuration.
 
-Some harnesses infer the target from the file being worked on — **file type matching**. Conventions load only with the content they govern, and the harness applies the match rather than relying on the agent to notice.
+Three mechanisms carry the target, and they act at different moments:
+
+| Mechanism                | Where the target lives      | Decided by                | What it settles       |
+| ------------------------ | --------------------------- | ------------------------- | --------------------- |
+| **File type matching**   | a path glob in frontmatter  | the harness, mechanically | whether the file loads |
+| **Description matching** | the `description` field     | the agent, at load time   | whether the file loads |
+| **Prose matching**       | the instruction body        | the agent, while working  | which value applies    |
+
+File type matching is deterministic. The harness evaluates a path glob rather than the agent judging a situation, so the instruction loads with the content it governs and the same file always draws the same rules.
 
 - **Cursor** — a rule in `.cursor/rules/` carries a `globs:` field in its frontmatter, set with `alwaysApply: false`, so it activates only when matching files enter context.
 - **GitHub Copilot** — a file in `.github/instructions/` carries an `applyTo:` glob.
 
-File type matching is a shortcut. It indicates roughly what a file holds: a markdown file contains code blocks in several languages, each carrying its own conventions, and one section of prose may answer to a different standard than the next. Content decides the value, and file type is a proxy close enough to be useful.
+What a path cannot express is a file that mixes targets. A markdown file holds prose under one set of conventions and code blocks in several languages, each under its own, and one section of prose may answer to a different standard than the next. The glob binds at file granularity while the targets vary inside the file.
 
-The other mechanism is **description matching**. An instruction file carries a description, and the agent judges from it whether the current situation calls for loading that file. It is a semantic judgment rather than a rule the tool evaluates, and it carries the work alone in three cases:
+Description matching reaches what a path cannot. An agent configuration file — a `SKILL.md`, a subagent definition, a Cursor rule — carries a `description` in its frontmatter, and the agent judges from it whether the current situation calls for loading that file. It is a semantic judgment rather than a rule the tool evaluates, and it carries the target alone in three cases:
 
 - where a harness offers no file type matching
 - where the kind of artifact is not evident from a path
 - where the target is the user or another agent, which correspond to no file at all
 
-Both mechanisms infer the target rather than declaring it. A glob on `**/*.py` bets that the session is producing Python; a description matches when the situation sounds like the one the instruction was written for. The bet is on presence, not production — a Python file in context may mean the agent is writing it, explaining it, or reading it to answer a question about something else.
+Both of those gate loading, and neither settles what an instruction covers once it is loaded. Prose matching does: the body names the target, so one loaded file carries a different value per target. The `article-writer-voice` skill states six rules that hold for all prose, then splits — **Personal** for blog posts and newsletter issues, **Docs** for project documentation and READMEs. The file loads once; the agent matches its situation against the branch and takes that value.
 
-The instruction body closes that gap. A rule selected by a glob still has to say it governs the Python you write rather than the replies you write about Python, and a skill selected by its description carries no scope from having been selected. The inference runs one way: a target narrows when an instruction should load, but loading never establishes what the instruction covers. Write that into the body; no harness setting enforces it for you.
+Reach for prose matching in two cases. The first is when neither of the others distinguishes the targets — a mixed-target file, where one path and one description govern content answering to several standards. The second is when the variants are too minor to separate: the two registers above share all six rules and diverge only in delivery, so a file per target would duplicate more than it distinguishes.
 
-Naming the target does not finish the job either. A Python module, a test file, a Storybook story, and a markdown document each follow their own conventions, so the same purpose takes a different value in each.
+Write the target into the body; no harness setting enforces it for you.
 
-| Purpose            | Python module                                | Test file                               | Storybook story                           | Markdown doc                                    |
-| ------------------ | -------------------------------------------- | --------------------------------------- | ----------------------------------------- | ----------------------------------------------- |
-| **Procedure**      | define types, functions, docstrings          | arrange-act-assert, mock setup          | define args, controls, render function    | front matter, headings, body                    |
-| **Criteria**       | lint and type-check pass, docstring coverage | edge cases covered, assertions present  | every state has a story, a11y checks pass | heading hierarchy, no broken links              |
-| **Reference**      | PEP 8, stdlib idioms                         | this repo's test-runner conventions     | design-system component API               | this repo's doc voice conventions               |
-| **Policy**         | no bare `print` in production code           | no snapshot tests without a description | no hard-coded prod URLs in args           | no bare URLs, no rationale prose                |
-| **Tone/Structure** | docstring register, import ordering          | comment style, describe/it nesting      | control naming, story ordering            | prose register, section ordering                |
+A target you can name is a target you can write for. Once the boundary is explicit, an instruction can carry rules that hold for one kind of output and reach nothing else — a convention for your Python modules that never touches how the agent talks to you.
 
-These four columns are an illustration rather than an inventory. Any kind of content that has conventions of its own will fill the same rows differently. Target alone does not fix a value: it identifies where the output goes, and the conventions of that content determine the rest.
+Naming has a limit. When one target needs a substantial body of instruction, isolating the work beats scoping it: give it its own subagent or its own session, and its rules arrive with nothing to compete against. Scoping asks the agent to honor a boundary on every turn, while isolation removes the other side of the boundary from context altogether. [Keeping targets apart](#keeping-targets-apart-within-one-session) weighs the two.
 
-## User: more than tone
+## User: the default target
 
-The user shares the whole session's context, which makes this target look like a matter of tone alone. Shared context is not shared reasoning. An instruction such as "when you need user input, state the reasoning that led to the question" targets the user and is pure Procedure, because it spares the user from reconstructing the question's origin out of the session history.
+Everything the agent says lands here unless it is writing a file or briefing another agent. That makes this the target always in force, and the one whose examples pile up fastest — the drift described in [Keeping targets apart](#keeping-targets-apart-within-one-session) runs toward it.
+
+No path reaches it. A reply is not a file, so file type matching has nothing to match on, and description matching or prose matching carries the target alone.
+
+Every purpose applies here, not only Tone. Tone comes to mind first — the caveman register above and `i-have-adhd` in the table are both Tone instructions — because the user already holds the session's context, so it looks as though nothing is left to convey and only the manner of conveying it is in play. Shared context is not shared reasoning: "when you need user input, state the reasoning that led to the question" targets the user and is pure Procedure, sparing them from reconstructing the question's origin out of the session history.
+
+The user can also answer back, which no other target can. An instruction here may leave something to a follow-up turn, where a brief has to anticipate it because the subagent has no way to ask.
 
 ## Agent: briefs and mail are not interchangeable
 
