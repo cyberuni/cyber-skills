@@ -3,9 +3,9 @@ title: Target
 description: Who or what consumes an instruction's output — the user, a subagent, a peer agent, or a produced artifact. Every purpose can carry a different value per target.
 ---
 
-**Target** answers who or what consumes an instruction's output. You may want the agent to reply to you in a **caveman** tone, while the documentation it writes stays **welcoming** and **inclusive**.
+**Target** answers who or what consumes an instruction's output. You may want the agent to reply to you in a **caveman** tone, but write documentation that is **welcoming** and **inclusive**.
 
-| Target         | Consumer                           | Pure example                                                                                               |
+| Target         | Consumer                           | Example                                                                                                    |
 | -------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | **Reply**      | The user, this session             | `i-have-adhd` — shapes how the agent talks, touches nothing it produces                                    |
 | **Brief**      | A subagent, at spawn time          | the delegation message a parent hands a subagent: context, why, what done looks like                       |
