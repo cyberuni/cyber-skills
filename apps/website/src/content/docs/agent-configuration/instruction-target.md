@@ -1,9 +1,9 @@
 ---
 title: Target
-description: Where an instruction's output goes — into a produced artifact, this session's conversation, or another agent's context. Every purpose can carry a different value per target.
+description: Which of the agent's outputs an instruction governs — a produced artifact, this session's conversation, or another agent's context — and why separating them lets contradictory instructions coexist.
 ---
 
-**Target** identifies where an instruction's output goes, and therefore who eventually reads it. You may want the agent to reply to you in a caveman register while it writes your documentation in plain, careful English.
+**Target** identifies which of the agent's outputs an instruction governs, and therefore who eventually reads it. You may want the agent to reply to you in a caveman register while it writes your documentation in plain, careful English.
 
 There are three kinds of targets, and the forms within each kind are open-ended:
 
@@ -14,6 +14,8 @@ There are three kinds of targets, and the forms within each kind are open-ended:
 | **Agent**    | Into another agent's context          | a spawn-time brief, and mail to a peer session      | cyberlegion mail sent to a peer session                                              |
 
 A single request routinely involves more than one target, each with its own value. The agent may reply tersely to the user while briefing a subagent with full context, or draft a formal document while sending a short status message to a peer agent.
+
+Separating the targets is what lets those values contradict each other safely. Caveman and careful English cannot both be one house style; as values on two targets, they coexist.
 
 ## Artifact: purpose values vary by kind of content
 
