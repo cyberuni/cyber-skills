@@ -19,7 +19,9 @@ A single request routinely involves more than one target, each with its own valu
 
 Naming the target does not finish the job. A Python module, a test file, a Storybook story, and a markdown document each follow their own conventions, so the same purpose takes a different value in each.
 
-Because that variation follows the file rather than the request, several harnesses provide a way to bind a set of instructions to a kind of content, so conventions load with the content they govern instead of applying everywhere. They differ in what they match on.
+No harness offers a way to declare an instruction's target. What they offer is two ways to decide whether an instruction loads at all, and both are approximations of it.
+
+The first is **path matching**, which suits the Artifact target because the variation follows the file rather than the request. Conventions load with the content they govern instead of applying everywhere. Harnesses differ in what they match on.
 
 - **Cursor** matches a glob. A rule in `.cursor/rules/` carries a `globs:` field in its frontmatter, set with `alwaysApply: false`, and activates only when matching files enter context.
 - **GitHub Copilot** also matches a glob, through an `applyTo:` field on a file in `.github/instructions/`.
@@ -28,7 +30,11 @@ Because that variation follows the file rather than the request, several harness
 
 When the binding is evaluated is what separates them. A glob or a subtree is resolved as files are touched, so it tracks the content the agent is actually working on. A directory chain is resolved from wherever the session is rooted, which is coarser and does not change as the agent moves between kinds of content inside that tree.
 
-None of these is a Target declaration in the strict sense, because a path says nothing about who reads the output. They work as a proxy: file type stands in for kind of content, and kind of content is what decides the value. Where a harness offers one, it is the sturdiest way to keep artifact conventions attached to the artifacts they describe, because the binding is evaluated by the tool rather than remembered by the agent.
+A path still says nothing about who reads the output. It works as a proxy: file type stands in for kind of content, and kind of content is what decides the value.
+
+The second mechanism is **description matching**. An instruction file carries a description, and the agent judges from it whether the current situation calls for loading the file. This is what remains for the User and Agent targets, since neither corresponds to a path, and for artifacts whose kind is not evident from a file extension. It is a semantic guess rather than a rule the tool evaluates.
+
+Both mechanisms decide loading, not governing. Neither says what a loaded instruction applies to once it is in context: a rule selected by a glob still has to state that it describes files rather than replies, and a skill selected by its description carries no scope from having been selected. The target therefore has to be written into the instruction body. It is not something the harness can be configured to enforce.
 
 Every purpose varies this way, not only voice.
 
