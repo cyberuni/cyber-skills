@@ -24,6 +24,8 @@ The first is **file type matching**. The kind of artifact is inferred from the f
 - **Cursor** — a rule in `.cursor/rules/` carries a `globs:` field in its frontmatter, set with `alwaysApply: false`, so it activates only when matching files enter context.
 - **GitHub Copilot** — a file in `.github/instructions/` carries an `applyTo:` glob.
 
+File type is a shortcut, not the thing being matched. An extension is a rough indicator of what a file holds, and it is wrong in both directions. A markdown document contains code blocks in several languages, each carrying its own conventions, and one section of prose may answer to a different standard than the next. A test file's conventions come from its test runner rather than from being TypeScript. What decides the value is the content, and file type is a proxy that happens to be close enough often enough to be useful.
+
 Not every harness offers this. Where it is missing, instructions cannot be bound to a kind of content at all, and the second mechanism carries the work alone.
 
 The second is **description matching**. An instruction file carries a description, and the agent judges from it whether the current situation calls for loading that file. It is the only mechanism available when the kind of artifact is not evident from a path, and the only one available for the User and Agent targets, which correspond to no file at all. It is a semantic judgment rather than a rule the tool evaluates.
