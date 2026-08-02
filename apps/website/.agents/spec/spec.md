@@ -7,8 +7,9 @@ project-path: apps/website
 # website — the cyberplace documentation site
 
 > Root project spec — the **descriptive** top index for the `website` project (the Astro site at
-> `apps/website`). Backfilled onto an existing site: the skeleton below is **stubs**, not authored
-> contracts. Every behavioral node still needs its explore grill.
+> `apps/website`). Backfilled onto an existing site. One node
+> (`content/docs/agent-configuration/`) is authored and carries a `.feature`; the rest are **stubs**
+> still awaiting their explore grill. No suite is frozen — no gate has run.
 
 ## What this is
 
@@ -46,15 +47,41 @@ navigates by code finds the spec node in the same shape.
 
 | Source | Spec node |
 |---|---|
-| `src/content/docs/**` | [`content/`](./content/README.md) — one behavioral leaf owning the whole corpus |
+| `src/content/docs/<section>/` | `content/docs/<section>/` — one behavioral leaf per doc section |
 | `src/components/<X>.astro` | `components/<x>/` — one behavioral leaf per component |
 | `src/styles/**` | [`styles/`](./styles/README.md) |
 | `astro.config.mjs`, `package.json`, `public/` | `tooling/` |
 
-Where a new concept lives — slot here, do not invent placement:
+The mirror keeps **every segment** of the source path, so the spec tree and the source tree read the
+same. `content/` and `content/docs/` are **descriptive groupings**, not nodes; the behavioral leaf is
+the section.
 
-- **a new documentation page or section** → `content/` (the leaf owns its whole subtree; do **not**
-  create a node per doc section — see the backfill gap)
+### Depth: this project mirrors past two levels — deliberately
+
+The SDD layout law caps a node at `<capability>/<unit>` — two levels. This project's content tree
+sits at **three** (`content/docs/<section>/`), which is a declared departure, not an oversight.
+
+The reason is that collapsing a level would break the mirror the strategy exists to provide:
+dropping `content/` or `docs/` leaves a spec path that matches no source path, and merging them into
+one folder invents a name the source does not have. Under `mirror-source`, fidelity to the source
+path is the whole value; a cap that forces a divergence defeats it.
+
+What the cap protects is the mission scheduler's node↔capability alignment, and that is **intact
+here**: one section is still exactly one node, and the two extra segments are groupings that own no
+behavior and can never be the unit of a change. Nothing is smeared across nodes.
+
+This is judged, not linted — `check-spec-structure` enforces no depth rule (breadth-vs-depth is
+Warden judgment). A formation Warden pass may therefore contest it; this section is the standing
+answer.
+
+### Where a new concept lives
+
+Slot here; do not invent placement:
+
+- **a new documentation page** → the section's node, `content/docs/<section>/` (the leaf owns its
+  section's pages; do **not** create a node per page)
+- **a new documentation section** → a new `content/docs/<section>/` leaf, when its contract is worth
+  freezing — otherwise it stays in the backfill gap
 - **a new interactive component** (`src/components/<X>.astro`) → a new `components/<x>/` leaf
 - **a change to theming, typography, or the color system** → `styles/`
 - **a change to the sidebar / information architecture** → `tooling/navigation/`
@@ -65,8 +92,9 @@ Where a new concept lives — slot here, do not invent placement:
 - **a decision + its rationale** → `design/decisions/` (the ADR log — append-only, ungated)
 - **a whole-site usage flow** crossing several nodes (a reader lands, searches, navigates, reads) →
   `workflows/`
-- **a cross-cutting concern** that would want a third folder level → a `concept:` tag, recovered
-  through the by-concept index below. **Never** a third folder level.
+- **a cross-cutting concern** spanning several nodes → a `concept:` tag, recovered through the
+  by-concept index below — **never** a deeper folder. The mirror segments above are the *only*
+  sanctioned depth; a concern is never a folder level.
 
 ### The cost of mirror-source here — declared, not hidden
 
@@ -88,12 +116,13 @@ project adopted on the shape it has.
 
 ## Behavioral nodes
 
-All are **stubs** — `## Use Cases` present, no `.feature`, no authored control flow. Filling each one
-is the per-unit explore grill, not this scaffold.
+All are **stubs** — `## Use Cases` present, no `.feature`, no authored control flow — **except**
+`content/docs/agent-configuration/`, which is authored (CFG drawn from source, 8 scenarios, scenario
+map 1:1). Filling the rest is the per-unit explore grill.
 
 | Node | Subject |
 |---|---|
-| [`content/`](./content/README.md) | the published documentation corpus |
+| [`content/docs/agent-configuration/`](./content/docs/agent-configuration/README.md) | the instruction-writing section — reachability and cross-reference integrity **(authored — the only node with a `.feature`)** |
 | [`components/marketplace-search/`](./components/marketplace-search/README.md) | browsing and filtering the skill marketplace |
 | [`components/tavern-storefront/`](./components/tavern-storefront/README.md) | browsing the crew storefront |
 | [`components/mermaid/`](./components/mermaid/README.md) | rendering Mermaid diagrams in docs pages |
@@ -106,20 +135,19 @@ is the per-unit explore grill, not this scaffold.
 
 Two gaps are **declared**, not silently omitted:
 
-1. **Every node is a stub.** The site is fully implemented and deployed; none of it is captured as an
-   authored contract. Each node needs its explore grill to produce `## What` / `## Use Cases` /
-   `## Control Flow` / `## Scenario map` and a `.feature`. On backfill the CFG is **drawn from the
-   source**, not stopped at Use Cases.
+1. **Seven of eight nodes are stubs.** The site is fully implemented and deployed; only
+   `content/docs/agent-configuration/` is captured as an authored contract. Each remaining node needs
+   its explore grill to produce `## What` / `## Use Cases` / `## Control Flow` / `## Scenario map`
+   and a `.feature`. On backfill the CFG is **drawn from the source**, not stopped at Use Cases.
 
-2. **The 76-page corpus is one leaf, not 16 nodes.** `content/` owns the entire
-   `src/content/docs/**` subtree as a single behavioral leaf. The 16 sections — `aced` (12 pages),
-   `concepts` (11), `motive-model` (9), `sdd` (8), `governances` (6), `cli` (5), `cyberfleet` (5),
-   `universal-plugin` (5), `getting-started` (3), `agent-configuration` (3), `quill` (2),
-   `cyberlegion` (2), `disciplines` (1), `marketplace` (1), `tavern` (1), plus 2 root pages — are
-   **not** individually specified. Splitting them into per-section nodes is a future change request,
-   to be opened when the corpus contract earns the granularity. Note the repo registers **quill** for
-   the `documentation` / `guide` / `reference` artifact types, so that split would run its production
-   chain.
+2. **15 of 16 doc sections are unspecified.** Sections earn a node one at a time. Specified so far:
+   `agent-configuration` (3 pages). Outstanding — `aced` (12 pages), `concepts` (11),
+   `motive-model` (9), `sdd` (8), `governances` (6), `cli` (5), `cyberfleet` (5),
+   `universal-plugin` (5), `getting-started` (3), `quill` (2), `cyberlegion` (2), `disciplines` (1),
+   `marketplace` (1), `tavern` (1), plus 2 root pages — **73 pages** in total. Each is a future
+   change request, opened when that section's contract is worth freezing. The repo registers
+   **quill** for the `documentation` / `guide` / `reference` artifact types, so each runs its
+   production chain (`quill-spec-writer` → `quill-doc-writer` → `quill-judge`).
 
 Not a gap, but worth stating because it reads like one: the `marketplace/` and `tavern/` content
 sections are **absent from the sidebar by design**. The site's information architecture is
@@ -136,9 +164,9 @@ flag them.
 | Concept | Facets |
 |---|---|
 | `build` | `tooling/site-config/` (behavior) |
-| `docs` | `components/mermaid/` (behavior) · `content/` (behavior) |
+| `docs` | `components/mermaid/` (behavior) · `content/docs/agent-configuration/` (behavior) |
 | `marketplace` | `components/marketplace-search/` (behavior) · `components/tavern-storefront/` (behavior) |
-| `navigation` | `components/site-title/` (behavior) · `tooling/navigation/` (behavior) |
+| `navigation` | `components/site-title/` (behavior) · `content/docs/agent-configuration/` (behavior) · `tooling/navigation/` (behavior) |
 | `theming` | `components/mermaid/` (behavior) · `components/site-title/` (behavior) · `styles/` (behavior) |
 
 <!-- END generated: by-concept -->
