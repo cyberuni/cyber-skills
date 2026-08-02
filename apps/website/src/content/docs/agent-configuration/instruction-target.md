@@ -17,18 +17,16 @@ A single request routinely involves more than one target, each with its own valu
 
 ## Artifact: purpose values vary by kind of content
 
-When the target is a specific kind of artifact — a given programming language, tests, Storybook stories, documentation, agent configuration — agent harnesses provide two mechanisms.
+Here the target is a specific kind of artifact: a given programming language, tests, Storybook stories, documentation, or agent configuration.
 
-The first is **file type matching**. The kind of artifact is inferred from the file being worked on, so a set of conventions loads with the content it governs instead of applying everywhere. The match is evaluated by the harness as files are touched, which means it tracks the content the agent is actually working on rather than depending on the agent to notice.
+Some harnesses infer the target from the file being worked on — **file type matching**. Conventions load only with the content they govern, and the harness applies the match rather than relying on the agent to notice.
 
 - **Cursor** — a rule in `.cursor/rules/` carries a `globs:` field in its frontmatter, set with `alwaysApply: false`, so it activates only when matching files enter context.
 - **GitHub Copilot** — a file in `.github/instructions/` carries an `applyTo:` glob.
 
-File type is a shortcut, not the thing being matched. An extension is a rough indicator of what a file holds, and it is wrong in both directions. A markdown document contains code blocks in several languages, each carrying its own conventions, and one section of prose may answer to a different standard than the next. A test file's conventions come from its test runner rather than from being TypeScript. What decides the value is the content, and file type is a proxy that happens to be close enough often enough to be useful.
+Note that **file type matching** is just a shortcut. It roughly indicates what a file holds. A markdown contains code blocks in several languages, each carrying its own conventions, and one section of prose may answer to a different standard than the next. What decides the value is the content, and file type is a proxy that happens to be close enough to be useful.
 
-Not every harness offers this. Where it is missing, instructions cannot be bound to a kind of content at all, and the second mechanism carries the work alone.
-
-The second is **description matching**. An instruction file carries a description, and the agent judges from it whether the current situation calls for loading that file. It is the only mechanism available when the kind of artifact is not evident from a path, and the only one available for the User and Agent targets, which correspond to no file at all. It is a semantic judgment rather than a rule the tool evaluates.
+The other mechanism is **description matching**. An instruction file carries a description, and the agent judges from it whether the current situation calls for loading that file. It is a semantic judgment rather than a rule the tool evaluates, and it carries the work alone in three cases: where a harness offers no file type matching, where the kind of artifact is not evident from a path, and for the User and Agent targets, which correspond to no file at all.
 
 Neither mechanism declares a target. Both decide whether an instruction loads, not what it governs once loaded: a rule selected by a glob still has to state that it describes files rather than replies, and a skill selected by its description carries no scope from having been selected. The target has to be written into the instruction body, because it is not something the harness can be configured to enforce.
 
