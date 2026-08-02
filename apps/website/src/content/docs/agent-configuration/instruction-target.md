@@ -1,17 +1,17 @@
 ---
 title: Target
-description: Who or what consumes an instruction's output — a produced artifact, the user, or another agent. Every purpose can carry a different value per target.
+description: Where an instruction's output goes — into a produced artifact, this session's conversation, or another agent's context. Every purpose can carry a different value per target.
 ---
 
-**Target** identifies who or what consumes an instruction's output. You may want the agent to reply to you in a **caveman** tone, but write documentation that is **welcoming** and **inclusive**.
+**Target** identifies where an instruction's output goes, and therefore who eventually reads it. You may want the agent to reply to you in a **caveman** tone, but write documentation that is **welcoming** and **inclusive**.
 
-| Target       | Consumer                                         | Example                                                                                  |
-| ------------ | ------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| **Artifact** | A third party, through a file the agent produces | `article-writer` shapes a draft's voice without changing how the agent replies            |
-| **User**     | The person in this session                       | `i-have-adhd` shapes how the agent talks without touching anything it produces            |
-| **Agent**    | Another agent that will act on the output        | a subagent brief, or cyberlegion mail sent to a peer session                              |
+| Target       | Where the output goes            | Example                                                                       |
+| ------------ | -------------------------------- | ----------------------------------------------------------------------------- |
+| **Artifact** | Into a file that outlives the session | `article-writer` shapes a draft's voice without changing how the agent replies |
+| **User**     | Into this session's conversation      | `i-have-adhd` shapes how the agent talks without touching anything it produces |
+| **Agent**    | Into another agent's context          | a subagent brief, or cyberlegion mail sent to a peer session                   |
 
-Each of the three consumers expects something different. The three kinds are stable, but the forms within each kind are not. The Artifact target covers every kind of content the agent can write. The User target covers both a live reply and a question that must carry its own reasoning. The Agent target covers a spawn-time brief as well as mail sent to a peer session.
+Each destination carries its own expectations. The three kinds are stable, but the forms within each kind are not. The Artifact target covers every kind of content the agent can write. The User target covers both a live reply and a question that must carry its own reasoning. The Agent target covers a spawn-time brief as well as mail sent to a peer session.
 
 A single request routinely involves more than one target, each with its own value. The agent may reply tersely to the user while briefing a subagent with full context, or draft a formal document while sending a short status message to a peer agent.
 
