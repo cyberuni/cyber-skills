@@ -13,7 +13,7 @@ Well written agent instructions make a huge difference. So it is important to un
 
 | Topic | What it's about |
 | ----- | ---------------- |
-| **[Purpose](/agent-configuration/purpose/)** | What the block is *for* — procedure, criteria, policy, reference, menu, or voice. Mismatched purpose is the most common source of confused instructions. |
+| **[Purpose](/agent-configuration/instruction-purpose/)** | What the block is *for* — procedure, criteria, policy, reference, menu, tone, or structure. Mismatched purpose is the most common source of confused instructions. |
 | **Word choice** | Precise, unambiguous terms. Hedge words ("try to", "consider", "usually") give the model room to skip the instruction; state the rule as a fact. |
 | **Tone** | The manner of address — formal, casual, terse — separate from what's actually being said. Two instructions can carry identical content in different tones. |
 | **Grammar** | Mood should match purpose: imperative ("Run the tests") for procedure, declarative ("The build output lives in `dist/`") for reference. |

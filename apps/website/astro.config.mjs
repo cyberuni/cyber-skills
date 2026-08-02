@@ -40,6 +40,25 @@ export default defineConfig({
           ],
         },
         {
+          label: "Agent Configuration",
+          items: [
+            { label: "Overview", slug: "agent-configuration/overview" },
+            {
+              label: "Instructions",
+              items: [
+                {
+                  label: "Purpose",
+                  slug: "agent-configuration/instruction-purpose",
+                },
+                {
+                  label: "Target",
+                  slug: "agent-configuration/instruction-target",
+                },
+              ],
+            },
+          ],
+        },
+        {
           label: "The Motive Model",
           items: [
             { label: "Overview", slug: "motive-model/overview" },
@@ -109,16 +128,6 @@ export default defineConfig({
             },
             { label: "CLI Resolution", slug: "governances/cli-resolution" },
             { label: "Universal Plugin", slug: "governances/universal-plugin" },
-          ],
-        },
-        {
-          label: "Agent Configuration",
-          items: [
-            { label: "Overview", slug: "agent-configuration/overview" },
-            {
-              label: "Purpose",
-              slug: "agent-configuration/purpose",
-            },
           ],
         },
         {

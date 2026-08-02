@@ -184,7 +184,7 @@ description: Use this skill when <trigger>. <One-line capability summary.>
 
 ## Related
 
-- [Purpose](/agent-configuration/purpose/) — what a *section* is for: procedure, criteria, policy, reference, menu, voice
+- [Purpose](/agent-configuration/instruction-purpose/) — what a *section* is for: procedure, criteria, policy, reference, menu, tone, structure
 - [Responsibility](/concepts/responsibility/) — the Required / Optional / Delegated axis, orthogonal to kind
 - [Gateway Skill](/concepts/gateway-skill/) — workflow entrypoints that route an opt-in workflow
 - [Persona](/concepts/persona/) — bundled agent identity a skill can invoke as a subagent
