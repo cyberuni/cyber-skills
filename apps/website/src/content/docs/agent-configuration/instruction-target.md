@@ -27,7 +27,15 @@ Naming the target does not finish the job. A Python module, a test file, a Story
 | **Policy**         | no bare `print` in production code           | no snapshot tests without a description | no hard-coded prod URLs in args           | no bare URLs, no rationale prose                |
 | **Tone/Structure** | docstring register, import ordering          | comment style, describe/it nesting      | control naming, story ordering            | prose register, section ordering                |
 
-These four columns are an illustration rather than an inventory. Any kind of content that has conventions of its own will fill the same rows differently. Target alone does not fix a value: it identifies who receives the output, and the conventions of that content determine the rest.
+These four columns are an illustration rather than an inventory. Any kind of content that has conventions of its own will fill the same rows differently. Target alone does not fix a value: it identifies where the output goes, and the conventions of that content determine the rest.
+
+### Harnesses can bind instructions to a kind of content
+
+Because this variation follows the file rather than the request, several harnesses let an instruction file declare which files it governs, so a set of conventions loads with the content it applies to instead of applying everywhere.
+
+Cursor scopes a rule in `.cursor/rules/` through a `globs:` field in its frontmatter, set alongside `alwaysApply: false` so the rule activates only when matching files enter context. GitHub Copilot scopes a file in `.github/instructions/` through an `applyTo:` glob. Harnesses without a glob field generally scope by placement instead, treating an instruction file in a subdirectory as governing the files beneath it.
+
+A glob says nothing about who reads the output, so it is not a Target declaration in the strict sense. It is a proxy: file type stands in for kind of content, and kind of content is what decides the value. Where a harness offers this, it is the most reliable way to keep artifact conventions attached to the artifacts they describe, because the binding is evaluated when the file is touched rather than remembered by the agent.
 
 ## User: more than tone
 
