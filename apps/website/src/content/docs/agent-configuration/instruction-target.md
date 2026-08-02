@@ -32,7 +32,9 @@ The other mechanism is **description matching**. An instruction file carries a d
 - where the kind of artifact is not evident from a path
 - where the target is the user or another agent, which correspond to no file at all
 
-Neither mechanism declares a target. Both decide whether an instruction loads, not what it governs once loaded: a rule selected by a glob still has to state that it describes files rather than replies, and a skill selected by its description carries no scope from having been selected. Write the target into the instruction body, because no harness setting enforces it for you.
+Both mechanisms infer the target rather than declaring it. A glob on `**/*.py` bets that the session is producing Python; a description matches when the situation sounds like the one the instruction was written for. The bet is on presence, not production — a Python file in context may mean the agent is writing it, explaining it, or reading it to answer a question about something else.
+
+The instruction body closes that gap. A rule selected by a glob still has to say it governs the Python you write rather than the replies you write about Python, and a skill selected by its description carries no scope from having been selected. The inference runs one way: a target narrows when an instruction should load, but loading never establishes what the instruction covers. Write that into the body; no harness setting enforces it for you.
 
 Naming the target does not finish the job either. A Python module, a test file, a Storybook story, and a markdown document each follow their own conventions, so the same purpose takes a different value in each.
 
