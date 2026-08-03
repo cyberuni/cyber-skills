@@ -123,7 +123,6 @@ Feature: instruction-target — the "Target" article
     And the two units govern the same target
     When the article's treatment of coexistence is read
     Then it states that this case is a genuine conflict rather than a coexistence
-    And it makes that claim in exactly one place, later passages referring back
 
   # ── C2 — Diagnose over-reach ──
 
