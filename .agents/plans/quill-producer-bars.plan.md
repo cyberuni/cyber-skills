@@ -9,9 +9,9 @@ todos:
   - content: "Extend the three agent definitions' load lists, and add the output fields five frozen scenarios already require"
     status: completed
   - content: "Add the spend-every-row-by-ID rule to the spec bar's completeness element"
-    status: in_progress
+    status: completed
   - content: "Add the one-namespace-per-node identifier rule"
-    status: pending
+    status: in_progress
   - content: "Join the doc-type table to the north-star element"
     status: pending
   - content: "Add the intra-node reconciliation duty after an edit"
@@ -267,9 +267,18 @@ declare it. What was written, so a re-reader does not re-derive it:
 `pnpm verify` green at the repo root. No changeset (private package). The impl gate for the four
 `sdd-roles` nodes has **not** been run — it is `aced-impl-judge`'s, and it is still owed.
 
-**Item 3 is now the live todo** — the spend-every-row-by-ID rule in `quill-builder-spec`'s
-completeness element. The remaining bar edits (3–6) are edits to
-`plugins/quill/skills/quill-builder-spec/SKILL.md`.
+**Item 3 is landed** (`d863ba1b`) — element 5 of `quill-builder-spec` gained a **Spend every row by
+its number** bullet, and read-check item 4 was extended to match. It reuses the `spend` the CFG
+section already predicates of the coverage table, so the two rules read as one discipline.
+
+**`doc-spec-bar` carries no `.feature`** — checked, not assumed. So bar edits 4–7 have no frozen
+scenario to violate; that node's missing grading face is the out-of-scope Conflict, and its absence
+is why these edits are free. Each is a change to
+`plugins/quill/skills/quill-builder-spec/SKILL.md`, and each should also update the **Key points
+(read-check)** list at the file's end — that list restates every rule, so a rule added only to the
+body leaves it stale.
+
+**Item 4 is now the live todo** — the one-namespace-per-node identifier rule.
 
 ### What item 2 had to make true — kept for the impl gate
 
