@@ -7,12 +7,12 @@ todos:
     status: completed
   - content: Re-partition the two tiers by what is actually decidable mechanically — most integrity criteria are judgment, not inspection
     status: completed
-  - content: Add declaration-agreement — a passage's presuppositions must match the spec's declared audience and prerequisites
-    status: pending
+  - content: "Add declaration-agreement — folded into the catalog as entry C1 (declaration mismatch), not a separate criterion"
+    status: completed
   - content: Spec the judged tier — a second evaluation instrument beside static inspection
-    status: pending
+    status: in_progress
   - content: Author the defect catalog — named, citable bad-writing shapes, each with a near-miss that must NOT fire
-    status: pending
+    status: completed
   - content: Calibrate against the corpus before the tier gates — known-good and known-weak documents
     status: pending
   - content: Spec gate — cold spec-judge, freeze, ledger gate line
@@ -232,21 +232,30 @@ the two-instrument partition, the retraction with its warrant, and the judged in
 after it. Verified by searching both `exactly one place` *and* `restatement`; every surviving hit is
 a retraction statement, a plan, or the research dossier.
 
-**Resume at todo 5 — author the defect catalog.** This is now the critical path, because both bars
-and both agents already name a catalog that holds only **two** entries (term drift, contradiction,
-each with a near-miss). Seven are specified and unauthored: unresolvable presupposition, bare
-cross-reference, re-presented as new, declaration mismatch, claim without mechanism, orphan claim,
-undefined term at first use. `quill-builder-impl/SKILL.md` says so in those words, so the gap is
-declared rather than hidden — but it is a gap.
+**Todo 5 is done — the catalog is authored**, nine entries in three groups, in
+`quill-builder-impl/SKILL.md` (209 lines, in family with `quill-builder-spec`; the split threshold is
+not reached). Todo 3 folded in as entry **C1, declaration mismatch** — the spec's audience and
+prerequisites are the catalog's *input*, so a separate declaration-agreement criterion would put one
+criterion in two places.
 
-**Todo 3 (declaration-agreement) folds into todo 5**, not beside it. The brief's own catalog table
-already notes this: the spec's declared audience and prerequisites are the catalog's *input*, and
-listing declaration-agreement as its own criterion would put one criterion in two places.
+**Resume at todo 6 — calibration. It is the gate on everything else.** Every entry is advisory until
+run against documents this repo already accepts and already considers weak, with a false-positive
+rate **reported rather than asserted**. Nothing blocks until that runs, so the catalog currently has
+no teeth by design. Suggested corpus: the Target article (known-good — 20/20 with one integrity
+finding that was half a false positive) against a document the team already considers weak. An entry
+that fires on an accepted document is miscalibrated and stays advisory.
 
-**Todo 4 (spec the judged tier) is largely absorbed.** The tier's contract — blind two-pass,
-deliberate-violation defense, advisory-until-calibrated, detect-never-certify — is written into
-`doc-eval-model.md`, `doc-impl-bar/README.md`, and the shipped bar. What remains of todo 4 is the one
-still-open decision below plus whatever the catalog's shape forces.
+**The catalog is unrun.** Nine entries and their near-misses are reasoned, not measured. Group A is
+the one to watch: its findings are *negatives* over a named reader path, which is the hardest thing
+to evidence and the easiest to fabricate.
+
+### What todo 4 still owes
+
+The tier's contract is written — blind two-pass, deliberate-violation defense,
+advisory-until-calibrated, detect-never-certify — across `doc-eval-model.md`,
+`doc-impl-bar/README.md`, and the shipped bar. What remains is the open decision below, and the
+mechanics calibration will force: how a producer *records* a deliberate-violation rationale so the
+judge can read it, and where a per-entry calibration verdict is stored.
 
 ### Still open
 
