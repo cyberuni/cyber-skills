@@ -39,7 +39,7 @@
 					"governances": {
 						"oracle-spec": null,
 						"builder-spec": "quill-builder-spec",
-						"builder-impl": null,
+						"builder-impl": "quill-builder-impl",
 						"architect-spec": null,
 						"architect-impl": null
 					}
