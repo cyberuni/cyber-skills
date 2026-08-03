@@ -1,17 +1,21 @@
+@frozen
 Feature: quill/quill-builder-impl — the impl-gate Builder bar reference
 
   A reference page, consulted one item at a time. Its reader arrives holding a single lookup —
   a criterion, a citation rule, an entry's standing, or the calibration procedure — so the
   scenarios assert that each criterion is retrievable with everything needed to use it: what
-  fires it, the near-miss that must not, the citation its group owes, and whether it blocks.
+  fires it, the citation its group owes, and whether it blocks; and, for each of the nine
+  catalog entries, the near-miss that must not fire it. The near-miss is scoped to the nine
+  because the enumeration rule has none.
 
   The page is at src/content/docs/quill/quill-builder-impl.md, project-root-relative to the
   website project. Scenarios assert the claims the page must land and the lookups it must
   route. They freeze neither section order nor wording, and they assert no example verbatim.
 
-  One distinction is load-bearing and is asserted twice from different arrivals: recurrence is
+  One distinction is load-bearing and is asserted from two different arrivals: recurrence is
   retracted, and the entry that survived it fires on new-information marking rather than on the
-  restatement itself.
+  restatement itself. Its placement is additionally forced by the entry-self-sufficiency
+  scenario, which requires every entry to carry its own fire condition at the entry.
 
   # ── W1 — Read the bar forward before the gate ──
 
@@ -39,6 +43,7 @@ Feature: quill/quill-builder-impl — the impl-gate Builder bar reference
     Then it states that a route must reach every option the document itself named
     And it states that an option absent from the routing is a defect rather than a simplification
     And it requires a report to cite the passage enumerating the set and the routing that skips a member
+    And it states that a failure of this rule is a blocker rather than an advisory finding
 
   Scenario: the catalog is presented as three groups named by what the defect does to a reader
     Given the reference page at src/content/docs/quill/quill-builder-impl.md
@@ -226,7 +231,7 @@ Feature: quill/quill-builder-impl — the impl-gate Builder bar reference
 
   Scenario: the page states that calibration is per entry and not a vote across the catalog
     Given the reference page at src/content/docs/quill/quill-builder-impl.md
-    And a maintainer holding nine cleared entries and one untested entry
+    And a maintainer whose catalog has some entries already calibrated and one not yet run
     When the page's scope for a calibration verdict is read
     Then it states that calibration is per entry
     And it states that entries clearing together tells nothing about another entry

@@ -12,8 +12,10 @@ writes — and from the section boundary in [`../README.md`](../README.md), whic
 the registry entry's shape, the skill's failure and edge behavior, and the reader's next step.
 
 **The published draft is not an input to this contract.** It is stale: it states that every
-governance binding is `null`, and the live registry binds two of them. A spec written to match the
-draft would freeze that error.
+governance binding is `null`, and the live registry contradicts that. A spec written to match the
+draft would freeze that error. (Which bindings the registry fills is deliberately not stated here —
+see *what this page must not copy* below; the falsity of the draft's claim is what this node needs,
+and the census is `production-chain`'s.)
 
 ## What
 
@@ -24,7 +26,7 @@ file and let the reader confirm it landed.
 
 ### Why the page exists: the registry is the only thing that switches Quill on
 
-Quill's other five pages describe a plugin that is already wired in. Installing Quill does not wire
+Quill's other pages describe a plugin that is already wired in. Installing Quill does not wire
 it in — the SDD conductor resolves roles by reading the registry file and nothing else (the lockfile
 pattern), so an installed-but-unregistered Quill is invisible at runtime and fails **silently**: the
 mission runs, the default chain produces something, and no error says why Quill never appeared.
@@ -79,8 +81,9 @@ an error unsure whether their registry file was modified.
 | the Quill plugin installed in the project | [Quill overview](/quill/overview/) — it owns the install command |
 | a project that uses SDD, at the level of knowing what a mission is | [SDD overview](/sdd/overview/) |
 
-Beyond those two, the page is **self-contained**: every file, term, and action a step needs is
-introduced on the page. A reader owes no other reading before following the steps.
+Beyond the rows above, the page is **self-contained**: every file, term, and action a step needs is
+introduced on the page. A reader owes no other reading before following the steps. K15 is the
+coverage row that enforces this, and the `S → A` scenario is what checks it.
 
 ### Required coverage
 
@@ -93,6 +96,7 @@ The page is incomplete without each row. The scenarios below check them.
 | K1 | **How to set it off** | the skill that performs the registration is named, at least one thing a reader can say or invoke to trigger it is given, and the file it writes is named |
 | K2 | **What it changes on disk** | it finds the registry file at the project root or creates it, stamps Quill's own version, writes the Quill entry into the `sdd-plugins` array, and writes the file back |
 | K3 | **Each step is followable** | every step in the procedure carries the action to take or the change it makes, on this page, without deferring its content elsewhere |
+| K15 | **The prerequisite surface is closed** | every file, tool, and term a step needs is either named in the prerequisites or introduced on the page — nothing required is sprung on the reader mid-procedure. This is the row that carries the self-containment claim `## Prerequisites` declares |
 
 **When it stops**
 
@@ -118,6 +122,7 @@ The page is incomplete without each row. The scenarios below check them.
 | K11 | **The `roles` block** | it carries the SDD production-chain role keys; each holds either a bound agent or `null`, and `null` means the SDD default is used for that role. The keys are **not counted or enumerated here** — that set is `production-chain`'s |
 | K12 | **The `governances` block is not presented as unbound** | the page does not state or imply that Quill leaves every governance binding `null` and relies on the SDD default bars throughout — the claim the current draft makes and the registry contradicts. It states the `null`-means-default **rule** (shape, which this page owns) and reaches the census of which bindings Quill actually fills by **link**, never reproducing it |
 | K13 | **The boundary is held** | what a bound agent does, what the checks verify, and what any bar requires are reached by link, not developed here in place of the link. The redirect is generic — the page names no set of bars, because a link set that resolves to exactly the bars Quill authors is the binding census again, decoded from presence and absence |
+| K16 | **The block descriptions serve both arrivals** | the description of the squad's blocks is reachable from the completion path as well as from the audit path — a reader who has just registered and is checking the entry is complete must not have to enter a maintainer-only section to find out what a complete entry looks like |
 
 **Getting on with it**
 
@@ -125,9 +130,16 @@ The page is incomplete without each row. The scenarios below check them.
 | --- | --- | --- |
 | K14 | **The next step** | starting a documentation mission is named as the next thing to do, with the statement that the conductor resolves the Quill roles from the registry without further setup, and a link to the page that owns starting a mission |
 
-**Completeness check.** A page meeting K1–K14 cannot trip the north star's failure mode: K1–K3 get
-the reader to a run, K7–K8 give them something concrete to look at in their own file, and K4–K6
-state for **both** stop cases that the file on disk did not change.
+**Completeness check.** A page meeting **every row above** cannot trip the north star's failure mode:
+K1, K2, K3 and K15 get the reader to a run without springing a requirement on them; K7 and K8 give
+them something concrete to look at in their own file, with K16 guaranteeing they can reach it from
+the path they are actually on; and K4, K5 and K6 state, for each way the run can stop, that the file
+on disk did not change.
+
+*(Stated as "every row above" rather than as an ID range on purpose. A range is the form in which a
+row hides: add one, and the sentence still reads true while quantifying over a set that no longer
+matches the table. K15 was added to this contract after the range was first written, and would have
+fallen outside it.)*
 
 **On K7, K11 and K12 — what this page must not copy.** All three rows were first drafted as
 **censuses**: they listed the members of sets whose home is a sibling page. Each failed the
@@ -167,7 +179,7 @@ are about **trusting a file that already exists**.
 
 | # | Entry point | Trigger / inputs / outcome |
 | --- | --- | --- |
-| R1 | **Register Quill for the first time** — the reader has installed Quill and nothing routes to it yet | *Trigger:* a documentation mission ran the default chain. *Inputs:* K1, K2, K3. *Outcome:* the reader sets the registration off and knows what it wrote. |
+| R1 | **Register Quill for the first time** — the reader has installed Quill and nothing routes to it yet | *Trigger:* a documentation mission ran the default chain. *Inputs:* K1, K2, K3, K15. *Outcome:* the reader sets the registration off and knows what it wrote. |
 | R2 | **Recover from a run that stopped** — the registration reported an error instead of finishing | *Trigger:* an error where a written file was expected. *Inputs:* K4, K5, K6. *Outcome:* the reader knows which failure they hit, that their file was not modified, and what to fix before re-running. |
 | R3 | **Take the next step** — registration succeeded and the reader wants to use it | *Trigger:* the entry is in place. *Inputs:* K14, with K7 as the precondition. *Outcome:* the reader starts a documentation mission without further setup. |
 
@@ -177,7 +189,7 @@ are about **trusting a file that already exists**.
 | --- | --- | --- |
 | V1 | **Confirm the project is really registered** — the reader wants evidence, not a report | *Trigger:* doubt about whether an earlier run took effect. *Inputs:* K7, K8. *Outcome:* the reader can look at their own registry file and decide. |
 | V2 | **Re-run over an entry that already exists** — the entry is old-shape, version-stale, or sits beside another plugin's | *Trigger:* a Quill upgrade, or an inherited registry. *Inputs:* K9, K10. *Outcome:* the reader re-runs knowing they will get one rewritten entry and no collateral damage. |
-| V3 | **Read what the entry binds** — the reader is looking at the `roles` and `governances` blocks and wants to know what they mean | *Trigger:* an unfamiliar block, or a `null` that looks like a gap. *Inputs:* K11, K12, K13. *Outcome:* the reader can read a binding, knows what `null` means, and follows a link for anything deeper. |
+| V3 | **Read what the entry binds** — the reader is looking at the `roles` and `governances` blocks and wants to know what they mean | *Trigger:* an unfamiliar block, or a `null` that looks like a gap. *Inputs:* K11, K12, K13, K16. *Outcome:* the reader can read a binding, knows what `null` means, and follows a link for anything deeper. |
 
 ## Control Flow
 
@@ -215,13 +227,28 @@ graph TD
   V -- "what does this entry bind?" --> B{the shape of a block, or what a binding does?}
 
   B -- "the shape of a block" --> B0{which block?}
-  B0 -- "roles" --> B2["five production-chain role keys; each a bound agent or null, and null means the SDD default"]
+  B0 -- "roles" --> B2["the production-chain role keys; each a bound agent or null, and null means the SDD default"]
   B0 -- "governances" --> B3["the block is required and is not all-null; a null binding uses the SDD default — which bindings Quill fills is on the page that owns the table"]
   B -- "what a binding does" --> B4["follow the link: the production chain, the eval model, or the bar itself"]
 ```
 
-Every coverage row is spent on an edge or a leaf, every edge carries a scenario, and both stop
-causes are routed rather than collapsed into one error node.
+Every coverage row is spent on an edge or a leaf, **every leaf carries a scenario**, and each stop
+cause is routed rather than collapsed into one error node.
+
+**Three edges carry no row of their own**, and the claim above is narrowed to say so: `Q0:existing
+→ V`, `V:bind → B`, and `B:shape → B0` are internal routing into a fan-out. Each one's observable
+content is the leaf it reaches, so a scenario on the edge itself would assert only that the fan-out
+exists — which the leaf scenarios already settle, and which no plausible wrong page gets wrong while
+still passing them.
+
+**The fourth entry into that fork is different.** `C2 → B0` is a **convergence**: a reader who has
+just finished registering and is checking the entry is complete reaches the same block descriptions
+as a maintainer who arrived to audit one. That is a real reader-path claim and a page can fail it —
+by filing the block descriptions inside a maintainer-only section the first-time reader never passes,
+leaving them unable to finish the completeness check `C2` sent them to make. It carries a coverage
+row (K16) and a map row, matching how `S → A` and `C1`/`C2 → N` are already called out as
+convergences. The other route into `B0`, `V:bind → B`, appears in that row as the second path rather
+than as an edge of its own — which is what a convergence row is for.
 
 **Why "is Quill installed?" is not a branch here.** An earlier draft opened the procedure with that
 decision and routed the *no* arm to `overview`. It is cut. Install is a **supplied precondition** —
@@ -279,6 +306,7 @@ who arrives without Quill installed.
 | `B0:roles → B2` | a reader looking at the roles block and at a null value | `the roles block is presented with what a null binding means` |
 | `B0:governances → B3` | a reader who has been told elsewhere that Quill uses the SDD default bars | `the governances block is not presented as unbound` |
 | `B:binding → B4` | a reader who wants to know what a bound agent or a bar actually does | `the page links the owning page instead of developing the binding` |
+| `C2 → B0` | both arrivals — one reader completing a first-time registration, one auditing an entry that already existed and reaching `B0` through `V:bind` *(convergence — the descriptions do not vary by arrival)* | `the block descriptions are reachable from both arrivals` |
 
 ## References
 

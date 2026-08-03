@@ -118,6 +118,22 @@ an unreported sweep is indistinguishable from an unrun one.
 caught five of six targeted items plus four unprompted defects, and still left one claim false. The
 sweep reduces rounds; it does not replace the cold judge.
 
+**The stale artifact is often the control-flow graph.** The last regression of the mission was prose
+and suite correctly updated with the diagram they describe left behind — and the diagram then said
+the opposite of both. A CFG is the artifact most likely to be forgotten, because it reads as
+scenery rather than as a claim.
+
+### 5a. A node whose subject is a rule should be checked against that rule
+
+Cheap, and it would have caught two of this mission's findings before the gate. The impl-bar page
+documents a rule against a routing that silently drops a member of a set the document enumerated —
+and its own control-flow graph did exactly that, dropping the enumeration rule's citation form from
+a routing over citation forms. The spec bar's own coverage-completeness rule, likewise, is what
+finally caught a completeness argument claiming twenty-seven spends against twenty-six rows.
+
+Where a node documents a rule that could apply to a spec, applying it to **this** spec is a free
+pre-gate check. Worth stating in the spec bar so a producer runs it rather than discovering it.
+
 ### 6. The plugin readme predates the current model
 
 It still leads the integrity row with *"no claim landed twice"* — the recurrence rule the doc-eval

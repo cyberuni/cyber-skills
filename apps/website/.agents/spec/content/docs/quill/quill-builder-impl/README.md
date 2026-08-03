@@ -23,9 +23,10 @@ document**, against a bar the scenarios structurally cannot carry — because ev
 a relation *between* two passages, and each passage is well-formed when read alone. That bar is
 `quill-builder-impl`, and this page is its reference.
 
-It is the section's densest page, and the only one a reader arrives at holding a *specific*
-question: *a finding landed on my paragraph — is it real, and does it block?* Everything below is
-organized around answering exactly one such question at a time.
+It is the section's densest page, and the one whose readers most often arrive mid-task holding a
+*specific* question: *a finding landed on my paragraph — is it real, and does it block?* Everything
+below is organized around answering exactly one such question at a time. How the sibling pages are
+read is their contract, not this one's.
 
 ### Why the page exists: the criteria have no other home
 
@@ -89,15 +90,22 @@ explanation** — the argument for two instruments, and for judging craft rather
 [`/quill/doc-eval-model/`](/quill/doc-eval-model/)'s, and the most likely way this page decays is
 drifting into that argument instead of pointing at it.
 
-The reference type has one consequence the coverage table below spends: **an entry lookup must be
-self-sufficient**. A reader who lands on one catalog entry from the sidebar, from search, or from a
-finding that names it has not read the page above it.
+The reference type has one consequence the coverage table below spends: **every entry lookup must be
+self-sufficient**. A reader who lands on any one catalog entry from the sidebar, from search, or from
+a finding that names it has not read the page above it, and the set has no privileged member — one
+self-sufficient entry beside a context-dependent one fails the type.
 
 ### North star
 
 > A reader can look up **any single criterion this bar carries** — the enumeration rule, or any one
-> of the nine catalog entries — and leave with what makes it fire, the **near-miss** that must not
-> fire, what must be **cited** to report it, and whether it **blocks** today.
+> of the nine catalog entries — and leave with what makes it fire, what must be **cited** to report
+> it, and whether it **blocks** today; and, for each of the **nine**, the **near-miss** that must
+> not fire it.
+
+The near-miss is scoped to the nine deliberately: it is a property of a *judged* entry, and the
+enumeration rule has none — a route either reaches every option or it does not. Stating the fields
+as if all four attached to all ten would make the north star false of the criterion a reader most
+often looks up first.
 
 A revision that leaves a reader able to say the bar holds one inspection rule and a nine-entry
 judged catalog, but unable — for the entry actually in front of them — to say what must *not* fire
@@ -139,7 +147,7 @@ The page is incomplete without each row. The scenarios below check them.
 
 | # | Topic | Must convey |
 | --- | --- | --- |
-| E1 | **The enumeration rule** | where the document names a set and a later passage routes a case across that set, an option **silently absent from the routing** is a defect; reporting it means citing both the enumeration and the routing that skips a member |
+| E1 | **The enumeration rule, and its verdict** | where the document names a set and a later passage routes a case across that set, an option **silently absent from the routing** is a defect; reporting it means citing both the enumeration and the routing that skips a member. Its verdict is a **blocker**, not an advisory finding — the enumeration rule is inspection and does not wait on calibration the way every catalog entry does. Without this the north star's *whether it blocks* is unanswerable for the one criterion a reader looks up first |
 | E2 | **The bar's inventory, and the split reached by link** | the bar carries **both** instruments — this one enumeration rule, and a judged catalog of nine entries — so a reader landing here directly knows what the page contains. **Link obligation, not a claim to develop:** *why* the two instruments split as they do is [`/quill/doc-eval-model/`](/quill/doc-eval-model/)'s, and the page reaches it by link rather than arguing it |
 
 **The catalog**
@@ -169,7 +177,7 @@ The page is incomplete without each row. The scenarios below check them.
 | # | Topic | Must convey |
 | --- | --- | --- |
 | S1 | **Advisory until calibrated** | an entry does not block until it has been run against documents the repo **already accepts** and **already considers weak**, with its false-positive rate **reported rather than asserted**; once calibrated it blocks on **confirmed and undefended** only. **Link obligation:** *why* the asymmetry runs that way is [`/quill/doc-eval-model/`](/quill/doc-eval-model/)'s argument; the page states the rule and routes the reason |
-| S2 | **Calibration is per entry** | not a majority vote across the catalog — nine entries clearing together says nothing about the tenth, and an entry that fires on **neither** corpus document has not been calibrated, only untested |
+| S2 | **Calibration is per entry** | not a majority vote across the catalog — entries clearing together says nothing about any entry not itself run, and an entry that fires on **neither** corpus document has not been calibrated, only untested |
 | S3 | **The current state** | **every one of the nine entries is advisory today, so the whole catalog is non-blocking** — the designed starting state, since the entries are reasoned rather than measured, and a row moves to calibrated only with a rate and a named corpus beside it |
 | S4 | **What a calibration run is and reports** | name the corpus first and let **the team** name it, not the judge; run the judged pass **unchanged**; score per entry, where every firing on an accepted document is a false positive; record **the rate and the named corpus** together, since a rate with no corpus is not a measurement; an entry that fires on an accepted document **stays advisory** and its near-miss is the thing to widen |
 
@@ -180,10 +188,29 @@ The page is incomplete without each row. The scenarios below check them.
 | X1 | **What is never assertable** | tone, register, length, word choice, and section order are out of scope at **both** instruments, and evidence is what draws that line: a finding quotes two locations, each naming **where** it came from and confirmed to be two different places |
 | X2 | **The boundary is held** | the claims other pages own are reached by **link** and not developed here — the four scenario-scoped checks and the two-instrument rationale, the spec-gate bar, and which agent runs this one |
 
-**Completeness check.** A page meeting B1–X2 cannot trip the north star's failure mode. C2–C5 put
-every entry's fire condition and near-miss in front of the reader, C6 makes one entry retrievable
-alone, C8 supplies the citation, and S3 supplies the standing — which is the whole of the first
-failure state. C7 rules out the second.
+**Completeness check.** Every row is spent below by ID, so that a row dropped in a later revision
+shows up here as a gap rather than passing unnoticed. All 22: B1, B2, E1, E2, C1–C10, R1, R2,
+S1–S4, X1, X2.
+
+*First failure state — an entry retrieved without what makes it usable.* **C1** establishes the set;
+**C2**, **C3**, and **C4** supply each entry's fire condition group by group; **C5** supplies every
+near-miss; **C8** supplies the citation each group owes; **C6** forces all of it to sit *at* the
+entry a cold reader lands on; **S3** supplies the standing. **C10** keeps one passage from returning
+several competing findings, and **C9** stops a clean run being read as an endorsement.
+
+*Second failure state — a reader leaving believing recurrence is a defect.* **C7** rules it out
+directly, and **C6** forces the marking distinction to sit at the surviving entry rather than in
+general prose a cold arrival never reaches.
+
+*The lookups that are not entry lookups.* **E1** carries the inspection criterion and its blocking
+verdict; **E2** carries the bar's inventory and the link out for the split; **B1** places the bar;
+**B2** settles precedence against a frozen scenario; **R1** and **R2** carry the pass mechanics and
+the defense channel; **S1**, **S2**, and **S4** carry the standing rule, its per-entry scope, and the
+procedure that changes it; **X1** bounds what may be asserted at all and **X2** holds the section
+boundary. None is load-bearing for the two failure states above, and none is droppable without
+leaving a use case in `## Use Cases` unserved.
+
+A page meeting all 22 cannot trip either failure state.
 
 ### Non-goals
 
@@ -220,7 +247,7 @@ rely on this at all**.
 
 | # | Entry point | Trigger / inputs / outcome |
 | --- | --- | --- |
-| W1 | **Read the bar forward before the gate** — the author has satisfied every scenario and wants what is left | *Trigger:* "my suite is green — what else is checked?" *Inputs:* B1, E1, E2, C1. *Outcome:* the author can name the one comparison and the three defect groups they are about to be read against. |
+| W1 | **Read the bar forward before the gate** — the author has satisfied every scenario and wants what is left | *Trigger:* "my suite is green — what else is checked?" *Inputs:* B1, E1, E2, C1. *Outcome:* the author can name the one enumeration rule and the three defect groups they are about to be read against. |
 | W2 | **Test a finding against its near-miss** — a finding has landed on one passage | *Trigger:* "is this actually a defect, or does my case fall in the exception?" *Inputs:* C2–C6, C10. *Outcome:* the author reaches the named entry, reads its near-miss beside it, and can say whether their passage is the defect or the exception. |
 | W3 | **Check whether restating a claim is a problem** — the author repeated a claim on a second reader path | *Trigger:* "I said this twice on purpose — is that the defect?" *Inputs:* C7. *Outcome:* the author knows recurrence is retracted and that only new-information marking fires, and does not replace the passage with a pointer. |
 | W4 | **Declare a violation made on purpose** — the author broke an expectation knowingly | *Trigger:* "this is deliberate — how do I say so?" *Inputs:* R2. *Outcome:* the author records entry, location, and rationale in the channel the judge already reads, and knows the rationale is weighed rather than obeyed. |
@@ -252,7 +279,7 @@ exactly one.
 
 ```mermaid
 graph TD
-  S["reader arrives holding one lookup"] --> Q0{which lookup?}
+  ARR["reader arrives holding one lookup"] --> Q0{which lookup?}
 
   Q0 -- "what is this bar, and does it outrank my suite?" --> I1["Builder bar, impl gate, once per document, unions onto the generic conformance bar"]
   I1 --> I2{does a frozen scenario require what a criterion would fail?}
@@ -264,31 +291,35 @@ graph TD
   K -- "one of the nine catalog entries" --> K2{what does the defect do to the reader?}
   K -- "why the two instruments split this way" --> K0["reached by link — the argument is doc-eval-model's"]
 
-  K2 -- "they cannot retrieve what the passage assumes" --> A["group A: unresolvable presupposition, bare cross-reference, undefined term at first use"]
-  K2 -- "it misrepresents what they already have" --> B["group B: re-presented as new, term drift, contradiction"]
-  K2 -- "it disagrees with the document's own spec" --> C["group C: declaration mismatch, claim without mechanism, orphan claim"]
+  K2 -- "they cannot retrieve what the passage assumes" --> GRPA["group A: unresolvable presupposition, bare cross-reference, undefined term at first use"]
+  K2 -- "it misrepresents what they already have" --> GRPB["group B: re-presented as new, term drift, contradiction"]
+  K2 -- "it disagrees with the document's own spec" --> GRPC["group C: declaration mismatch, claim without mechanism, orphan claim"]
 
-  A --> N{does the entry's near-miss hold for this passage?}
-  B --> N
-  C --> N
-  K1 --> N
+  GRPA --> N{does the entry's near-miss hold for this passage?}
+  GRPB --> N
+  GRPC --> N
+
+  K1 --> K1CITE["cite the passage enumerating the set, and the routing that skips a member"]
+  K1CITE --> SAMEPLACE
   N -- yes --> N1["not a finding — the exception is the point of the near-miss"]
   N -- no --> N2{does this passage fire more than one entry?}
   N2 -- yes --> N3["report the one whose repair subsumes the other"]
-  N2 -- no --> V
-  N3 --> V
+  N2 -- no --> CITE
+  N3 --> CITE
 
-  Q0 -- "may this finding be reported?" --> V{which group's citation does it owe?}
-  Q0 -- "does this finding block?" --> T
-  V -- "group A — a negative" --> V1["demonstrate the absence over a named path; list what that path traverses first"]
-  V -- "group B" --> V2["quote both passages"]
-  V -- "group C" --> V3["quote the spec line disagreed with"]
-  V1 --> V4
-  V2 --> V4
-  V3 --> V4
-  V4{do the two quoted locations resolve to the same place?}
-  V4 -- yes --> V5["one passage read twice — not a pair, not reportable"]
-  V4 -- no --> T{is this entry calibrated?}
+  Q0 -- "may this finding be reported?" --> CITE{which group's citation does it owe?}
+  Q0 -- "does this finding block?" --> BLK
+  CITE -- "group A — a negative" --> CITE_A["demonstrate the absence over a named path; list what that path traverses first"]
+  CITE -- "group B" --> CITE_B["quote both passages"]
+  CITE -- "group C" --> CITE_C["quote the spec line disagreed with"]
+  CITE_A --> SAMEPLACE
+  CITE_B --> SAMEPLACE
+  CITE_C --> SAMEPLACE
+  SAMEPLACE{do the two quoted locations resolve to the same place?}
+  SAMEPLACE -- yes --> NOTPAIR["one passage read twice — not a pair, not reportable"]
+  SAMEPLACE -- no --> BLK{which instrument produced the finding?}
+  BLK -- "the enumeration rule — inspection" --> K1BLOCK["blocks the gate; inspection does not wait on calibration"]
+  BLK -- "a catalog entry — judged" --> T{is this entry calibrated?}
   T -- "no — all nine are, today" --> T1["advisory: reported, does not block"]
   T -- yes --> T2{confirmed, and undefended by a deliberate-violation rationale?}
   T2 -- yes --> T3["blocks the gate"]
@@ -314,7 +345,10 @@ graph TD
   O -- "the checks, the spec bar, or which agent runs this" --> O3["reach the owning page by link"]
 ```
 
-Every criterion the bar holds is a leaf of `K`; every coverage row is spent on an edge or a leaf.
+Every criterion the bar holds is reachable from `K`, and each carries its own citation and verdict
+path from there — the enumeration rule through `K1CITE` to an unconditional block, a catalog entry
+through its group's citation to the calibration gate. Every coverage row is spent on an edge or a
+node.
 
 ## Scenario map
 
@@ -324,16 +358,16 @@ Every criterion the bar holds is a leaf of `K`; every coverage row is spent on a
 | --- | --- | --- |
 | `I1` | an author whose suite is green, arriving at the page first | `the page identifies the bar by actor, gate, and scope` |
 | `K:why-the-split → K0` | a reader landing on the page directly, holding no criterion yet | `the page states what the bar carries and links for the split's rationale` |
-| `K:enumeration-rule → K1` | a reader looking up the bar's one enumeration rule by name | `the page states the enumeration rule and what reporting it must cite` |
+| `K:enumeration-rule → K1 → K1CITE → K1BLOCK` | a reader looking up the bar's one enumeration rule by name | `the page states the enumeration rule and what reporting it must cite` |
 | `K2` (all three edges) | a reader who has reached the judged side | `the catalog is presented as three groups named by what the defect does to a reader` |
 
 ### W2 — Test a finding against its near-miss
 
 | Edge | Path (Given) | Scenario |
 | --- | --- | --- |
-| `K2:cannot-retrieve → A` | an author whose passage was said to assume something the reader lacks | `group A names its three entries and what each fires on` |
-| `K2:misrepresents → B` | an author whose passage was said to misstate established content | `group B names its three entries and what each fires on` |
-| `K2:disagrees → C` | an author whose passage was said to contradict the document's own spec | `group C names its three entries, and gates claim-without-mechanism on the declared doc type` |
+| `K2:cannot-retrieve → GRPA` | an author whose passage was said to assume something the reader lacks | `group A names its three entries and what each fires on` |
+| `K2:misrepresents → GRPB` | an author whose passage was said to misstate established content | `group B names its three entries and what each fires on` |
+| `K2:disagrees → GRPC` | an author whose passage was said to contradict the document's own spec | `group C names its three entries, and gates claim-without-mechanism on the declared doc type` |
 | `N` | any of the nine entries, reached through the page *(convergence — every entry carries one)* | `every catalog entry states the near-miss that must not fire it` |
 | `N` | any of the nine entries, arrived at cold from search or a finding's citation *(convergence — the claim holds for every entry, and the cold arrival is what makes it bite)* | `every catalog entry can be used without reading the rest of the page` |
 | `N2:yes → N3` | a passage that fires more than one entry | `the page states which finding to report when one passage fires several entries` |
@@ -343,7 +377,7 @@ Every criterion the bar holds is a leaf of `K`; every coverage row is spent on a
 | Edge | Path (Given) | Scenario |
 | --- | --- | --- |
 | `O:recurrence → O2` | an author who landed one claim on two reader paths | `the page records recurrence as retracted rather than relocated` |
-| `B` (re-presented as new) | an author reading the entry that survived the retraction | `the surviving entry fires on new-information marking, not on the recurrence` |
+| `GRPB` (re-presented as new) | an author reading the entry that survived the retraction | `the surviving entry fires on new-information marking, not on the recurrence` |
 
 ### W4 — Declare a violation made on purpose
 
@@ -355,14 +389,14 @@ Every criterion the bar holds is a leaf of `K`; every coverage row is spent on a
 
 | Edge | Path (Given) | Scenario |
 | --- | --- | --- |
-| `V` (all three edges) | a reviewer holding a finding from a known group | `each group states the citation it owes, and the three rules differ` |
-| `V4` | a reviewer checking a finding's two quotes | `the page requires each citation to name where it came from and the two locations to be confirmed distinct` |
+| `CITE` (all three edges) | a reviewer holding a finding from a known group | `each group states the citation it owes, and the three rules differ` |
+| `SAMEPLACE` | a reviewer checking a finding's two quotes | `the page requires each citation to name where it came from and the two locations to be confirmed distinct` |
 
 ### V2 — Decide whether a finding blocks
 
 | Edge | Path (Given) | Scenario |
 | --- | --- | --- |
-| `T` | a reviewer asking whether a reported finding stops the gate | `the page states that an entry is advisory until calibrated and what it blocks on afterward` |
+| `BLK:catalog-entry → T` | a reviewer asking whether a reported finding stops the gate | `the page states that an entry is advisory until calibrated and what it blocks on afterward` |
 | `T:no → T1` | a reviewer looking up one entry's standing today | `the page shows a per-entry standing, and every entry is advisory` |
 
 ### V3 — Resolve a collision with a frozen scenario
@@ -390,7 +424,7 @@ Every criterion the bar holds is a leaf of `K`; every coverage row is spent on a
 | --- | --- | --- |
 | `G2` | a maintainer preparing to calibrate an entry | `the page gives the calibration run as steps and states what must be recorded` |
 | `G3` (both edges) | a maintainer scoring a run against a document the repo already accepts, and against one it considers weak | `the page states how a run is scored and that firing on an accepted document keeps the entry advisory` |
-| `G` | a maintainer holding nine cleared entries and a tenth | `the page states that calibration is per entry and not a vote across the catalog` |
+| `G` | a maintainer holding a catalog in which some entries have been calibrated and one has not | `the page states that calibration is per entry and not a vote across the catalog` |
 
 ### M3 — Check the bar is not a style guide
 
@@ -407,7 +441,7 @@ Every criterion the bar holds is a leaf of `K`; every coverage row is spent on a
 ## References
 
 - [Diátaxis](https://diataxis.fr/) — classifies this page as **reference**: consulted one item at a
-  time rather than read through, which is what makes C6 (*an entry lookup stands alone*) a coverage
+  time rather than read through, which is what makes C6 (*every entry lookup stands alone*) a coverage
   row rather than a courtesy, and which is why the contract freezes the criteria the page must land
   and the lookups it must route, and freezes neither section order nor wording.
 - Haviland, S. E. & Clark, H. H., *What's new? Acquiring new information as a process in

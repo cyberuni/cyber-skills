@@ -1,3 +1,4 @@
+@frozen
 Feature: quill/init-quill — registering Quill in a project
 
   Specifies the document at src/content/docs/quill/init-quill.md, published at /quill/init-quill/.
@@ -137,3 +138,10 @@ Feature: quill/init-quill — registering Quill in a project
     When the page is read
     Then each of those topics is reached by a link to the page that owns it
     And none of them is developed on this page in place of that link
+
+  Scenario: the block descriptions are reachable from both arrivals
+    Given a reader who has just completed a first-time registration and is checking the entry is complete
+    And a reader who arrived to audit an entry that already existed
+    When each follows the route the page gives their arrival
+    Then each route reaches the page's description of the squad's blocks
+    And neither route requires the reader to read the other's section first

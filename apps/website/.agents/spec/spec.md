@@ -1,7 +1,18 @@
 ---
-status: draft
+status: approved
 name: website
 project-path: apps/website
+approval:
+  spec:
+    verdict: approve
+    by: agent
+    cause: dimension
+    why:
+      floor: none — six new behavioral leaves, all additive. No pre-existing frozen scenario was narrowed or re-opened; before this CR no suite in this project was frozen at all.
+      blast: medium — the whole quill section (six nodes plus a new grouping), the root node table, the backfill-gap counts, and the by-concept index. Sibling sections untouched.
+      novelty: medium — first section specified whole rather than page by page, which forced an explicit one-claim-one-owner boundary contract; first end-to-end dogfood of quill's own production chain.
+      confidence: high — six of six cold sdd-spec-judges return {oracle,builder,architect} all PASS, ALIGNED true, each re-deriving counts and namespace disjointness independently. Five gate rounds, findings 8 → 5 → 3 → 0.
+      cr: quill-docs-section
 ---
 
 # website — the cyberplace documentation site

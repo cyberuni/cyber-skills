@@ -1,3 +1,4 @@
+@frozen
 Feature: quill/production-chain — the page of record for Quill's role and bar bindings
 
   The reference page a reader consults to look up which agent or default acts at each SDD

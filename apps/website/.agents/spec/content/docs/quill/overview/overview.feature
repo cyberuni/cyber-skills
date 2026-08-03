@@ -1,3 +1,4 @@
+@frozen
 Feature: quill/overview — the Quill section entry page
 
   The entry page delivers one outcome: a reader can name where the artifact they are holding

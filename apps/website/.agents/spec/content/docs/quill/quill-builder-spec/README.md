@@ -117,7 +117,8 @@ The page is incomplete without each row. The scenarios below check them.
 | I4 | **The boundary** | the impl-gate bar, what the static checks verify, and which agent fills which role are reached by **link**, not developed here |
 | I5 | **What the other half of the union binds** | the generic requirements that still reach a documentation spec are **named**, not left as "other requirements also apply" — every edge of the control flow carries a scenario, every guard or negative edge is paired with a **positive companion**, and every scenario asserts an **observable boolean**; their home is linked rather than re-derived here |
 
-**The seven required elements of `## What`**
+**The seven required elements of `## What`** — ten rows, because the audience element carries three
+(W1–W3) and the coverage element two (W7–W8).
 
 | # | Topic | Must convey |
 | --- | --- | --- |
@@ -158,13 +159,17 @@ The page is incomplete without each row. The scenarios below check them.
 | --- | --- | --- |
 | G1 | **A gap is returned, never guessed** | a missing audience, doc type, north star, or coverage table is returned as a **content gap** for the user to settle; the audience in particular must not be inferred from the document's existing prose, because that launders whatever audience the draft happens to serve into the contract — the exact defect the audience element exists to catch |
 
-**Completeness check.** A page meeting I1–G1 cannot trip the north star's failure mode. Every row is
-spent below, by ID.
+**Completeness check.** A page meeting every row above cannot trip the north star's failure mode.
+All twenty-six rows are spent below, each named individually and each appearing exactly once — no
+range standing in for a member, so the claim can be checked by counting rather than by reading.
 
-- ***Reciting elements without the condition that decides them.*** Closed by **W1–W10** and
-  **S1–S7**, every one of which is written as a pass condition rather than a name. **I2** is the
-  warrant for that form: because one bar is read forward by the producer and backward by the gate,
-  a requirement stated without its condition serves neither direction.
+- ***Reciting elements without the condition that decides them.*** Closed by **W1**, **W2**, **W3**,
+  **W4**, **W5**, **W6**, **W7**, **W8**, **W9**, **W10**, **S1**, **S2**, **S3**, **S4**, **S5**,
+  and **S7** — every one written as a pass condition rather than a name. (The one remaining `S` row
+  belongs to this group by form too, but is spent in the last bullet, where its closure is the
+  load-bearing one.)
+  **I2** is the warrant for the form: because one bar is read forward by the producer and backward
+  by the gate, a requirement stated without its condition serves neither direction.
 - ***Retrieving a requirement that does not settle the reader's case.*** A lookup can be accurate
   and still wrong for the reader holding it. **I1** keeps a reader from applying the spec-gate bar
   at the impl gate, **I3** keeps them from applying it to a subject that recuses, **I4** routes a
@@ -256,7 +261,7 @@ audience branch is the second.
 
 ```mermaid
 graph TD
-  S["reader arrives at the spec-gate Builder bar page"] --> B{"does the subject have an inspectable document surface — a declared path and required sections?"}
+  START["reader arrives at the spec-gate Builder bar page"] --> B{"does the subject have an inspectable document surface — a declared path and required sections?"}
   B -- no --> B1["outside Quill's lens: the spec recuses to the SDD-default chain; carrying prose does not make an artifact a documentation subject"]
   B -- yes --> G["the Builder bar at the spec gate — it unions onto the generic SDD builder-spec bar, and the impl-gate bar is a separate document"]
   G --> G2["one bar, two directions: the spec-producer role reads it forward while authoring, and the gate reads the same bar backward while grading — which is why every requirement is given with the condition that decides it"]
@@ -274,12 +279,12 @@ graph TD
   A -- "## What" --> A1{"which of the seven elements?"}
 
   A1 -- "audience" --> E1["a table whose row names a role plus what that role is trying to accomplish — written first, because coverage and use cases derive from it"]
-  E1 --> F{"do two audiences need opposite things from one fact?"}
-  F -- yes --> F1["a split signal: choose one document or two, and record the decision either way"]
-  F -- no --> F2{"does every listed audience have a reader entry point?"}
-  F2 -- no --> F3["not an audience: add the entry point, or cut the row"]
-  F2 -- yes --> F4["the audience list is settled — derive coverage and use cases from it"]
-  F1 --> F2
+  E1 --> AUD{"do two audiences need opposite things from one fact?"}
+  AUD -- yes --> AUD1["a split signal: choose one document or two, and record the decision either way"]
+  AUD -- no --> AUD2{"does every listed audience have a reader entry point?"}
+  AUD2 -- no --> AUD3["not an audience: add the entry point, or cut the row"]
+  AUD2 -- yes --> AUD4["the audience list is settled — derive coverage and use cases from it"]
+  AUD1 --> AUD2
 
   A1 -- "doc type" --> T{"what is the reader doing while they read?"}
   T -- "doing it for the first time, learning by doing" --> T1["tutorial — success is it worked, and they now trust they can do it"]
@@ -310,9 +315,9 @@ graph TD
   A3 --> H{"where does the disjunction sit?"}
   H -- "in a decision node" --> H1["keep it — that is a question"]
   H -- "in an outcome node" --> H2["a decision deferred onto the reader: promote it to a decision node and put the criterion on the edges"]
-  A3 --> I{"does the route reach every option the spec enumerates?"}
-  I -- no --> I1["a gap, not a simplification: route to it, or state why it is excluded"]
-  I -- yes --> I2["and it is checked against the spec, never against the draft"]
+  A3 --> RTE{"does the route reach every option the spec enumerates?"}
+  RTE -- no --> RTE1["a gap, not a simplification: route to it, or state why it is excluded"]
+  RTE -- yes --> RTE2["and it is checked against the spec, never against the draft"]
 
   A -- "## Scenario map" --> A4["one-to-one with the suite; every coverage row reachable from at least one scenario"]
   A4 --> M["and the other half of the union still binds: every control-flow edge carries a scenario, every guard is paired with a positive companion, and every scenario asserts an observable boolean — linked, not re-derived"]
@@ -351,14 +356,14 @@ stated in the Completeness check above.
 
 | Edge | Path (Given) | Scenario |
 | --- | --- | --- |
-| `S` | any reader, whatever brought them *(convergence — the outcome does not vary)* | `the reference page exists at its declared path` |
+| `START` | any reader, whatever brought them *(convergence — the outcome does not vary)* | `the reference page exists at its declared path` |
 | `G` | a reader holding one of the two Quill bars and unsure which | `the page states which actor and which gate this bar belongs to` |
 | `G` | a reader who expects this bar to be the whole contract | `the page states that the bar unions onto the generic builder bar rather than replacing it` |
 | `G2` | a reader who does not know whether this is an authoring aid or a grading standard | `the page states the two directions the bar is read in` |
 | `A1` (all seven edges) | an author starting a documentation spec's What section | `the page enumerates the seven required elements of the What section` |
 | `E1` | an author writing the audience element | `the page requires an audience row to name a role and a goal` |
-| `F2:no → F3` | an author whose audience list has a row no entry point serves | `the page states that an audience with no reader entry point is not an audience` |
-| `F:yes → F1` | an author whose two audiences need opposite things from one fact | `the page treats opposite needs on one fact as a decision to be recorded` |
+| `AUD2:no → AUD3` | an author whose audience list has a row no entry point serves | `the page states that an audience with no reader entry point is not an audience` |
+| `AUD:yes → AUD1` | an author whose two audiences need opposite things from one fact | `the page treats opposite needs on one fact as a decision to be recorded` |
 | `E3` | an author writing the north star | `the page requires a north star to carry a failure mode` |
 | `E4` | an author who cannot state the problem without restating the title | `the page routes a document whose purpose restates its title` |
 | `E5` | an author writing the coverage table | `the page states the drop test for a key point` |
@@ -379,7 +384,7 @@ stated in the Completeness check above.
 | --- | --- | --- |
 | `A3` | an author at the control-flow section, holding the document's section list | `the page distinguishes the reader's decision path from the table of contents` |
 | `H` (both edges) | an author holding a node that offers two options | `the page routes a disjunction by the kind of node it sits in` |
-| `I:no → I1` | an author whose route omits a member of a set the spec names | `the page treats an unrouted option as a gap rather than a simplification` |
+| `RTE:no → RTE1` | an author whose route omits a member of a set the spec names | `the page treats an unrouted option as a gap rather than a simplification` |
 
 ### P4 — Write a scenario that tests the route rather than ratifying it
 
@@ -414,7 +419,7 @@ stated in the Completeness check above.
 
 | Edge | Path (Given) | Scenario |
 | --- | --- | --- |
-| `I:yes → I2` | a reviewer grading a route with the document open alongside the spec | `the page states that routing coverage is checked against the spec, not the draft` |
+| `RTE:yes → RTE2` | a reviewer grading a route with the document open alongside the spec | `the page states that routing coverage is checked against the spec, not the draft` |
 
 ### F1 — Find out whether an edit can break the contract
 

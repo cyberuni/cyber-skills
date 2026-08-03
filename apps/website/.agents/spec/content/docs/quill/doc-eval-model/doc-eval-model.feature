@@ -1,3 +1,4 @@
+@frozen
 Feature: quill/doc-eval-model — how Quill decides a document is correct
 
   Every scenario below concerns one document: apps/website/src/content/docs/quill/doc-eval-model.md,

@@ -85,21 +85,43 @@ spec had stated in its own words, and the Builder bar closed an unscenario'd CFG
 
 ## Gate state
 
-**Approved (2):** `doc-eval-model` (all three lenses, round 2), `production-chain` (all three lenses,
-round 3 — the References placement was independently re-audited and upheld).
+**Approved (3):** `doc-eval-model`, `production-chain`, `overview` — all three lenses, ALIGNED true.
+`overview` cleared on its fourth pass with the judge explicitly reporting no regression.
 
-**Outstanding (4):** `overview`, `init-quill`, `quill-builder-spec`, `quill-builder-impl`.
+**Outstanding (3):** `init-quill`, `quill-builder-spec`, `quill-builder-impl` — one localized finding
+each, all dispatched.
 
-## Convergence — measured, because the loop inverted
+## Convergence — measured, because the loop inverted once
 
 | Gate round | Verdicts | Findings | Provenance |
 |---|---|---|---|
 | 1 | 0/6 graded | 0 — all blocked at governance pre-flight | — |
 | 2 | 1 pass, 5 fail | 8 | all pre-existing |
 | 3 | 2 pass, 4 fail | 5 | **all 5 introduced by the round-2 remediation** |
+| 4 | 3 pass, 3 fail | 3 | 1 pre-existing, 2 self-inflicted |
 
-Count falling, provenance inverted — the documented stop-for-re-plan trigger. Stopped rather than
-firing another round.
+Round 3 was the inversion — count falling but provenance flipped entirely to self-inflicted, the
+documented stop-for-re-plan trigger. Round 4 recovered: count still falling **and** provenance
+partially back to pre-existing, with one node clearing outright.
+
+## The sharpened rule — what the pilot earned
+
+The re-plan's first instruction ("reconcile referencing passages") was too vague to act on. Piloting
+it on one node before spending it on four turned it into two checkable rules:
+
+1. **A universal or summary claim must hold for every member it quantifies over.** Check every
+   quantifier — *every*, *all*, *each*, *both*, *either*, bare counts — and especially **ID ranges**,
+   where a member can hide inside the range. On one node, checking `K1–K14` against its members
+   exposed a scenario tracing to **no coverage row at all**; on another, a completeness argument was
+   spending 8 of 22 rows; on a third, a preamble and north star claimed a near-miss for "each
+   criterion" when one of the ten criteria has none.
+2. **A node's identifiers share one namespace.** Coverage rows, use-case groups, and CFG nodes may
+   not reuse a token, and enumerated items are referenced by name, never by an invented index. Four
+   nodes shipped collisions, three of them found only by this check.
+
+**A sweep is not self-certifying.** The piloted node caught five of six targeted items plus four
+unprompted defects and still left one claim false. The sweep reduces rounds; it does not replace the
+cold judge.
 
 **Diagnosis.** Three of the four regressions are one defect class: the producer changed the claim at
 the site the finding named and did not reconcile the passages elsewhere in its own node that

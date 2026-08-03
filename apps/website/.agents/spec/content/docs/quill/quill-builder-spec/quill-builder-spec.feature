@@ -1,3 +1,4 @@
+@frozen
 Feature: quill/quill-builder-spec — the spec-gate Builder bar reference page
 
   The reference page at src/content/docs/quill/quill-builder-spec.md, published at
