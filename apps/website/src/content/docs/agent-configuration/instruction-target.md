@@ -5,7 +5,7 @@ description: Which of the agent's outputs an instruction governs — a produced 
 
 **Target** identifies which of the agent's outputs an instruction governs, and therefore who eventually reads it. A single request routinely involves more than one, each with its own value: the agent may reply to you in a caveman register while writing your documentation in plain, carefully written English, or draft a formal document while sending a peer agent a one-line status.
 
-Separating the targets is what lets those instructions contradict each other safely. A caveman register and careful prose cannot both be one house style; assigned to two targets, they coexist. Two instructions on the same target are a genuine conflict, and naming the target does not resolve it.
+Separating the targets is what lets those instructions contradict each other safely. A caveman register and careful prose cannot both be one house style; assigned to two targets, they coexist. Two instructions on the same target genuinely conflict — there is no second target to separate them onto, so one of them has to win.
 
 ## Specifying a target
 
