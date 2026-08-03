@@ -68,7 +68,7 @@ Support varies by harness; the notes below are Claude Code's documented behavior
 | `context: fork` | Runs the skill in a subagent with the body as the task. Pair with `agent:`. Only for a skill that states a task — a reference or stance skill forked this way gets no actionable prompt. |
 | `paths` | Glob patterns limiting automatic activation to matching files. |
 
-A skill cannot express a tool **allowlist**. A hard allowlist, `permissionMode`, `maxTurns`, persistent `memory`, `mcpServers`, and worktree `isolation` remain agent-definition fields — reach for an agent definition when one of those is the requirement, not for `model` or `effort` alone. See [Skills › Runtime fields](/concepts/skills/#runtime-fields).
+A skill cannot express a tool **allowlist**. A hard allowlist, `permissionMode`, `maxTurns`, persistent `memory`, `mcpServers`, and worktree `isolation` remain agent-definition fields — reach for an agent definition when one of those is the requirement, not for `model` or `effort` alone. See [Skills › Runtime fields](/agent-configuration/skills/overview/#runtime-fields).
 
 ## Activation
 

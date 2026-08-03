@@ -17,7 +17,7 @@ A model augmented with tools and instructions that can take actions — read fil
 
 The application or CLI that wraps the model and makes it an agent — Claude Code, Cursor, Codex CLI, Windsurf. The harness provides the tool set, loads [agent configuration](/agent-configuration/overview/), manages the session, and surfaces the interface to the user.
 
-Different harnesses support different features. A skill that works in Claude Code may behave differently in Cursor. See [Commands](/concepts/commands/) for a harness compatibility example.
+Different harnesses support different features. A skill that works in Claude Code may behave differently in Cursor. See [Commands](/agent-configuration/skills/commands/) for a harness compatibility example.
 
 ## Agent runtime
 
@@ -49,13 +49,13 @@ A shell command registered to fire when a specific agent event occurs — sessio
 
 ## Skill
 
-A reusable, on-demand workflow the agent loads when it matches a situation. Defined in a `SKILL.md` file. Auto-invoked by the model when the description matches, or explicitly invoked by the user via `/name`. See [Skills](/concepts/skills/).
+A reusable, on-demand workflow the agent loads when it matches a situation. Defined in a `SKILL.md` file. Auto-invoked by the model when the description matches, or explicitly invoked by the user via `/name`. See [Skills](/agent-configuration/skills/overview/).
 
 ## Discipline
 
 A class of always-on behavioral rules that shape how any agent (main or sub) operates — not loaded on demand, always active via any channel (hooks, `AGENTS.md`, or agent definitions). [Commit Discipline](/disciplines/commit-discipline/) is an example: rules about when and how to commit that apply in every session.
 
-Discipline and [Governance](#governance) are verified the same way: give the agent a scenario and observe what it does. The distinction is not how you test them — it is *when* the rule is active (always vs on demand) and *what kind of content* it encodes (cross-cutting habits vs domain-specific normative rules). See [Disciplines](/concepts/disciplines/).
+Discipline and [Governance](#governance) are verified the same way: give the agent a scenario and observe what it does. The distinction is not how you test them — it is *when* the rule is active (always vs on demand) and *what kind of content* it encodes (cross-cutting habits vs domain-specific normative rules). See [Disciplines](/agent-configuration/skills/disciplines/).
 
 ## Subagent
 
@@ -69,7 +69,7 @@ The text input sent to the model at each turn — the user's message combined wi
 
 A versioned, agent-readable rule set that tells agents *what* to do for a specific domain. Loaded on demand via CLI. Dense and imperative — no rationale, no background.
 
-Governance and [Discipline](#discipline) are verified the same way: give the agent a scenario and observe what it does. The distinction is *when* the rule is active (on demand vs always-on) and *what kind of content* it encodes (domain-specific normative rules vs cross-cutting habits). Governance's crisp rule text additionally enables static artifact analysis — tools like `audit-skill` can check documents against governance rules without running an agent. See [Governances](/concepts/governances/).
+Governance and [Discipline](#discipline) are verified the same way: give the agent a scenario and observe what it does. The distinction is *when* the rule is active (on demand vs always-on) and *what kind of content* it encodes (domain-specific normative rules vs cross-cutting habits). Governance's crisp rule text additionally enables static artifact analysis — tools like `audit-skill` can check documents against governance rules without running an agent. See [Governances](/agent-configuration/skills/governances/).
 
 ## ADR
 

@@ -31,10 +31,10 @@ The familiar names are **recognizable combinations** of these values, not slots 
 | Kind | Selection | Visibility | Effect |
 |---|---|---|---|
 | Public skill | situational | user | action |
-| [Command](/concepts/commands/) | explicit | user | action |
-| [Gateway skill](/concepts/gateway-skill/) | situational or explicit | user | routing |
-| [Persona skill](/concepts/persona/) | explicit | user | stance |
-| [Discipline](/concepts/disciplines/) | event | — | stance |
+| [Command](/agent-configuration/skills/commands/) | explicit | user | action |
+| [Gateway skill](/agent-configuration/skills/gateway-skill/) | situational or explicit | user | routing |
+| [Persona skill](/agent-configuration/skills/persona/) | explicit | user | stance |
+| [Discipline](/agent-configuration/skills/disciplines/) | event | — | stance |
 | Name-only skill | by-name | agent-only | action or reference |
 
 Every row is a skill. Commands, gateways, personas, and disciplines are not separate artifacts that sit *beside* skills — they are skills whose values on these three axes differ from the default. Three of them also have a non-skill realization: a persona can instead be a subagent definition in `agents/`, a governance can be a file loaded via `governance show`, and a discipline can arrive through `AGENTS.md` or a hook rather than a skill.
@@ -90,7 +90,7 @@ A caller addresses one by `name`, directly. A caller may also resolve *which* na
 
 **Skills that are not meant to run alone.** Some name-only skills are fragments: a criteria set a producer aligns itself to, a step factored out of a longer procedure. Running one standalone is not forbidden so much as meaningless. This is worth saying in the skill's README, and it changes nothing mechanically — a fragment and a self-contained engine are selected the same way and both keep minimal descriptions. Treat it as documentation, not as a kind.
 
-A name-only skill whose effect is **reference** is read as criteria rather than executed as steps — producers load it to align, judges load it to grade. See [Governances](/concepts/governances/).
+A name-only skill whose effect is **reference** is read as criteria rather than executed as steps — producers load it to align, judges load it to grade. See [Governances](/agent-configuration/skills/governances/).
 
 ## Runtime fields
 
@@ -185,11 +185,11 @@ description: Use this skill when <trigger>. <One-line capability summary.>
 ## Related
 
 - [Purpose](/agent-configuration/instruction-purpose/) — what a *section* is for: procedure, criteria, policy, reference, menu, tone, structure
-- [Responsibility](/concepts/responsibility/) — the Required / Optional / Delegated axis, orthogonal to kind
-- [Gateway Skill](/concepts/gateway-skill/) — workflow entrypoints that route an opt-in workflow
-- [Persona](/concepts/persona/) — bundled agent identity a skill can invoke as a subagent
-- [Governances](/concepts/governances/) — normative rules a skill loads to stay aligned
-- [Disciplines](/concepts/disciplines/) — always-on behavioral habits
+- [Responsibility](/agent-configuration/skills/responsibility/) — the Required / Optional / Delegated axis, orthogonal to kind
+- [Gateway Skill](/agent-configuration/skills/gateway-skill/) — workflow entrypoints that route an opt-in workflow
+- [Persona](/agent-configuration/skills/persona/) — bundled agent identity a skill can invoke as a subagent
+- [Governances](/agent-configuration/skills/governances/) — normative rules a skill loads to stay aligned
+- [Disciplines](/agent-configuration/skills/disciplines/) — always-on behavioral habits
 - [Agent Configuration](/agent-configuration/overview/) — full picture of what shapes agent behavior
 - [Marketplace](/marketplace/) — the plugins and skills shipped with this repo
 - [Claude Code — skills](https://code.claude.com/docs/en/skills) — frontmatter reference, invocation control, `context: fork`

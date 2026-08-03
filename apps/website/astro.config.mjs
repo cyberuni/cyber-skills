@@ -56,6 +56,37 @@ export default defineConfig({
                 },
               ],
             },
+            {
+              label: "Skills",
+              items: [
+                {
+                  label: "Overview",
+                  slug: "agent-configuration/skills/overview",
+                },
+                {
+                  label: "Responsibility",
+                  slug: "agent-configuration/skills/responsibility",
+                },
+                { label: "Commands", slug: "agent-configuration/skills/commands" },
+                {
+                  label: "Direct Invocation Skill",
+                  slug: "agent-configuration/skills/direct-skill",
+                },
+                {
+                  label: "Gateway Skill",
+                  slug: "agent-configuration/skills/gateway-skill",
+                },
+                { label: "Persona", slug: "agent-configuration/skills/persona" },
+                {
+                  label: "Governances",
+                  slug: "agent-configuration/skills/governances",
+                },
+                {
+                  label: "Disciplines",
+                  slug: "agent-configuration/skills/disciplines",
+                },
+              ],
+            },
           ],
         },
         {
@@ -133,22 +164,6 @@ export default defineConfig({
         {
           label: "Concepts",
           items: [
-            {
-              label: "Skills",
-              items: [
-                { label: "Overview", slug: "concepts/skills" },
-                { label: "Responsibility", slug: "concepts/responsibility" },
-                { label: "Commands", slug: "concepts/commands" },
-                {
-                  label: "Direct Invocation Skill",
-                  slug: "concepts/direct-skill",
-                },
-                { label: "Gateway Skill", slug: "concepts/gateway-skill" },
-                { label: "Persona", slug: "concepts/persona" },
-                { label: "Governances", slug: "concepts/governances" },
-                { label: "Disciplines", slug: "concepts/disciplines" },
-              ],
-            },
             { label: "Constraints", slug: "concepts/constraints" },
             { label: "Permissions", slug: "concepts/permissions" },
           ],

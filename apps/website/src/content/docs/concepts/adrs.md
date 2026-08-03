@@ -12,7 +12,7 @@ description: What ADRs are — frozen records of why a decision was made, separa
 - The reasoning behind the chosen option
 - Rejected alternatives and why they were ruled out
 
-ADRs do not contain rules for agents to follow. That belongs in [Governances](/concepts/governances/) or [`AGENTS.md`](/agent-configuration/overview/).
+ADRs do not contain rules for agents to follow. That belongs in [Governances](/agent-configuration/skills/governances/) or [`AGENTS.md`](/agent-configuration/overview/).
 
 ## Why they are separate from governances
 
@@ -27,5 +27,5 @@ A governance may reference an ADR for background, but agents do not need the ADR
 
 ## Related
 
-- [Governances](/concepts/governances/) — the rules that came out of decisions
+- [Governances](/agent-configuration/skills/governances/) — the rules that came out of decisions
 - [Agent Configuration](/agent-configuration/overview/) — where always-on rules live

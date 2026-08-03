@@ -110,7 +110,7 @@ The article is incomplete without each of these. The scenarios below check them.
 | Not covered here                                                          | Lives at                                                                                                                           |
 | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | what a block of instruction is _for_ (the other axis)                     | [Purpose](/agent-configuration/instruction-purpose/)                                                                               |
-| where Tone and Structure separate from expertise                          | [Persona](/concepts/persona/)                                                                                                      |
+| where Tone and Structure separate from expertise                          | [Persona](/agent-configuration/skills/persona/)                                                                                                      |
 | which file kinds carry instructions in each harness                       | [Agent Configuration](/agent-configuration/overview/)                                                                              |
 | a harness's settings reference (`globs:`, `applyTo:`, permissions, hooks) | that harness's own documentation — this article names such fields only as evidence a mechanism exists, and does not track releases |
 

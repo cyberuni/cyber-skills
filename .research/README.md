@@ -47,7 +47,7 @@ Not every dossier has all five. `conclusion.md` is the file other documents cite
 | [plugin-consumption-leveling](plugin-consumption-leveling/) | Plugin consumption tiers |
 | [plugin-schema](plugin-schema/) | ADR-0007, `universal-plugin` governance |
 | [prepare-skill-design](prepare-skill-design/) | `skill-design` governance |
-| [skill-description-dual-purpose](skill-description-dual-purpose/) | `concepts/direct-skill` website page — why Direct Invocation skills default to `user-invocable: false` |
+| [skill-description-dual-purpose](skill-description-dual-purpose/) | `agent-configuration/skills/direct-skill` website page — why Direct Invocation skills default to `user-invocable: false` |
 | [skill-description-guidelines](skill-description-guidelines/) | `description` length/structure checks in `improve-skill` |
 | [skill-ecosystem-landscape](skill-ecosystem-landscape/) | `skill-repo-structure` governance, ADR-0002, future `init-skill-repo` |
 | [skill-kind-axes](skill-kind-axes/) | Issue #380, ADR-0031 (`user-invocable: false` ≠ partial skill) |

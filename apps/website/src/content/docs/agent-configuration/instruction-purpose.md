@@ -73,8 +73,8 @@ Strip the loading behavior from commit discipline and its body reads like any go
 ## Related
 
 - [Target](/agent-configuration/instruction-target/) — who consumes any purpose's output: the user, a subagent, a peer agent, or an artifact
-- [Skills](/concepts/skills/) — the per-artifact Selection / Visibility / Effect axes
-- [Governances](/concepts/governances/) — artifacts that are almost entirely Policy
-- [Persona](/concepts/persona/) — where Tone and Structure separate from expertise
-- [Gateway Skill](/concepts/gateway-skill/) — the clearest Menu example
+- [Skills](/agent-configuration/skills/overview/) — the per-artifact Selection / Visibility / Effect axes
+- [Governances](/agent-configuration/skills/governances/) — artifacts that are almost entirely Policy
+- [Persona](/agent-configuration/skills/persona/) — where Tone and Structure separate from expertise
+- [Gateway Skill](/agent-configuration/skills/gateway-skill/) — the clearest Menu example
 - [Agent Configuration](/agent-configuration/overview/) — which file kinds carry these

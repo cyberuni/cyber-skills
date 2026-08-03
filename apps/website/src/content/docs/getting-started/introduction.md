@@ -7,7 +7,7 @@ description: What cyberplace is and why it exists.
 
 ## What is a skill?
 
-A skill is a `SKILL.md` file that an AI agent loads on demand. It encodes a workflow — steps, decisions, and tool use — so the agent behaves consistently across sessions and teammates. Skills are plain Markdown; no framework, no runtime. See [Skills](/concepts/skills/) for the concept.
+A skill is a `SKILL.md` file that an AI agent loads on demand. It encodes a workflow — steps, decisions, and tool use — so the agent behaves consistently across sessions and teammates. Skills are plain Markdown; no framework, no runtime. See [Skills](/agent-configuration/skills/overview/) for the concept.
 
 ## What cyberplace provides
 

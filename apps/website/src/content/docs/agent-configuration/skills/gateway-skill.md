@@ -9,7 +9,7 @@ They are for workflows that should not be always on, but need more than a single
 
 ## Responsibilities
 
-A gateway skill's job splits along the [Required / Optional / Delegated](/concepts/responsibility/) axis.
+A gateway skill's job splits along the [Required / Optional / Delegated](/agent-configuration/skills/responsibility/) axis.
 
 **Required** — the front door of the workflow:
 
@@ -20,7 +20,7 @@ A gateway skill's job splits along the [Required / Optional / Delegated](/concep
 
 **Optional** — continuing to shape the current work after routing; still scoped to the requested workflow, not global agent behavior.
 
-**Delegated** — voice and judgment during intake and routing. A gateway does not own its own tone: it tries to load a persona by name and falls back to a bundled default if the consumer hasn't supplied one. That's what lets a consumer change how the gateway sounds without forking its operation menu — see the [worked example](/concepts/responsibility/#worked-example-a-gateway-delegates-its-voice-to-a-persona).
+**Delegated** — voice and judgment during intake and routing. A gateway does not own its own tone: it tries to load a persona by name and falls back to a bundled default if the consumer hasn't supplied one. That's what lets a consumer change how the gateway sounds without forking its operation menu — see the [worked example](/agent-configuration/skills/responsibility/#worked-example-a-gateway-delegates-its-voice-to-a-persona).
 
 A gateway skill should stay at the user-facing boundary: it does not own the workflow's internal delegate selection, detailed lifecycle transitions, or artifact-specific correctness rules unless those are themselves part of the user-facing intake surface.
 
@@ -32,7 +32,7 @@ Spec-Driven Development is a good example: not every edit in a repository needs 
 
 ## Gateway Skill vs Other Concepts
 
-A gateway skill is close kin to a [Command](/concepts/commands/) — both are meant to be reached by the user, not fired on stray context — but they differ on two of the three axes that distinguish any skill (see [Skills](/concepts/skills/#kinds-of-skill)):
+A gateway skill is close kin to a [Command](/agent-configuration/skills/commands/) — both are meant to be reached by the user, not fired on stray context — but they differ on two of the three axes that distinguish any skill (see [Skills](/agent-configuration/skills/overview/#kinds-of-skill)):
 
 | Concept | Selection | Effect |
 |---|---|---|
@@ -64,9 +64,9 @@ The agent should ask what SDD work the user wants to do: create a new feature, b
 
 ## Related
 
-- [Skills](/concepts/skills/) — on-demand workflows; Selection, Visibility, and Effect axes
-- [Responsibility](/concepts/responsibility/) — Required / Optional / Delegated, and the gateway-persona seam
-- [Commands](/concepts/commands/) — the explicit-only, action-effect counterpart
-- [Governances](/concepts/governances/) — domain rules loaded on demand
-- [Disciplines](/concepts/disciplines/) — always-on behavioral habits
+- [Skills](/agent-configuration/skills/overview/) — on-demand workflows; Selection, Visibility, and Effect axes
+- [Responsibility](/agent-configuration/skills/responsibility/) — Required / Optional / Delegated, and the gateway-persona seam
+- [Commands](/agent-configuration/skills/commands/) — the explicit-only, action-effect counterpart
+- [Governances](/agent-configuration/skills/governances/) — domain rules loaded on demand
+- [Disciplines](/agent-configuration/skills/disciplines/) — always-on behavioral habits
 - [Spec-Driven Development](/sdd/spec-driven-development/) — the workflow `$sdd` activates

@@ -115,5 +115,5 @@ A reasonable default is to produce in a separate session when the artifact can b
 ## Related
 
 - [Purpose](/agent-configuration/instruction-purpose/) — the axis Target composes with
-- [Persona](/concepts/persona/) — where Tone and Structure separate from expertise
+- [Persona](/agent-configuration/skills/persona/) — where Tone and Structure separate from expertise
 - [Agent Configuration](/agent-configuration/overview/) — which file kinds carry these

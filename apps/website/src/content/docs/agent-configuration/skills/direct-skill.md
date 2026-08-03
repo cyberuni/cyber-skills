@@ -73,17 +73,17 @@ All Direct Invocation skills share this same description; they're distinguished 
 how callers address them. Identity moves to the body and README — what the skill is, who calls it,
 what it returns, is documentation a caller reads after loading it by name, not selection criteria a
 model reads before. `user-invocable: false` alone does not enforce unmatchability — see
-[Selection and Visibility are not the same question](/concepts/skills/#selection-and-visibility-are-not-the-same-question).
+[Selection and Visibility are not the same question](/agent-configuration/skills/overview/#selection-and-visibility-are-not-the-same-question).
 
 ## Relation to Governance
 
 A Direct Invocation skill whose **effect** is _reference_ rather than _action_ is read as criteria
 instead of executed as steps — a producer loads it to align, a judge loads it to grade. That
 combination (direct selection, `user-invocable: false`, reference effect) is what
-[Governances](/concepts/governances/) are built from.
+[Governances](/agent-configuration/skills/governances/) are built from.
 
 ## Related
 
-- [Skills](/concepts/skills/) — the overview this page specializes; Selection, Visibility, and Effect axes
-- [Governances](/concepts/governances/) — the reference-effect realization of a Direct Invocation skill
-- [Commands](/concepts/commands/) — the user-visible, explicit-selection counterpart
+- [Skills](/agent-configuration/skills/overview/) — the overview this page specializes; Selection, Visibility, and Effect axes
+- [Governances](/agent-configuration/skills/governances/) — the reference-effect realization of a Direct Invocation skill
+- [Commands](/agent-configuration/skills/commands/) — the user-visible, explicit-selection counterpart

@@ -32,7 +32,7 @@ A skill named this way must stay model-invocable. `disable-model-invocation: tru
 
 ## As a delegated responsibility
 
-A persona is usually the **delegate**, not the delegator: another artifact — commonly a [Gateway skill](/concepts/gateway-skill/) — owns a required job (an operation menu, a routing decision) and hands off only the voice or judgment layer to a persona it resolves by name, falling back to a bundled default if none is supplied. See [Responsibility](/concepts/responsibility/) for the Required / Optional / Delegated axis this realizes, and its worked example.
+A persona is usually the **delegate**, not the delegator: another artifact — commonly a [Gateway skill](/agent-configuration/skills/gateway-skill/) — owns a required job (an operation menu, a routing decision) and hands off only the voice or judgment layer to a persona it resolves by name, falling back to a bundled default if none is supplied. See [Responsibility](/agent-configuration/skills/responsibility/) for the Required / Optional / Delegated axis this realizes, and its worked example.
 
 A persona filling this role is `agent-only` and selected `by-name`, not the `explicit`/`user` combination in the table below — it exists to be loaded by its caller, not invoked directly.
 
@@ -86,7 +86,7 @@ You are a [role framing here]...
 
 - [Permissions](/concepts/permissions/) — tool boundaries bundled in a persona
 - [Constraints](/concepts/constraints/) — behavioral limits bundled in a persona
-- [Skills](/concepts/skills/) — on-demand workflows a persona can invoke
-- [Responsibility](/concepts/responsibility/) — Required / Optional / Delegated; a persona as the usual delegate
-- [Gateway Skill](/concepts/gateway-skill/) — the typical delegator
+- [Skills](/agent-configuration/skills/overview/) — on-demand workflows a persona can invoke
+- [Responsibility](/agent-configuration/skills/responsibility/) — Required / Optional / Delegated; a persona as the usual delegate
+- [Gateway Skill](/agent-configuration/skills/gateway-skill/) — the typical delegator
 - [Agent Configuration](/agent-configuration/overview/) — full picture of what shapes agent behavior
