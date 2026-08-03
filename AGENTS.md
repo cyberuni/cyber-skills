@@ -7,7 +7,6 @@
 - **Unit of work:** one complete, reviewed, coherent, independently revertable change
 - **Auto-commit rule:** commit a unit of work automatically
 
-
 ## Delegation
 
 The higher your tier, the more you delegate. Push the work down, keep your own context for judgment. Brief every child: the context, the why, what done looks like. It starts blank and inherits nothing.
@@ -86,7 +85,7 @@ description: "One sentence trigger description — WHAT it does, WHEN to invoke 
 
 For **name-only skills** (loaded **by name** by another skill, never matched to a user situation), set the description to exactly `"By name only"` and nothing else. The minimal description is the mechanism, not a label: the description is the only surface the model matches against, so anything added to it is another handle for a spurious match. Identity — what the skill is, who calls it, what it returns — goes in the body and README.
 
-`user-invocable` is a **visibility** flag only: it controls whether a skill appears in the user's command list and never determines how a skill is selected. A skill may legitimately be `user-invocable: false` and still situationally triggered. Both are distinct from `metadata: internal: true`, which marks a *project-local internal* skill (marketplace visibility). See [ADR-0031](artifacts/adr/0031-selection-is-not-visibility.md).
+`user-invocable` is a **visibility** flag only: it controls whether a skill appears in the user's command list and never determines how a skill is selected. A skill may legitimately be `user-invocable: false` and still situationally triggered. Both are distinct from `metadata: internal: true`, which marks a _project-local internal_ skill (marketplace visibility). See [ADR-0031](artifacts/adr/0031-selection-is-not-visibility.md).
 
 ## Language
 
