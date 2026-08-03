@@ -78,6 +78,12 @@ Each entry needs a **citation rule** (what the judge must quote) and a **near-mi
 looks like the defect and must NOT fire). The near-miss is what stops a catalog entry from becoming
 a style opinion with a rubric attached.
 
+The location requirement added to the inspection bar carries over: a citation names *where* it came
+from, not only what it said. It was added after a finding in this session's own research quoted a
+real figure accurately and attached it to the wrong experiment — the words checked out, so the
+finding read as verified. A judged tier is more exposed to this than an inspection is, since its
+findings are arguments rather than conditions.
+
 | Defect | Fires on | Near-miss that must not fire |
 |---|---|---|
 | **Unresolvable presupposition** | a passage presupposes X; no antecedent is retrievable on the reader's declared path | a presupposition licensed by a declared prerequisite |
