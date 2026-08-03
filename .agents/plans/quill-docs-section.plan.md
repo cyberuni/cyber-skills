@@ -11,17 +11,17 @@ todos:
   - content: "Explore r2: resolve judged-tier boundary collision (doc-eval-model vs builder-impl)"
     status: completed
   - content: "Explore r3: producers load oracle/architect/builder-sdd forward bars, declare truthfully"
-    status: in_progress
+    status: completed
   - content: "Spec gate: re-dispatch cold sdd-spec-judge x6 with real relay, freeze, status write-back"
-    status: pending
+    status: completed
   - content: "Deliver: quill-doc-writer writes 6 pages against frozen suites"
-    status: pending
+    status: completed
   - content: "Deliver: add 4 new sidebar entries in astro.config.mjs"
-    status: pending
+    status: completed
   - content: "Impl gate: quill-judge runs acceptance checks per frozen scenario"
-    status: pending
+    status: completed
   - content: "Handoff: pnpm verify, branch + PR, ledger + follow-ups"
-    status: pending
+    status: in_progress
 ---
 
 # CR quill-docs-section — document the whole Quill plugin on the website
@@ -85,11 +85,13 @@ spec had stated in its own words, and the Builder bar closed an unscenario'd CFG
 
 ## Gate state
 
-**Approved (3):** `doc-eval-model`, `production-chain`, `overview` — all three lenses, ALIGNED true.
-`overview` cleared on its fourth pass with the judge explicitly reporting no regression.
-
-**Outstanding (3):** `init-quill`, `quill-builder-spec`, `quill-builder-impl` — one localized finding
-each, all dispatched.
+**Both gates cleared.** Spec gate: 6 of 6 cold `sdd-spec-judge`s return `{oracle, builder,
+architect}` all PASS with ALIGNED true, each having re-derived counts, set equality and namespace
+disjointness independently rather than accepting the producers' reports. Impl gate: 125 of 125
+frozen scenarios pass across the six suites under a cold `quill-judge` per node, plus a
+document-scoped enumeration pass and a blind reader simulation; all judged findings advisory, none
+blocking. Both `approve` lines are in the ledger shard, and the root spec is `status: implemented`
+with the impl approval recorded.
 
 ## Convergence — measured, because the loop inverted once
 
@@ -99,6 +101,7 @@ each, all dispatched.
 | 2 | 1 pass, 5 fail | 8 | all pre-existing |
 | 3 | 2 pass, 4 fail | 5 | **all 5 introduced by the round-2 remediation** |
 | 4 | 3 pass, 3 fail | 3 | 1 pre-existing, 2 self-inflicted |
+| 5 | 6 pass, 0 fail | 0 | — |
 
 Round 3 was the inversion — count falling but provenance flipped entirely to self-inflicted, the
 documented stop-for-re-plan trigger. Round 4 recovered: count still falling **and** provenance
@@ -138,8 +141,16 @@ preamble and section comments included, each sweep item reported with its result
 
 ## NEXT
 
-Collect the four round-4 sweeps, then re-dispatch four cold judges on those nodes only (the two
-approved nodes are done; do not re-grade them). On approve: freeze each `.feature` with `@frozen`,
-write the `gate` line to the ledger shard, set the root `status`. Then deliver with
-`quill-doc-writer`, add the four sidebar entries to `astro.config.mjs`, and run `quill-judge` at the
-impl gate.
+Handoff only. Done: `pnpm verify` green at the repo root; both gate lines and all follow-ups
+written to the ledger shard; root spec `status: implemented`.
+
+**Remaining, and it needs a call:** branch + PR. The work sits on `sdd/380-partial-skill-classifier`
+— a long-lived stack now 86 commits ahead of `origin/main` and 63 ahead of its own remote, carrying
+several unrelated CRs (`quill-writing-quality`, `website-target-doc-spec`) that have *not* cleared
+their gates. This CR cannot be PR'd alone without first splitting it off the stack. Do not push or
+open a PR until that scope is decided.
+
+The blocking follow-up this mission produced is already opened as its own CR brief at
+[`quill-producer-bars.plan.md`](quill-producer-bars.plan.md) — item 1 there (all three Quill agents
+replace the SDD load list instead of extending it) is the one that changes what every future Quill
+spec is graded against.
