@@ -147,6 +147,11 @@ Grouped by audience. The author entry points concern **splitting**; the user ent
 The reader's decision path. The first branch is **which audience the reader is** — it selects which
 half of the article they need.
 
+The two halves converge in one place: a **user** who diagnoses drift (`V1`) needs the same chooser an
+**author** reaches from `D` (`P`), because having named the problem they still have to pick a remedy.
+The graph therefore routes `V1 --> P` rather than leaving the user at a leaf that names four options
+and no criterion.
+
 ```mermaid
 graph TD
   S["reader arrives"] --> E["assumed background: what agent configuration is — the section's entry page, and nothing beyond it"]
@@ -157,8 +162,9 @@ graph TD
   Z -- "different outputs" --> Z1["safe to enable together — the contradiction never meets"]
   Z -- "same output" --> Z2["a real conflict — one must win"]
   W -- diagnosing --> V{which target does the unit actually govern?}
-  V -- "the one you intended" --> V1["it is drifting — the four arrangements apply"]
+  V -- "the one you intended" --> V1["the unit is scoped correctly — what you are seeing is drift"]
   V -- "another target" --> V2["it was never scoped to the output you meant"]
+  V1 --> P
 
   R -- authoring --> B{knows what Target means?}
   B -- "no: unfamiliar with the term" --> L1["lead defines Target"]
@@ -185,8 +191,12 @@ graph TD
   H -- yes --> H1["Artifact — file type matching is available"]
   H -- no --> H2["User / Agent — no path reaches them"]
 
-  P -- yes --> P1["produce in a separate session"]
-  P -- no --> P2["restate the target at production time"]
+  P -- yes --> P1["produce in a separate session — a fresh session has accumulated nothing"]
+  P -- no --> P3{can you rely on restating the target at the moment of production?}
+  P3 -- yes --> P2["restate the target at production time"]
+  P3 -- no --> P5{is it known at the outset which artifact the session will produce?}
+  P5 -- yes --> P4["produce the artifact early, before other output accumulates"]
+  P5 -- no --> P6["scope the instruction itself — the weakest, and the only one asking nothing at production time"]
 ```
 
 ## Scenario map
@@ -205,8 +215,8 @@ graph TD
 
 | Edge           | Path (Given)                                           | Scenario                                                                                |
 | -------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------- |
-| `K:no → M:yes` | a single-target file on a harness with glob support    | `a glob-capable harness routes to file type matching`                                   |
-| `K:no → M:no`  | a single-target file on a harness without glob support | `a harness without globs routes to description matching`                                |
+| `K:no → M:yes` | a single-target file on a harness with glob support    | `file type matching is reserved for content a path can name`                            |
+| `K:no → M:no`  | a single-target file on a harness without glob support | `description matching is reserved for content no path can name`                         |
 | `M`            | an author comparing the three mechanisms               | `each mechanism states where the target lives, who decides, and what it settles`        |
 | `N:yes`        | a target whose rules are a substantial body of instruction | `a target needing a substantial body of instruction is isolated rather than scoped`  |
 | `N:no`         | a target whose rules are a few lines inside an existing file | `a target needing a short instruction is bound by a scope statement in the body`   |
@@ -218,12 +228,14 @@ graph TD
 
 ### A3 — Stop a unit bleeding
 
-| Edge    | Path (Given)                                    | Scenario                                                             |
-| ------- | ----------------------------------------------- | -------------------------------------------------------------------- |
-| `P`     | an author observing drift                       | `the article attributes drift to accumulation of unlabeled examples` |
-| `P:yes` | an artifact that can be specified in a brief    | `the article recommends a separate session`                          |
-| `P:no`  | an artifact that cannot be specified in a brief | `the article recommends restating the target at production time`     |
-| `P`     | an author comparing the arrangements            | `the four arrangements are ranked by separation strength`            |
+| Edge                        | Path (Given)                                                       | Scenario                                                                     |
+| --------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| `P`                         | an author observing drift                                          | `the article attributes drift to accumulation of unlabeled examples`         |
+| `P:yes`                     | an artifact that can be specified in a brief                       | `a separate session is reserved for an artifact a brief can specify`         |
+| `P:no → P3:yes`             | an artifact that cannot be specified in a brief                    | `restating the target is reserved for an artifact a brief cannot specify`    |
+| `P:no → P3:no → P5:yes`     | a session that knows at the outset which artifact it will produce  | `producing early is reserved for a session that knows its artifact upfront`  |
+| `P:no → P3:no → P5:no`      | a session that discovers as it runs which artifacts it will produce | `scoping the instruction is named the weakest arrangement of the four`      |
+| `P`                         | an author comparing the arrangements                               | `the four arrangements are ranked by separation strength`                    |
 
 ### C1 — Predict whether two configs will fight
 
@@ -240,7 +252,7 @@ graph TD
 | ------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------ |
 | `W:diagnosing`           | a user whose enabled unit shapes unintended output           | `each of the three targets has its own section`                                |
 | `V`                      | a user placing an unexpected output among the three targets  | `each target names where its output goes, the forms it covers, and an example` |
-| `V:"the one you intended"` | a unit whose named target is the one the user intended     | `a unit bound to the target the user intended is diagnosed as drift`           |
+| `V:"the one you intended" → V1 → P` | a unit whose named target is the one the user intended | `a unit bound to the target the user intended is diagnosed as drift`   |
 | `V:"another target"`     | a unit whose body and description name no target             | `an instruction that names no target is placed on the user by default`         |
 
 ## References

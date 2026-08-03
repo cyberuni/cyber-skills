@@ -43,16 +43,18 @@ Feature: instruction-target — the "Target" article
 
   # ── A2 — Bind a unit to its target ──
 
-  Scenario: a glob-capable harness routes to file type matching
+  Scenario: file type matching is reserved for content a path can name
     Given a single-target file on a harness that supports path globs
     When the article's guidance on choosing a mechanism is read
-    Then it directs that case to file type matching
+    Then it reserves file type matching for the case where the harness offers a path glob and a path names the content the instruction governs
+    And it states that file type matching is deterministic, because the harness evaluates the glob rather than the agent judging the situation
     And it names at least one harness that provides a glob field
 
-  Scenario: a harness without globs routes to description matching
+  Scenario: description matching is reserved for content no path can name
     Given a single-target file on a harness that provides no path glob
     When the article's guidance on choosing a mechanism is read
-    Then it directs that case to description matching
+    Then it reserves description matching for the case where no path names the content the instruction governs, including where the harness offers no glob and where the output is not a file at all
+    And it states that description matching is a semantic judgment the agent makes rather than a rule the harness evaluates
 
   Scenario: each mechanism states where the target lives, who decides, and what it settles
     Given an author comparing the three mechanisms
@@ -63,22 +65,22 @@ Feature: instruction-target — the "Target" article
   Scenario: a target needing a substantial body of instruction is isolated rather than scoped
     Given an author whose single target needs a substantial body of instruction
     When the article's account of the limit of specifying a target is read
-    Then it states that isolating that work in its own subagent or session beats scoping it
+    Then it states that where one target needs a substantial body of instruction, isolating it in its own subagent or session beats scoping it in place
     And it states that isolation removes the competing target from context
     And it states that a scope statement instead asks the agent to honor a boundary on every turn
 
   Scenario: a target needing a short instruction is bound by a scope statement in the body
     Given an author whose single target needs a few lines of instruction inside an existing file
     When the article's account of specifying a target is read
-    Then it states that the target is written into the instruction body
+    Then it states that a target needing only a scope statement rather than a substantial body of instruction is specified by writing the target into the instruction body
     And it states that no harness setting enforces that boundary
 
   Scenario: the Artifact section states it is the only target with a path
     Given an instruction governing content written to a file
     When the Artifact section is read
     Then it states that Artifact is the only target that has a path
-    And it states that this is what makes file type matching possible
-    And it states that this is the only target where one file can hold several targets
+    And it states that having a path is what makes file type matching possible
+    And it states that having a path is why a single file can hold content governed by several targets at once
 
   Scenario: the User and Agent sections state that no path reaches them
     Given an instruction governing a reply or a brief
@@ -114,15 +116,32 @@ Feature: instruction-target — the "Target" article
     Then it states that produced output accumulates as unlabeled examples
     And it states that drift runs toward whichever target was served most
 
-  Scenario: the article recommends a separate session
+  Scenario: a separate session is reserved for an artifact a brief can specify
     Given an artifact that can be specified in a brief
-    When the article's closing recommendation is read
-    Then it recommends producing that artifact in a separate session
+    When the article's account of the arrangements is read
+    Then it reserves producing in a separate session for an artifact that can be specified in a brief
+    And it states that a freshly spawned session has accumulated nothing that can bleed
+    And it states that its cost is starting with no context, which fits poorly when the artifact is the residue of a long discussion
 
-  Scenario: the article recommends restating the target at production time
+  Scenario: restating the target is reserved for an artifact a brief cannot specify
     Given an artifact that cannot be specified in a brief
-    When the article's closing recommendation is read
-    Then it recommends restating the target at the moment of production
+    When the article's account of the arrangements is read
+    Then it directs an artifact that cannot be specified in a brief to restating the target at the moment of production
+    And it states that its cost is having to remember to do it
+
+  Scenario: producing early is reserved for a session that knows its artifact upfront
+    Given an author who knows at the outset which artifact the session will produce
+    When the article's account of the arrangements is read
+    Then it reserves producing the artifact early for a session that knows at the outset which artifact it will produce
+    And it states that producing early works because less output for another target has accumulated
+    And it states that its cost is nothing to apply, but that it depends on that foreknowledge
+
+  Scenario: scoping the instruction is named the weakest arrangement of the four
+    Given an author whose session discovers as it runs which artifacts it will produce
+    When the article's account of the arrangements is read
+    Then it states that scoping the instruction separates the targets least of the four
+    And it states that a scope statement is exactly what accumulation erodes
+    And it states that it is nonetheless the only arrangement asking nothing of the author at the time of writing
 
   Scenario: the four arrangements are ranked by separation strength
     Given an author comparing the arrangements that keep targets apart
@@ -143,14 +162,16 @@ Feature: instruction-target — the "Target" article
     Given two configuration units whose stated values contradict each other
     And the two units govern different targets
     When the article's treatment of coexistence is read
-    Then it names a concrete pair of units in that position
-    And it states that both may be in force at once
+    Then it states the test as comparing what each of the two units governs
+    And it states that two contradicting units whose targets differ never meet, so both may be in force at once
+    And it names a concrete pair of units in that position
 
   Scenario: two units on the same target are named a real conflict
     Given two configuration units whose stated values contradict each other
     And the two units govern the same target
     When the article's treatment of coexistence is read
-    Then it states that this case is a genuine conflict rather than a coexistence
+    Then it states that two contradicting units governing the same target is a genuine conflict rather than a coexistence
+    And it states that one of them has to win, because there is no second target to separate them onto
 
   Scenario: two units sharing a purpose do not compete on that account
     Given two units that serve the same purpose
@@ -181,6 +202,7 @@ Feature: instruction-target — the "Target" article
     When the article's account of drift is read
     Then it states that a scope statement made once competes against the examples the session accumulates
     And it states that the longer the session runs the weaker that scope statement's position
+    And it points a reader who has diagnosed drift to the arrangements that keep targets apart
 
   Scenario: an instruction that names no target is placed on the user by default
     Given a user whose enabled unit is shaping their chat replies
