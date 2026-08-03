@@ -2,12 +2,12 @@
 cr-ref: quill-producer-bars
 project: quill
 project-path: plugins/quill
-status: draft
+status: in-progress
 todos:
   - content: "Fix the SDD plugin-contract role-loads table — the upstream cause, and the only item that changes what other plugins inherit"
-    status: pending
+    status: completed
   - content: "Extend the three agent definitions' load lists, and add the output fields five frozen scenarios already require"
-    status: pending
+    status: in_progress
   - content: "Add the spend-every-row-by-ID rule to the spec bar's completeness element"
     status: pending
   - content: "Add the one-namespace-per-node identifier rule"
@@ -89,16 +89,27 @@ scenarios) that **specify the correct behavior**:
   resolves plus the Quill bar.
 - `sdd-roles/doc-writer/` (14) — `E1` asserts the union by name.
 
-**So this item is now an impl-gate task against a frozen contract, not an authoring task.** Run
-`quill-judge`… except that this CR must also fix `quill-judge`, so sequence accordingly (see
-`## Sequencing`).
+**So this item is now an impl-gate task against a frozen contract, not an authoring task.**
+
+**Corrected:** an earlier draft of this brief warned that the impl gate could not run until
+`quill-judge` was fixed, because this CR modifies it. That is wrong. These nodes specify
+**agent-configuration** artifacts, so the squad is **ACED** and the impl-judge is `aced-impl-judge`.
+`quill-judge` grades documentation, never its own definition — there is no self-grading and no
+sequencing constraint from it.
 
 ### 3. Five frozen scenarios require output fields that do not exist — **NEW**
 
-The suites specify a declaration the shipped agents cannot produce. This is legitimate spec-ahead
-under `sdd:suite-format-governance`'s *"when an act matters but records nothing, add the record — do
-not delete the act"*, and the cold judge ruled it so explicitly. But it is a **known impl-gate
-delta**, and it is work this CR owns:
+The suites specify a declaration the shipped agents cannot produce.
+
+**Corrected — this is not spec-ahead at all.** A cold judge ruled it legitimate spec-ahead under
+`sdd:suite-format-governance`'s *"when an act matters but records nothing, add the record"*, and that
+ruling was sound but understated the case. `sdd:spec-producer-governance` **already makes
+`governances_loaded` a required structured-output field, "listed even when empty"** — its stated
+reason being that the spec-judge otherwise cannot tell a skipped pre-flight from a correctly run one.
+The contract always demanded the field. These agents simply never carried it, which makes this a
+plain conformance gap rather than a contract running ahead of its subject.
+
+It is work this CR owns:
 
 | Agent | Owes |
 |---|---|
@@ -225,11 +236,73 @@ leaves the suites still failing.
 
 **Then the corrections (8–10),** which can ride together.
 
-**Do not run `quill-judge` at this CR's impl gate until item 2 has landed** — this CR modifies the
-judge, so grading its own change with the unmodified agent grades the wrong artifact.
+**There is no `quill-judge` sequencing constraint** — an earlier draft claimed one. The impl-judge for
+these nodes is `aced-impl-judge`, because they specify agent-configuration artifacts. `quill-judge`
+grades documentation and never its own definition.
 
-## NEXT
+## NEXT — resume here
 
-Open against `.agents/specs/quill/`, but **the first commit lands in `plugins/sdd/`** — one word at
-`plugin-contract-governance/SKILL.md:53`. Everything downstream depends on that being the stated
-contract rather than a local exception.
+**Branch:** `sdd/quill-producer-bars`, off `main` after PR #385 merged. No PR open yet.
+
+**Item 1 is done** (`59e08d9a`, with a `cyber-sdd` changeset). The plugin contract's role-loads table
+now gives the spec-producer all three spec bars. Four authorities agreed it was a transcription slip:
+the table's own preamble, the impl-producer row one line below it, `spec-producer-governance`, and
+the table's declared owner at `.agents/specs/sdd/design/specialists-and-squads.md`.
+
+**Item 2 is the live mission, and it is an *impl* mission.** The contract already exists and is
+frozen — `quill-writing-quality` authored and froze four node suites, and `.agents/specs/quill/` is
+`status: approved`. Nothing here needs a spec gate; the terminus is the **impl gate**.
+
+### What item 2 has to make true
+
+| Agent | Extend the load list with | Add to `## Output` |
+|---|---|---|
+| `plugins/quill/agents/quill-spec-writer.md` | the resolved **oracle-spec** and **architect-spec** bars (it names only its own builder bar plus the two format bars and ownership) | `GOVERNANCES_LOADED`, **and** a recusal `STATUS` value plus a recusal step — its enum is `complete \| needs-input \| blocked` and `## Steps` has no recusal step at all |
+| `plugins/quill/agents/quill-doc-writer.md` | `sdd:builder-impl-governance` and `sdd:architect-impl-governance` (it names only `quill:quill-builder-impl` and ownership) | `GOVERNANCES_APPLIED` |
+| `plugins/quill/agents/quill-judge.md` | `gate-validation`, `builder-impl`, `architect-impl` | the equivalent declaration field |
+
+**Extend, never replace.** A replaced list is the defect being fixed.
+
+**`governances_loaded` is not spec-ahead.** `sdd:spec-producer-governance` already makes it a
+**required** structured-output field, *"listed even when empty"*. The contract always demanded it;
+these agents never carried it. The ACED siblings do — read `plugins/aced/agents/aced-impl-judge.md`
+for the shape rather than inventing one.
+
+### The scenarios that grade it
+
+Read these before editing; they are the bar, and they are frozen:
+
+- `.agents/specs/quill/sdd-roles/spec-writer/spec-writer.feature` — 29 scenarios. The CFG **enters at
+  the governance pre-flight**: one row for the registry binding `builder-spec` only (the packet must
+  name the SDD-default oracle and architect bars it fell back to), one for all three slots bound. Two
+  downstream rows make the omission cost something a declaration alone cannot.
+- `.agents/specs/quill/sdd-roles/judge/judge.feature` — 40 scenarios. Asserts the declared set
+  contains **every** SDD default the matcher resolves, plus the Quill bar.
+- `.agents/specs/quill/sdd-roles/doc-writer/doc-writer.feature` — 14 scenarios. `E1` asserts the union
+  by name.
+
+### The sequencing worry is resolved — do not act on the old note
+
+An earlier brief warned "do not run `quill-judge` at this CR's impl gate until item 2 lands, since
+this CR modifies the judge." **That does not apply.** These are agent-configuration artifacts, so the
+squad is **ACED**, and the impl-judge is `aced-impl-judge`. `quill-judge` grades *documentation*, not
+its own definition. There is no self-grading.
+
+### Guardrails
+
+- **The suites are frozen and are not this mission's to change.** If an agent genuinely cannot satisfy
+  a scenario, that is a `BLOCKER` to report, never a suite edit.
+- `@cyberplace/quill-plugin` is `private: true` — **no changeset** for items 2 onward. Item 1 needed
+  one because `cyber-sdd` is published.
+- Run `pnpm verify` at the repo root before each commit.
+- `check-suite` cannot run in-repo (`gherkin-cli` is npx-only). Install the pinned `gherkin-cli@0.0.2`
+  into a scratch dir and run the `spec-gate/scripts/*.mts` from there — that is a workaround, not the
+  repo's, and the gate scripts remain broken here for everyone else.
+
+### After item 2
+
+Items 3–6 are bar edits to `quill-builder-spec` whose effect is only observable once producers load
+the bars — so they follow item 2, not precede it. Items 7–9 are corrections to shipped prose and can
+ride together. The three things routed **out** of this CR (the missing home for the spec bar's
+grading face, the largely unfrozen defect catalog, a real calibration) stay out; folding any of them
+in makes this CR unlandable.
