@@ -1,8 +1,18 @@
 ---
-status: approved
+status: implemented
 name: website
 project-path: apps/website
 approval:
+  impl:
+    verdict: approve
+    by: agent
+    cause: dimension
+    why:
+      floor: none — no frozen scenario narrowed at impl. The single impl-gate failure was fixed in the document, never in the suite.
+      blast: medium — six documents published (four new, two revised and both previously stale against the registry), plus four sidebar entries. Nothing outside the website app changed.
+      novelty: medium-high — first end-to-end dogfood of quill's own chain, and the first blind-then-scored judged pass on real documents.
+      confidence: high — 125 of 125 frozen scenarios pass across six suites, each run by a cold quill-judge plus a document-scoped enumeration pass and a blind reader simulation. All judged findings advisory, none blocking. Website build green.
+      cr: quill-docs-section
   spec:
     verdict: approve
     by: agent

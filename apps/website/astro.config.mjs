@@ -190,7 +190,17 @@ export default defineConfig({
           label: "Quill",
           items: [
             { label: "Overview", slug: "quill/overview" },
+            { label: "Doc Eval Model", slug: "quill/doc-eval-model" },
+            { label: "Production Chain", slug: "quill/production-chain" },
             { label: "init-quill", slug: "quill/init-quill" },
+            {
+              label: "Builder Bar — Spec Gate",
+              slug: "quill/quill-builder-spec",
+            },
+            {
+              label: "Builder Bar — Impl Gate",
+              slug: "quill/quill-builder-impl",
+            },
           ],
         },
         {
