@@ -7,9 +7,9 @@ todos:
   - content: "Fix the SDD plugin-contract role-loads table — the upstream cause, and the only item that changes what other plugins inherit"
     status: completed
   - content: "Extend the three agent definitions' load lists, and add the output fields five frozen scenarios already require"
-    status: in_progress
+    status: completed
   - content: "Add the spend-every-row-by-ID rule to the spec bar's completeness element"
-    status: pending
+    status: in_progress
   - content: "Add the one-namespace-per-node identifier rule"
     status: pending
   - content: "Join the doc-type table to the north-star element"
@@ -249,11 +249,29 @@ now gives the spec-producer all three spec bars. Four authorities agreed it was 
 the table's own preamble, the impl-producer row one line below it, `spec-producer-governance`, and
 the table's declared owner at `.agents/specs/sdd/design/specialists-and-squads.md`.
 
-**Item 2 is the live mission, and it is an *impl* mission.** The contract already exists and is
-frozen — `quill-writing-quality` authored and froze four node suites, and `.agents/specs/quill/` is
-`status: approved`. Nothing here needs a spec gate; the terminus is the **impl gate**.
+**Item 2 is landed** (`6faae222`). All three agent definitions now load their whole lens set and
+declare it. What was written, so a re-reader does not re-derive it:
 
-### What item 2 has to make true
+- `quill-spec-writer` — a bulleted **"Load the spec-producer bars"** block replacing the run-on
+  preamble sentence, resolving each of the three spec-gate slots against the squad registry with the
+  SDD default named as the fallback; a `## Steps` step 1 governance pre-flight and a step 2 recusal
+  (steps renumbered 3–6); `STATUS` gains `recused`; `## Output` gains `GOVERNANCES_LOADED` and
+  `RECUSAL`.
+- `quill-doc-writer` — the same block shape for `{builder, architect}` at the impl gate, stating the
+  Quill bar **unions onto** `sdd:builder-impl-governance` rather than replacing it; `## Output` gains
+  `GOVERNANCES_APPLIED`.
+- `quill-judge` — the same, plus `gate-validation`; a new `### 1. Compose the governance set for the
+  run` step (the rest renumbered 2–6) because `judge.feature` specifies composition as an act;
+  `## Output` gains `GOVERNANCES_APPLIED`.
+
+`pnpm verify` green at the repo root. No changeset (private package). The impl gate for the four
+`sdd-roles` nodes has **not** been run — it is `aced-impl-judge`'s, and it is still owed.
+
+**Item 3 is now the live todo** — the spend-every-row-by-ID rule in `quill-builder-spec`'s
+completeness element. The remaining bar edits (3–6) are edits to
+`plugins/quill/skills/quill-builder-spec/SKILL.md`.
+
+### What item 2 had to make true — kept for the impl gate
 
 | Agent | Extend the load list with | Add to `## Output` |
 |---|---|---|
