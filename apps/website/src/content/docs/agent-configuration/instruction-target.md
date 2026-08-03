@@ -3,9 +3,7 @@ title: Target
 description: Which of the agent's outputs an instruction governs — a produced artifact, this session's conversation, or another agent's context — and why separating them lets contradictory instructions coexist.
 ---
 
-**Target** identifies which of the agent's outputs an instruction governs, and therefore who eventually reads it. You may want the agent to reply to you in a caveman register while it writes your documentation in plain, careful English.
-
-A single request routinely involves more than one target, each with its own value. The agent may reply tersely to the user while briefing a subagent with full context, or draft a formal document while sending a short status message to a peer agent.
+**Target** identifies which of the agent's outputs an instruction governs, and therefore who eventually reads it. A single request routinely involves more than one, each with its own value: the agent may reply to you in a caveman register while writing your documentation in plain, carefully written English, or draft a formal document while sending a peer agent a one-line status.
 
 Separating the targets is what lets those values contradict each other safely. Caveman and careful English cannot both be one house style; as values on two targets, they coexist.
 
@@ -15,11 +13,11 @@ The target is also the boundary. Two instructions governing different outputs ne
 
 Three mechanisms carry the target, and they act at different moments:
 
-| Mechanism                | Where the target lives      | Decided by                | What it settles       |
-| ------------------------ | --------------------------- | ------------------------- | --------------------- |
-| **File type matching**   | a path glob in frontmatter  | the harness, mechanically | whether the file loads |
-| **Description matching** | the `description` field     | the agent, at load time   | whether the file loads |
-| **Prose matching**       | the instruction body        | the agent, while working  | which value applies    |
+| Mechanism                | Where the target lives     | Decided by                | What it settles        |
+| ------------------------ | -------------------------- | ------------------------- | ---------------------- |
+| **File type matching**   | a path glob in frontmatter | the harness, mechanically | whether the file loads |
+| **Description matching** | the `description` field    | the agent, at load time   | whether the file loads |
+| **Prose matching**       | the instruction body       | the agent, while working  | which value applies    |
 
 File type matching is deterministic. The harness evaluates a path glob rather than the agent judging a situation, so the instruction loads with the content it governs and the same file always draws the same rules.
 
@@ -48,8 +46,8 @@ Naming has a limit. When one target needs a substantial body of instruction, iso
 
 There are three kinds of targets, and the forms within each kind are open-ended:
 
-| Target       | Where the output goes                 | Forms it covers                                    | Example                                                                              |
-| ------------ | ------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Target       | Where the output goes                 | Forms it covers                                     | Example                                                                              |
+| ------------ | ------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | **Artifact** | Into a file that outlives the session | every kind of content the agent can write           | `article-writer-voice` shapes a draft's voice without changing how the agent replies |
 | **User**     | Into this session's conversation      | a live reply, and a question carrying its reasoning | `i-have-adhd` shapes how the agent talks without touching anything it produces       |
 | **Agent**    | Into another agent's context          | a spawn-time brief, and mail to a peer session      | cyberlegion mail sent to a peer session                                              |
