@@ -14,11 +14,11 @@ todos:
   - content: Author the defect catalog — named, citable bad-writing shapes, each with a near-miss that must NOT fire
     status: completed
   - content: Calibrate against the corpus before the tier gates — known-good and known-weak documents
-    status: in_progress
+    status: completed
   - content: Spec gate — cold spec-judge, freeze, ledger gate line
-    status: pending
+    status: completed
   - content: Handoff — Warden placement pass, commit, follow-up drain
-    status: pending
+    status: in_progress
 ---
 
 # CR: give quill an instrument for prose quality
@@ -224,103 +224,44 @@ standalone correction. The second is cheaper and does not depend on this CR at a
 
 ## NEXT — resume here
 
-**Todos 1–5 are done.** Retraction (twelve sites, not six — see `## Done means`), the two-instrument
-re-partition, the nine-entry catalog, and the judged tier's mechanics all landed, spec side and impl
-side, with `pnpm verify` green at each commit.
+**Todos 1–7 are done. Only handoff remains.**
 
-**Both blockers are now cleared and calibration is running.** The owner authorized cold subagent
-dispatch for this stack and named the corpus. Recorded here because a rate with no named corpus is
-not a measurement:
+**Calibration (todo 6) ran and moved no row — that is the result, not a failure.** Corpus named by
+the owner: known-good `apps/website/src/content/docs/agent-configuration/instruction-target.md`,
+known-weak `apps/website/src/content/docs/governances/skill-repo-structure.md`. Four of nine entries
+fired on neither document, one accepted document is a count and not a rate, and the weak document's
+missing spec node removes only the *exculpatory* halves of the group-C entries, biasing them toward
+firing. What the run earned is three reworded entries (A3's fires-on and near-miss, A2's
+discriminator, C1's near-miss), all landed. Full record in `quill-builder-impl`'s
+`#### Run 1 — under-powered, no row moved`.
 
-| Role | Document | Ground |
-|---|---|---|
-| **known-good** | `apps/website/src/content/docs/agent-configuration/instruction-target.md` | 20/20 scenarios PASS under a cold `quill-judge`, reviewed and reconciled |
-| **known-weak** | `apps/website/src/content/docs/governances/skill-repo-structure.md` | named by the owner |
+**The spec gate (todo 7) needed four suites written first.** quill's project spec had **no `.feature`
+anywhere**, so it could not legally reach `approved` — four nodes marked `spec-type: behavioral`
+carried only a Subject and a deferral note. Those are now authored and frozen: `registry` (11),
+`doc-writer` (14), `spec-writer` (29), `judge` (40) — 94 scenarios, two cold rounds. The root spec is
+`status: approved`.
 
-Pass 1 was dispatched as **two separate blind contexts**, one per document, each given only the
-document, an audience, and one declared reader path — no catalog, no entry names, no coverage table,
-per the bar's leak rule.
+### Handoff — what is left
 
-**One departure, recorded rather than hidden:** the known-weak document has **no spec node**, so it
-has no declared control-flow path and no audience row to hand its blind reader. Both were synthesized
-from the page's own headings and its stated subject. This is a real gap in the calibration procedure
-— it assumes every corpus document is specified, and a governance page is not. Either the procedure
-should say how to calibrate against an unspecified document, or the corpus should be drawn only from
-specified ones. **Do not let the resulting rate be read as though both documents were briefed
-equally.**
-
-**The historical blockers, for the record:**
-
-1. **Todo 6 — calibration needs a cold agent.** The judged pass's first context must be *blind to the
-   catalog*. Any session that authored the catalog is disqualified from being its own blind reader,
-   so calibration cannot be self-run: it needs a dispatched subagent. This session was not authorized
-   to spawn one.
-2. **Todo 6 also needs the corpus named by the team.** The procedure in `quill-builder-impl` says so
-   in as many words — *a judge that picks its own corpus has chosen the evidence that suits it*.
-   Known-good is available (the Target article: 20/20, reviewed, reconciled). **Known-weak is not**,
-   and picking one myself would violate the rule I just wrote.
-3. **Todo 7 — the spec gate needs a cold spec-judge** for grader independence (ADR-0016), and its
-   ratification line is a human write that cannot be relayed
-   (`project_sdd_relayed_ratification_seam`). Both are outside what this session may do alone.
-
-**Todo 8's Warden placement pass** is likewise a subagent. What is already done: the ledger is open
-at `.agents/specs/quill/ledger/quill-writing-quality.9f2b1c.jsonl` with a derived leash, and every
-unit is committed.
-
-**So the honest state is: the CR is complete up to its gates, and parked at them.** Nothing here is
-frozen, `status` stays `draft`, and the catalog ships non-blocking — so the parked state is safe to
-sit in indefinitely.
-
-### Findings from the closing pass
-
-- **The judge would have blocked on every advisory finding** (`efb36742`). Its aggregation rule set
-  `IMPLEMENTATION_PASS` false on any evidenced integrity finding, and folding the catalog into that
-  pass silently made all nine entries blocking on the day they shipped. Worth remembering that
-  "advisory" has to be enforced at the *aggregator*, not only declared at the entry.
-- **The site count went from six to eleven to twelve.** `glossary.md` defined the integrity pass as
-  *"one claim per place"* — a phrasing neither `exactly one place` nor `restatement` finds. A
-  criterion gets paraphrased everywhere it is summarized.
-
-## The quantifier's replacement — path coverage, not a count
-
-`quill-builder-spec`'s rule *"Quantify a claim that more than one passage could carry"* has two
-halves, and only one is disproven. The remedy (`in exactly one place`) falls. The **problem** it
-names survives: `Then it states X` is satisfied by X appearing anywhere, so a coverage row whose
-claim is load-bearing across sections is under-specified.
-
-The correct quantifier is **path coverage**, and the driving case hands it over. A reader arriving at
-*Composing configuration* from the sidebar never read the lead — so the question was never *how many
-places* carry the claim, but *whether every path that needs it reaches it*:
-
-```gherkin
-Then it presents two values that cannot both be one house style
-And it states that contrast on each path the control flow routes to it
-```
-
-This is strictly stronger than what it replaces, it stays **inspection** (CFG branches are in the
-spec, passages are in the document — a comparison), and it freezes nothing on the never-freeze list.
-It also inverts the retracted rule's verdict on the Target article: the installer decision table was
-not a redundancy to be collapsed, it was the sidebar reader's only statement of the rule.
-
-### Findings the commits will not show
-
-- **The tier partition in this brief was wrong once already** and is corrected in 6262c73e: the
-  integrity criteria are not mechanically decidable, so most of the shipped integrity bar becomes the
-  seed of the defect catalog rather than a peer of it. Anyone resuming should treat "add a tier" as an
-  understatement of the change.
-- **Two of the research conclusion's load-bearing claims are marked medium confidence** — that a judge
-  can carry craft (our inference from the sources' 1990 vintage, not a finding) and that within-text
-  coherence results transfer across pages. Do not let an explore pass promote either to settled
-  without saying so.
-- **The dossier's citation was itself corrected** (df705cf2): the warrant is Experiment II's
-  controlled replication at Δ137 ms, p<.001 — not the 19 ms null, which is Experiment III and
-  non-significant. Cite E03; the null corroborates and cannot carry a design decision.
-- **Calibration is a gating prerequisite**, not a follow-up (todo 5). It is the empirical test the
-  "a judge can do it" inference lacks, and the first thing that will be dropped under time pressure.
+1. **Warden placement pass** — a subagent, not yet run.
+2. **Follow-up drain.** The ledger shard carries the open set. Two are worth reading before anything
+   else is planned:
+   - **`plugin-contract-governance` contradicts itself** (`blocking`). Its preamble sets the
+     spec-gate lens set to `{oracle, builder, architect}`; its role-loads table gives spec-producer
+     only `oracle-spec + builder-spec`. The decisive evidence is the **impl-producer row two lines
+     below**, which correctly carries its architect bar against its own `{builder, architect}` set —
+     so the spec-producer row is a dropped cell, not a deliberate narrowing. **This reframes
+     `quill-producer-bars` item 1:** `quill-spec-writer`'s under-load is downstream of this, not a
+     quill defect. `quill-judge`'s under-load is contradicted by nothing and *is* quill's.
+   - **Three agents owe an output field** (`blocking`). Five scenarios across three of the new nodes
+     specify a `GOVERNANCES_LOADED`/`GOVERNANCES_APPLIED` declaration the shipped agents cannot
+     produce, plus a recusal `STATUS` value on `quill-spec-writer`. Legitimate spec-ahead under
+     *"when an act matters but records nothing, add the record"* — but it is a **known impl-gate
+     delta**, and the impl gate has not run.
 
 ### Do not relearn
 
-`## What the research changed` and `## The design` hold settled ground, and
-`.research/documentation-craft/conclusion.md` is the source they compress — read it before reopening
-any of it. `## Scope` records what is deliberately out: cross-page ordering, foreshadow marking, and
-claim overlap between articles all belong to the formation loop, not here.
+`## What the research changed` and `## The design` hold settled ground. `## Scope` records what is
+deliberately out. The calibration corpus and its limits are settled above — re-running it against the
+same two documents will produce the same nothing; what it needs is five or six accepted documents
+**each with a spec node**, which is its own mission.

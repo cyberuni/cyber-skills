@@ -1,7 +1,7 @@
 ---
 cr-ref: website-target-doc-spec
 project-spec: apps/website/.agents/spec
-status: in-progress
+status: implemented
 todos:
   - content: Settle docs-corpus granularity — content/ as one leaf vs a per-section node
     status: completed
@@ -14,9 +14,9 @@ todos:
   - content: Strike the unsupported quantifier clause from the suite before the gate freezes it
     status: completed
   - content: Spec gate — cold spec-judge, freeze, ledger gate line
-    status: pending
+    status: completed
   - content: Handoff — Warden placement pass, commit, follow-up drain
-    status: pending
+    status: completed
 ---
 
 # CR: spec the Target article
