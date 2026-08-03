@@ -37,6 +37,7 @@ Not every dossier has all five. `conclusion.md` is the file other documents cite
 | [agent-session-wake](agent-session-wake/) | cyberfleet comms-wake PoC, inter-session messaging, future fleet wake-seam ADR |
 | [cli-output-format](cli-output-format/) | `agent-tool-output` governance, ADR-0004 |
 | [cross-project-knowledge-sharing](cross-project-knowledge-sharing/) | Cross-repo governance federation |
+| [documentation-craft](documentation-craft/) | quill's doc-integrity criteria, the doc spec's prerequisite declaration, a prospective formation-loop check for cross-page claim overlap |
 | [gherkin-ui-testing](gherkin-ui-testing/) | SDD scenario/suite format |
 | [hook-event-survey](hook-event-survey/) | `hook` domain, cross-runtime hook registration |
 | [impl-judge-independence](impl-judge-independence/) | ADR-0016, SDD impl gate, `autonomy-rubric` |
