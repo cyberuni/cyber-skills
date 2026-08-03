@@ -249,8 +249,15 @@ Arrangement **4**:
 The numbered list in `## Keeping targets apart within one session`:
 
 - **exactly four** arrangements are presented
+- states that **the four arrangements remedy drift in an instruction governing a produced artifact.**
+  The scope must be **stated**, not left to be inferred from the arrangements or the routing
+  questions below — currently the introducing sentence, "Four arrangements remedy drift in an
+  instruction governing a produced artifact". A sentence that introduces the four without naming what
+  kind of instruction they remedy fails this step, **even though every item beneath it concerns an
+  artifact**: the four items and the three routing questions all being artifact-shaped is precisely
+  the implication this step exists to reject.
 - the list states its **ordering by how strongly each separates the targets** — "ordered by how
-  strongly each separates them — decreasing separation, increasing convenience"
+  strongly each separates the targets — decreasing separation, increasing convenience"
 - **each of the four carries the cost of adopting it.** Check per item, not in aggregate: 1 = no
   starting context; 2 = having to remember; 3 = depends on foreknowledge; 4 = weakest separation,
   eroded by accumulation.
@@ -331,10 +338,25 @@ In `## Keeping targets apart within one session`, ¶2–¶3:
 
 In `## User: the default target`, ¶1:
 
-- states **everything the agent produces other than a file or a brief goes to the user**
+- states that **the user receives whatever the agent neither writes to a file nor addresses to another
+  agent** — currently "The user receives whatever the agent neither writes to a file nor addresses to
+  another agent." The claim is the **residual** one: what is left after writing-to-a-file and
+  addressing-another-agent are excluded. A formulation that instead **enumerates** what the user does
+  not receive — "everything other than a file or a brief" — fails, because it is false of mail, which
+  is neither a file nor a brief and does not reach the user.
 - states **the User target is therefore always in force** — the inference marker ("therefore") is
   required; two adjacent assertions fail
 
 ## Deliberate violations
 
 None declared.
+
+## Revision note — contract repair
+
+Two blocks above were re-derived after the `.feature` was repaired and re-frozen; the rest of this
+file is unchanged and its scenarios were unaffected.
+
+| Block | Was | Now |
+|---|---|---|
+| `an instruction that names no target is placed on the user by default` | quoted the defective enumeration ("everything the agent produces other than a file or a brief goes to the user") | checks the residual formulation the repaired `Then` requires, and names the enumeration as an explicit failure |
+| `the four arrangements are ranked by separation strength` | count, ordering, per-item cost | plus the artifact-scope clause, with inference-from-the-items named as a failure |

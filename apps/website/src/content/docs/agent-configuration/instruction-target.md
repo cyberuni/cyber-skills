@@ -65,7 +65,7 @@ Artifact is the only target that has a path, and having one is what makes file t
 
 ## User: the default target
 
-Everything the agent produces other than a file or a brief goes to the user — anything it does not write out and does not address to another agent lands in this conversation. The User target is therefore always in force, and it is the one whose examples pile up fastest: the drift described in [Keeping targets apart](#keeping-targets-apart-within-one-session) runs toward it.
+The user receives whatever the agent neither writes to a file nor addresses to another agent. The User target is therefore always in force, and it is the one whose examples pile up fastest: the drift described in [Keeping targets apart](#keeping-targets-apart-within-one-session) runs toward it.
 
 No file path corresponds to the User target. A reply is not a file, so file type matching has nothing to match on, and description matching or prose matching carries the target instead.
 
@@ -111,7 +111,7 @@ The mechanism is accumulation rather than misunderstanding. Every reply the agen
 
 So a unit already bound to the target you intended can still shape output for another one late in the session. That is drift rather than a mis-scoped unit, and the remedy is one of the four arrangements below, chosen by the questions that follow them.
 
-Four arrangements keep the targets apart, ordered by how strongly each separates them — decreasing separation, increasing convenience — and each carries the cost of adopting it.
+Four arrangements remedy drift in an instruction governing a produced artifact — usually the output a long session has produced least, so its instruction is the one the accumulated examples erode first. They are ordered by how strongly each separates the targets — decreasing separation, increasing convenience — and each carries the cost of adopting it.
 
 1. **Produce the artifact in a separate session.** Reserved for an artifact that can be specified in a brief. A freshly spawned session has accumulated nothing that can bleed, which makes this the only arrangement that separates by construction rather than by instruction. Its cost is starting with no context, which fits poorly when the artifact is the residue of a long discussion, because the brief would have to reconstruct that discussion.
 2. **Restate the target at the moment of production.** Reserved for an artifact that cannot be specified in a brief. Naming the intended register immediately before you write re-establishes the boundary where it matters, after the accumulation rather than ahead of it. Its cost is having to remember to do it.
