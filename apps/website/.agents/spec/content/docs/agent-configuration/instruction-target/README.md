@@ -94,7 +94,7 @@ The article is incomplete without each of these. The scenarios below check them.
 | #   | Topic                    | Must convey                                                                                                                                                |
 | --- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | T9  | **The three mechanisms** | file type, description, prose matching — for each: where the target lives, who decides, what it settles                                                    |
-| T10 | **Which mechanism when** | globs are deterministic but bind at file granularity; description reaches what a path cannot; prose handles mixed-target files and near-identical variants |
+| T10 | **Which mechanism when** | globs are deterministic but bind at file granularity; description reaches what a path cannot, including inside a mixed-target file; prose handles near-identical variants |
 | T11 | **The limit of naming**  | when one target needs a substantial body of instruction, isolation beats scoping                                                                           |
 
 **Working with targets**
@@ -103,7 +103,7 @@ The article is incomplete without each of these. The scenarios below check them.
 | --- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | T12 | **Drift within a session**   | targets bleed by accumulation of unlabeled examples, running toward whichever target was served most                                 |
 | T13 | **The four arrangements**    | separate session / restate at production / produce early / scope the instruction — ranked by separation strength, each with its cost |
-| T14 | **Orthogonality to Purpose** | naming a target does not change what purpose a block serves                                                                          |
+| T14 | **Orthogonality to Purpose** | a block's purpose is unchanged by which target receives it, so two units sharing a purpose compete only if they also share a target  |
 
 **Non-goals** — each with where it lives instead, so a reader who wants it is not simply left:
 
@@ -123,7 +123,7 @@ Grouped by audience. The author entry points concern **splitting**; the user ent
 
 | #   | Entry point                                                                                                  | Trigger / inputs / outcome                                                                                                                                                                                            |
 | --- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A1  | **Decide whether to split a file** — the author has one config file that shapes more than one kind of output | _Trigger:_ a file that feels like it is doing two jobs. _Inputs:_ the three targets and the mixed-target discussion. _Outcome:_ the author splits it into single-target units, or keeps it whole and scopes by prose. |
+| A1  | **Decide whether to split a file** — the author has one config file that shapes more than one kind of output | _Trigger:_ a file that feels like it is doing two jobs. _Inputs:_ the three targets and the mixed-target discussion. _Outcome:_ the author splits it into single-target units that description matching loads, or — where splitting would copy more than it separates — keeps it whole and branches by prose. |
 | A2  | **Bind a unit to its target** — the author has a single-target unit and must make it apply only there        | _Trigger:_ writing a skill, rule, or `AGENTS.md` section. _Inputs:_ the mechanisms table. _Outcome:_ the author picks file type, description, or prose matching.                                                      |
 | A3  | **Stop a unit bleeding** — the author's instruction is being ignored late in a long session                  | _Trigger:_ observed drift. _Inputs:_ the drift section and its four arrangements. _Outcome:_ the author picks an arrangement and knows its cost.                                                                      |
 
@@ -141,34 +141,40 @@ half of the article they need.
 
 ```mermaid
 graph TD
-  S[reader arrives] --> A{does the article require prior reading?}
-  A -- "no — for every reader, whatever they have read" --> R{authoring config, or combining installed config?}
+  S["reader arrives"] --> A["no prior reading required — every branch is open to any reader"]
+  A --> R{authoring config, or combining installed config?}
 
-  R -- combining --> Z{do the two units govern the same output?}
-  Z -- "different outputs" --> Z1[safe to enable together: the contradiction never meets]
-  Z -- "same output" --> Z2[a real conflict: one must win]
+  R -- combining --> W{predicting a clash, or diagnosing one?}
+  W -- predicting --> Z{do the two units govern the same output?}
+  Z -- "different outputs" --> Z1["safe to enable together — the contradiction never meets"]
+  Z -- "same output" --> Z2["a real conflict — one must win"]
+  W -- diagnosing --> V{which target does the unit actually govern?}
+  V -- "the one you intended" --> V1["it is drifting — the four arrangements apply"]
+  V -- "another target" --> V2["it was never scoped to the output you meant"]
 
   R -- authoring --> B{knows what Target means?}
-  B -- "no: unfamiliar with the term" --> C1[lead defines Target]
-  B -- "no: doubts contradictory rules can coexist" --> C2[lead motivates with two conflicting values]
+  B -- "no: unfamiliar with the term" --> L1["lead defines Target"]
+  B -- "no: doubts contradictory rules can coexist" --> L2["lead motivates with two conflicting values"]
   B -- yes --> D{what does the author need?}
-  C1 --> D
-  C2 --> D
+  L1 --> D
+  L2 --> D
 
   D -- "does this file do two jobs?" --> K{does one file mix several targets?}
   D -- "which target is this?" --> H{does the target have a path?}
   D -- "it keeps bleeding" --> P{can the artifact be specified in a brief?}
 
-  K -- yes --> K1[split into single-target units, or scope by prose matching]
+  K -- yes --> K1{would splitting copy more than it separates?}
+  K1 -- no --> K2["split into single-target units — description matching loads each"]
+  K1 -- yes --> K3["keep one file, branch by prose matching"]
   K -- no --> M{harness offers glob matching?}
-  M -- yes --> M1[file type matching]
-  M -- no --> M2[description matching]
+  M -- yes --> M1["file type matching"]
+  M -- no --> M2["description matching"]
 
-  H -- yes --> H1[Artifact: file type matching is available]
-  H -- no --> H2[User / Agent: no path reaches them]
+  H -- yes --> H1["Artifact — file type matching is available"]
+  H -- no --> H2["User / Agent — no path reaches them"]
 
-  P -- yes --> P1[produce in a separate session]
-  P -- no --> P2[restate the target at production time]
+  P -- yes --> P1["produce in a separate session"]
+  P -- no --> P2["restate the target at production time"]
 ```
 
 ## Scenario map
@@ -179,9 +185,9 @@ graph TD
 | ------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | `A`           | any reader, whatever they have read before _(convergence — the outcome does not vary)_ | `the article stands alone without prerequisite reading`                 |
 | `R:authoring` | an author holding one file that shapes several outputs                                 | `the article names separation by target as the seam that splits config` |
-| `K:yes`       | a file holding content governed by more than one target                                | `a mixed-target file routes to splitting or prose matching`             |
-| `B:no → C1`   | an author unfamiliar with the term                                                     | `the article defines Target before naming any mechanism`                |
-| `B:no → C2`   | an author who doubts contradictory rules can coexist                                   | `the opening motivates Target with two values that contradict`          |
+| `K:yes`       | a file holding content governed by more than one target                                | `a mixed-target file routes to a separate unit or to prose matching`    |
+| `B:no → L1`   | an author unfamiliar with the term                                                     | `the article defines Target before naming any mechanism`                |
+| `B:no → L2`   | an author who doubts contradictory rules can coexist                                   | `the opening motivates Target with two values that contradict`          |
 
 ### A2 — Bind a unit to its target
 
@@ -189,7 +195,7 @@ graph TD
 | -------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------- |
 | `K:no → M:yes` | a single-target file on a harness with glob support    | `a glob-capable harness routes to file type matching`                                   |
 | `K:no → M:no`  | a single-target file on a harness without glob support | `a harness without globs routes to description matching`                                |
-| `K`            | an author comparing the three mechanisms               | `each mechanism states where the target lives, who decides, and what it settles`        |
+| `M`            | an author comparing the three mechanisms               | `each mechanism states where the target lives, who decides, and what it settles`        |
 | `H:yes`        | an instruction governing a written file                | `the Artifact section states it is the only target with a path`                         |
 | `H:no`         | an instruction governing a reply or a brief            | `the User and Agent sections state that no path reaches them`                           |
 | `H:no`         | an instruction governing another agent                 | `the Agent section distinguishes a brief from mail by the recipient's standing mission` |
@@ -210,13 +216,13 @@ graph TD
 | `R:combining` | a user holding two units whose rules look contradictory | `the article addresses the user combining units, not only the author writing them` |
 | `Z:different` | two units governing different outputs                   | `two units on different targets are shown coexisting`                              |
 | `Z:same`      | two units governing the same output                     | `two units on the same target are named a real conflict`                           |
+| `Z`           | a user checking what an enabled unit actually governs   | `two units sharing a purpose do not compete on that account`                       |
 
 ### C2 — Diagnose over-reach
 
 | Edge          | Path (Given)                                       | Scenario                                                  |
 | ------------- | -------------------------------------------------- | --------------------------------------------------------- |
-| `R:combining` | a user whose enabled unit shapes unintended output | `each of the three targets has its own section`           |
-| `D`           | a user checking what a unit actually governs       | `the article states that Target is orthogonal to Purpose` |
+| `W:diagnosing` | a user whose enabled unit shapes unintended output | `each of the three targets has its own section`          |
 
 ## References
 

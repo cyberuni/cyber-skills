@@ -21,11 +21,12 @@ Feature: instruction-target — the "Target" article
     Then it states that separating instructions by target makes them reusable independently
     And it states that mixing targets in one unit is what forces it to be adopted whole
 
-  Scenario: a mixed-target file routes to splitting or prose matching
+  Scenario: a mixed-target file routes to a separate unit or to prose matching
     Given a file holding content governed by more than one target
     When the article's guidance on mixed-target files is read
     Then it states that a path binds at file granularity while the targets vary inside the file
-    And it directs that case to prose matching
+    And it directs a target whose rules can stand as their own unit to description matching
+    And it reserves prose matching for variants that splitting would duplicate
 
   Scenario: the article defines Target before naming any mechanism
     Given an author unfamiliar with the term Target
@@ -122,6 +123,7 @@ Feature: instruction-target — the "Target" article
     And the two units govern the same target
     When the article's treatment of coexistence is read
     Then it states that this case is a genuine conflict rather than a coexistence
+    And it makes that claim in exactly one place, later passages referring back
 
   # ── C2 — Diagnose over-reach ──
 
@@ -132,7 +134,8 @@ Feature: instruction-target — the "Target" article
     And there is a section covering the User target
     And there is a section covering the Agent target
 
-  Scenario: the article states that Target is orthogonal to Purpose
+  Scenario: two units sharing a purpose do not compete on that account
     Given a user checking what an enabled unit actually governs
-    When the article's closing section on purpose is read
-    Then it states that naming a target does not change the purpose a block serves
+    When the article's treatment of coexistence is read
+    Then it states that a block's purpose is unchanged by which target receives it
+    And it states that only a shared target puts two units in conflict
