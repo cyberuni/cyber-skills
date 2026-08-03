@@ -184,8 +184,9 @@ flag them.
 |---|---|
 | `build` | `tooling/site-config/` (behavior) |
 | `composition` | `content/docs/agent-configuration/instruction-target/` (behavior) |
-| `docs` | `components/mermaid/` (behavior) · `content/docs/agent-configuration/instruction-target/` (behavior) |
+| `docs` | `components/mermaid/` (behavior) · `content/docs/agent-configuration/instruction-target/` (behavior) · `content/docs/motive-model/four-actors/` (behavior) · `content/docs/motive-model/glossary/` (behavior) · `content/docs/motive-model/overview/` (behavior) |
 | `marketplace` | `components/marketplace-search/` (behavior) · `components/tavern-storefront/` (behavior) |
+| `motive-model` | `content/docs/motive-model/four-actors/` (behavior) · `content/docs/motive-model/glossary/` (behavior) · `content/docs/motive-model/overview/` (behavior) |
 | `navigation` | `components/site-title/` (behavior) · `tooling/navigation/` (behavior) |
 | `theming` | `components/mermaid/` (behavior) · `components/site-title/` (behavior) · `styles/` (behavior) |
 
