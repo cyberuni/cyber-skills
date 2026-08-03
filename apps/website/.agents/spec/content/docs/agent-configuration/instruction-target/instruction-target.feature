@@ -55,16 +55,30 @@ Feature: instruction-target — the "Target" article
     Then it directs that case to description matching
 
   Scenario: each mechanism states where the target lives, who decides, and what it settles
-    Given the article's table of mechanisms
-    When the table is inspected
-    Then it lists file type matching, description matching, and prose matching
-    And each row states where the target lives, who decides it, and what it settles
+    Given an author comparing the three mechanisms
+    When the article's account of the mechanisms is read
+    Then it names file type matching, description matching, and prose matching
+    And for each it states where the target lives, who decides it, and what it settles
+
+  Scenario: a target needing a substantial body of instruction is isolated rather than scoped
+    Given an author whose single target needs a substantial body of instruction
+    When the article's account of the limit of specifying a target is read
+    Then it states that isolating that work in its own subagent or session beats scoping it
+    And it states that isolation removes the competing target from context
+    And it states that a scope statement instead asks the agent to honor a boundary on every turn
+
+  Scenario: a target needing a short instruction is bound by a scope statement in the body
+    Given an author whose single target needs a few lines of instruction inside an existing file
+    When the article's account of specifying a target is read
+    Then it states that the target is written into the instruction body
+    And it states that no harness setting enforces that boundary
 
   Scenario: the Artifact section states it is the only target with a path
     Given an instruction governing content written to a file
     When the Artifact section is read
     Then it states that Artifact is the only target that has a path
     And it states that this is what makes file type matching possible
+    And it states that this is the only target where one file can hold several targets
 
   Scenario: the User and Agent sections state that no path reaches them
     Given an instruction governing a reply or a brief
@@ -77,6 +91,20 @@ Feature: instruction-target — the "Target" article
     When the Agent section is read
     Then it states that a brief becomes the recipient's mission
     And it states that mail arrives at an agent that already has a mission
+    And it states that mail therefore competes for attention rather than setting the agenda
+    And it states that mail must therefore stand on its own, carrying the context the recipient needs to act without access to the sender's session
+
+  Scenario: the User section states that every purpose applies to it, not only Tone
+    Given an instruction for the user that carries a procedure rather than a rule about phrasing
+    When the User section is read
+    Then it states that every purpose applies to the User target, not only Tone
+    And it gives an example of a User instruction that is not about how something is said
+
+  Scenario: the User section states that the user can answer back
+    Given an instruction for the user that could leave a detail to a later turn
+    When the User section is read
+    Then it states that the user can respond, which no other target can
+    And it states that a brief must instead anticipate what would have been asked
 
   # ── A3 — Stop a unit bleeding ──
 
@@ -97,8 +125,8 @@ Feature: instruction-target — the "Target" article
     Then it recommends restating the target at the moment of production
 
   Scenario: the four arrangements are ranked by separation strength
-    Given the section on keeping targets apart
-    When its list of arrangements is inspected
+    Given an author comparing the arrangements that keep targets apart
+    When the article's list of arrangements is read
     Then it presents four arrangements
     And they are ordered by how strongly each separates the targets
     And each carries the cost of adopting it
@@ -124,6 +152,13 @@ Feature: instruction-target — the "Target" article
     When the article's treatment of coexistence is read
     Then it states that this case is a genuine conflict rather than a coexistence
 
+  Scenario: two units sharing a purpose do not compete on that account
+    Given two units that serve the same purpose
+    And the two units govern different targets
+    When the article's treatment of coexistence is read
+    Then it states that a block's purpose is unchanged by which target receives it
+    And it states that only a shared target puts two units in conflict
+
   # ── C2 — Diagnose over-reach ──
 
   Scenario: each of the three targets has its own section
@@ -133,8 +168,23 @@ Feature: instruction-target — the "Target" article
     And there is a section covering the User target
     And there is a section covering the Agent target
 
-  Scenario: two units sharing a purpose do not compete on that account
-    Given a user checking what an enabled unit actually governs
-    When the article's treatment of coexistence is read
-    Then it states that a block's purpose is unchanged by which target receives it
-    And it states that only a shared target puts two units in conflict
+  Scenario: each target names where its output goes, the forms it covers, and an example
+    Given a user placing an unexpected output among the three targets
+    When the article's account of the three targets is read
+    Then for each of Artifact, User, and Agent it states where that output goes
+    And for each it states the forms of output it covers
+    And for each it gives an example of a unit governing that target
+
+  Scenario: a unit bound to the target the user intended is diagnosed as drift
+    Given a user whose enabled unit names the target they intended it for
+    And that unit is shaping output for a second target late in the session
+    When the article's account of drift is read
+    Then it states that a scope statement made once competes against the examples the session accumulates
+    And it states that the longer the session runs the weaker that scope statement's position
+
+  Scenario: an instruction that names no target is placed on the user by default
+    Given a user whose enabled unit is shaping their chat replies
+    And that unit's body and description name no target
+    When the article's account of the User target is read
+    Then it states that everything the agent produces other than a file or a brief goes to the user
+    And it states that the User target is therefore always in force

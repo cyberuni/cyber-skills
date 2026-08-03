@@ -51,7 +51,14 @@ The most likely way this article decays is drifting toward reference as harnesse
 ### Prerequisites
 
 The reader should know **what agent configuration is** — that a harness loads instruction files that
-shape behavior. That is the section's entry page, `/agent-configuration/overview/`.
+shape behavior. That is the section's entry page, `/agent-configuration/overview/`, which sits
+upstream of this article in the section's own navigation.
+
+**This background is assumed, not instructed.** The article does not tell the reader to go and read
+the entry page first: a reader who arrives already carries that background, and one who does not is
+served by the section's navigation rather than by a reading instruction inside the article. So the
+declared prerequisite and the suite's "no section directs the reader to read another document first"
+say the same thing from two sides — the article assumes the entry page and demands nothing beyond it.
 
 Nothing else is assumed. In particular, the sibling **Purpose** article is **complementary, not
 prerequisite**: the two axes are orthogonal, so Target must stand alone for a reader who has not read
@@ -69,7 +76,8 @@ them buys has missed the north star.
 
 ### Required coverage
 
-The article is incomplete without each of these. The scenarios below check them.
+The article is incomplete without each of these, and **every row below is checked by at least one
+scenario** in the scenario map — a row no scenario reaches would be unenforced.
 
 **The idea**
 
@@ -141,8 +149,8 @@ half of the article they need.
 
 ```mermaid
 graph TD
-  S["reader arrives"] --> A["no prior reading required — every branch is open to any reader"]
-  A --> R{authoring config, or combining installed config?}
+  S["reader arrives"] --> E["assumed background: what agent configuration is — the section's entry page, and nothing beyond it"]
+  E --> R{authoring config, or combining installed config?}
 
   R -- combining --> W{predicting a clash, or diagnosing one?}
   W -- predicting --> Z{do the two units govern the same output?}
@@ -162,6 +170,10 @@ graph TD
   D -- "does this file do two jobs?" --> K{does one file mix several targets?}
   D -- "which target is this?" --> H{does the target have a path?}
   D -- "it keeps bleeding" --> P{can the artifact be specified in a brief?}
+  D -- "how much instruction does this target need?" --> N{is that body of instruction substantial?}
+
+  N -- yes --> N1["isolate it — its own subagent or session, with nothing to compete against"]
+  N -- no --> N2["write the target into the instruction body"]
 
   K -- yes --> K1{would splitting copy more than it separates?}
   K1 -- no --> K2["split into single-target units — description matching loads each"]
@@ -183,7 +195,7 @@ graph TD
 
 | Edge          | Path (Given)                                                                           | Scenario                                                                |
 | ------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `A`           | any reader, whatever they have read before _(convergence — the outcome does not vary)_ | `the article stands alone without prerequisite reading`                 |
+| `E`           | a reader carrying the section's entry page and nothing else                            | `the article stands alone without prerequisite reading`                 |
 | `R:authoring` | an author holding one file that shapes several outputs                                 | `the article names separation by target as the seam that splits config` |
 | `K:yes`       | a file holding content governed by more than one target                                | `a mixed-target file routes to a separate unit or to prose matching`    |
 | `B:no → L1`   | an author unfamiliar with the term                                                     | `the article defines Target before naming any mechanism`                |
@@ -196,9 +208,13 @@ graph TD
 | `K:no → M:yes` | a single-target file on a harness with glob support    | `a glob-capable harness routes to file type matching`                                   |
 | `K:no → M:no`  | a single-target file on a harness without glob support | `a harness without globs routes to description matching`                                |
 | `M`            | an author comparing the three mechanisms               | `each mechanism states where the target lives, who decides, and what it settles`        |
+| `N:yes`        | a target whose rules are a substantial body of instruction | `a target needing a substantial body of instruction is isolated rather than scoped`  |
+| `N:no`         | a target whose rules are a few lines inside an existing file | `a target needing a short instruction is bound by a scope statement in the body`   |
 | `H:yes`        | an instruction governing a written file                | `the Artifact section states it is the only target with a path`                         |
 | `H:no`         | an instruction governing a reply or a brief            | `the User and Agent sections state that no path reaches them`                           |
 | `H:no`         | an instruction governing another agent                 | `the Agent section distinguishes a brief from mail by the recipient's standing mission` |
+| `H:no`         | an instruction for the user carrying a procedure rather than a phrasing rule | `the User section states that every purpose applies to it, not only Tone` |
+| `H:no`         | an instruction for the user that could defer a detail to a later turn | `the User section states that the user can answer back`                       |
 
 ### A3 — Stop a unit bleeding
 
@@ -216,13 +232,16 @@ graph TD
 | `R:combining` | a user holding two units whose rules look contradictory | `the article addresses the user combining units, not only the author writing them` |
 | `Z:different` | two units governing different outputs                   | `two units on different targets are shown coexisting`                              |
 | `Z:same`      | two units governing the same output                     | `two units on the same target are named a real conflict`                           |
-| `Z`           | a user checking what an enabled unit actually governs   | `two units sharing a purpose do not compete on that account`                       |
+| `Z`           | two units serving the same purpose on different targets | `two units sharing a purpose do not compete on that account`                       |
 
 ### C2 — Diagnose over-reach
 
-| Edge          | Path (Given)                                       | Scenario                                                  |
-| ------------- | -------------------------------------------------- | --------------------------------------------------------- |
-| `W:diagnosing` | a user whose enabled unit shapes unintended output | `each of the three targets has its own section`          |
+| Edge                     | Path (Given)                                                 | Scenario                                                                       |
+| ------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `W:diagnosing`           | a user whose enabled unit shapes unintended output           | `each of the three targets has its own section`                                |
+| `V`                      | a user placing an unexpected output among the three targets  | `each target names where its output goes, the forms it covers, and an example` |
+| `V:"the one you intended"` | a unit whose named target is the one the user intended     | `a unit bound to the target the user intended is diagnosed as drift`           |
+| `V:"another target"`     | a unit whose body and description name no target             | `an instruction that names no target is placed on the user by default`         |
 
 ## References
 
