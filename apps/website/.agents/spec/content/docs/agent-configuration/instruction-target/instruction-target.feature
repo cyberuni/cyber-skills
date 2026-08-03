@@ -136,12 +136,13 @@ Feature: instruction-target — the "Target" article
     And it states that producing early works because less output for another target has accumulated
     And it states that its cost is nothing to apply, but that it depends on that foreknowledge
 
-  Scenario: scoping the instruction is named the weakest arrangement of the four
+  Scenario: scoping the instruction is reserved for a session that discovers its artifacts as it runs
     Given an author whose session discovers as it runs which artifacts it will produce
     When the article's account of the arrangements is read
-    Then it states that scoping the instruction separates the targets least of the four
+    Then it reserves scoping the instruction for a session that does not know at the outset which artifact it will produce
+    And it states that scoping the instruction separates the targets least of the four
     And it states that a scope statement is exactly what accumulation erodes
-    And it states that it is nonetheless the only arrangement asking nothing of the author at the time of writing
+    And it states that it is nonetheless the only arrangement asking nothing at production time
 
   Scenario: the four arrangements are ranked by separation strength
     Given an author comparing the arrangements that keep targets apart

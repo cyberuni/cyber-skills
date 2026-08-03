@@ -234,7 +234,7 @@ graph TD
 | `P:yes`                     | an artifact that can be specified in a brief                       | `a separate session is reserved for an artifact a brief can specify`         |
 | `P:no → P3:yes`             | an artifact that cannot be specified in a brief                    | `restating the target is reserved for an artifact a brief cannot specify`    |
 | `P:no → P3:no → P5:yes`     | a session that knows at the outset which artifact it will produce  | `producing early is reserved for a session that knows its artifact upfront`  |
-| `P:no → P3:no → P5:no`      | a session that discovers as it runs which artifacts it will produce | `scoping the instruction is named the weakest arrangement of the four`      |
+| `P:no → P3:no → P5:no`      | a session that discovers as it runs which artifacts it will produce | `scoping the instruction is reserved for a session that discovers its artifacts as it runs` |
 | `P`                         | an author comparing the arrangements                               | `the four arrangements are ranked by separation strength`                    |
 
 ### C1 — Predict whether two configs will fight
