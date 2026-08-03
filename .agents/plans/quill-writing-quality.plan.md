@@ -3,10 +3,10 @@ cr-ref: quill-writing-quality
 project-spec: plugins/quill
 status: draft
 todos:
-  - content: Retract the recurrence criterion at all six live sites (impl bar, spec bar x2, doc-impl-bar README, key-point lists, and the instruction-target suite)
-    status: pending
+  - content: Retract the recurrence criterion at all eleven live sites across nine files (see the corrected inventory in ## Done means)
+    status: in_progress
   - content: Re-partition the two tiers by what is actually decidable mechanically — most integrity criteria are judgment, not inspection
-    status: pending
+    status: in_progress
   - content: Add declaration-agreement — a passage's presuppositions must match the spec's declared audience and prerequisites
     status: pending
   - content: Spec the judged tier — a second evaluation instrument beside static inspection
@@ -161,26 +161,50 @@ above require.
 - **Fixing the Target article.** It is the driving case, not the deliverable; its own CR is
   `website-target-doc-spec`, still parked at its spec gate.
 
-## Open decisions — to settle in explore
+## Resolved decisions — settled with the owner, do not relitigate
 
-1. **Reuse ACED's rubric machinery or build quill's own?** ACED already has inline `@rubric`
-   scenarios, N runs, thresholds, and a case-judge. The judged tier is the same shape. Reuse is the
-   obvious call and the reason to look twice: ACED grades *agent configuration* against simulated
-   behavior, while this grades *prose* against a reader — the runner may transfer where the eval
-   model does not.
-2. **Where the catalog lives** — inside `quill-builder-impl`, or its own loaded-by-name bar. It is
-   long, it will grow, and both faces read it.
-3. **Does a judged finding block?** A graded tier that hard-blocks will be routed around. Options:
-   block on confirmed-and-undefended only; advisory-until-calibrated; or leash-scoped by blast radius
-   as SDD does elsewhere.
-4. **Whether `quill-judge` runs both tiers or a second agent runs the judged one.** One agent is
-   simpler; two keeps a boolean instrument from being contaminated by a graded one.
+1. **The judged tier is the existing bar, graded.** `quill-builder-impl` stops being a boolean
+   inspection bar and carries both instruments: one enumeration rule (inspection) plus the defect
+   catalog (judgment). No new bar, no new file — both faces already load it. Split the catalog out
+   only when one read can no longer hold it. *This collapses old decisions 2 and 4 into one.*
+
+   The cheaper alternative — graded `@rubric` scenarios inside each doc `.feature` — is rejected on a
+   ground stronger than the two the brief stated: a catalog entry carries **no per-document
+   content**, so it is a *bar*, not a *contract*, and authoring it per suite would duplicate it 76
+   times over. SDD already has the place for a per-document invariant, and this is it.
+
+2. **Borrow ACED's blind two-pass asymmetry, not its threshold plumbing.** Pass 1 simulates a reader
+   on one declared CFG path, blind to the catalog; pass 2 scores that transcript
+   (`aced-case-judge`). This is the answer to the false-positive asymmetry in `## Cost`: a defect a
+   blind reader stumbled on is evidence about a reader, not an opinion about prose. Cost is a blind
+   dispatch per document per run — accepted.
+
+3. **Advisory until calibrated, then blocking on confirmed-and-undefended.** Calibration (todo 6) is
+   what *earns* an entry its blocking power, which is precisely what stops it being the todo dropped
+   under time pressure. Two states to spec, and a document may ship with an open finding during the
+   advisory window.
+
+**Still open (todo 4's business, not a gate on todos 1–2):** whether `quill-judge` runs both
+instruments or a second agent runs the judged one.
 
 ## Done means
 
-1. The recurrence criterion appears nowhere — verified by search, not by memory. Current live sites:
-   `quill-builder-impl` (criterion + key point), `quill-builder-spec` (the scenario-map rule + its
-   key point), `doc-impl-bar/README.md`, and `instruction-target.feature:126`.
+1. The recurrence criterion appears nowhere — verified by search, not by memory.
+
+   **The site inventory below corrects this brief: eleven mentions across nine files, not six.**
+   `grep -rn "exactly one place"` finds only seven of them; the other four are phrased as
+   *Restatement* and are invisible to that search. Search both terms.
+
+   | File | Sites | State |
+   |---|---|---|
+   | `apps/website/.agents/spec/.../instruction-target.feature` | :126 | ✅ `ee2666fa` |
+   | `.agents/specs/quill/design/doc-eval-model.md` | :29 + the all-inspection framing | ✅ |
+   | `.agents/specs/quill/sdd-roles/doc-impl-bar/README.md` | :15, :23, :40 | ✅ |
+   | `plugins/quill/skills/quill-builder-impl/SKILL.md` | criterion + key point 1 | pending |
+   | `plugins/quill/skills/quill-builder-impl/README.md` | :9, :18 | pending |
+   | `plugins/quill/skills/quill-builder-spec/SKILL.md` | the quantifier rule + its gherkin example + key point 7 | pending |
+   | `plugins/quill/agents/quill-judge.md` | :57 | pending |
+   | `plugins/quill/agents/quill-doc-writer.md` | :30 | pending |
 2. Every criterion sits in the tier that matches how its verdict is reached, and the bar says which.
 3. The catalog separates documents this repo already accepts from documents it already considers
    weak, with the false-positive rate reported — not asserted.
@@ -198,29 +222,57 @@ standalone correction. The second is cheaper and does not depend on this CR at a
 
 ## NEXT — resume here
 
-**Do this first, and it does not need the rest of this CR.** Strike
-`And it makes that claim in exactly one place, later passages referring back` from
-`apps/website/.agents/spec/content/docs/agent-configuration/instruction-target/instruction-target.feature:126`.
-It is the one site of the retracted criterion with a deadline: `website-target-doc-spec` is parked at
-its spec gate, and a freeze locks the criterion into a suite. See `## Ordering hazard` above.
+**The deadline strike is landed** (`ee2666fa`) and `website-target-doc-spec` can now take its spec
+gate without freezing the disproven criterion.
 
-**Then todos 1–2 as one explore pass**, via `start-mission` against `plugins/quill`. They are one
-piece of work: retracting the recurrence criterion leaves the craft defects homeless, and
-re-partitioning the tiers is what decides where they land. Retract at all six live sites — verify by
-`grep -rn "exactly one place"`, not from memory.
+**The spec side of todos 1–2 is landed.** `doc-eval-model.md` and `doc-impl-bar/README.md` now carry
+the two-instrument partition, the retraction with its warrant, and the judged instrument's contract.
 
-### Blocking decisions
+**Resume at the impl side of todos 1–2** — the five pending rows in `## Done means`, all under
+`plugins/quill/`. They are not deletions: each site needs a *different* replacement, listed below.
+Then todo 3 (declaration-agreement) and todo 5 (author the catalog) — the criteria migrated to
+judgment are currently named in the spec but have no catalog to live in yet.
 
-1. **Reuse ACED's rubric machinery, or build quill's own?** Same shape (inline rubric, N runs,
-   thresholds, case-judge), but ACED grades agent configuration against simulated behavior while this
-   grades prose against a reader — the runner may transfer where the eval model does not.
-2. **Is a judged tier warranted at all?** The cheaper design is graded scenarios inside the doc
-   `.feature`. The CR must defeat it on two stated grounds (a catalog entry applies to every document;
-   a per-suite scenario can only encode a defect someone already anticipated). If those do not hold,
-   this CR shrinks to a criteria correction — decide before building.
-3. **Does a judged finding block?** Weigh with the asymmetry stated in `## Cost`: a false positive is
-   costlier than a miss, because it teaches the producer to ignore the judge.
-4. **Where the catalog lives** — inside `quill-builder-impl`, or its own loaded-by-name bar.
+### Per-site replacements for the pending five
+
+- **`quill-builder-impl/SKILL.md`** — the largest edit. The recurrence criterion goes; term-class and
+  incompatible-claims move from *the bar* to *the catalog* within the same file; the enumeration rule
+  stays as the one inspection criterion. Key point 1 currently reads "four document-scoped criteria"
+  and must state the partition instead.
+- **`quill-builder-spec/SKILL.md`** — see `## The quantifier's replacement` below. Do not simply
+  delete the rule; the problem it names is real and its fix changes.
+- **`quill-judge.md:57` / `quill-doc-writer.md:30`** — the *Restatement* entry, and the instruction to
+  "fix a restated claim by making the later passage refer back". That prescribed fix is the **bare
+  cross-reference** defect and now fires rather than resolves.
+- **`quill-builder-impl/README.md:9, :18`** — the four-defect list and the cross-reference to the
+  spec bar's place-count rule.
+
+### Still open
+
+**Does `quill-judge` run both instruments, or a second agent run the judged one?** One agent is
+simpler; two keeps a boolean instrument from being contaminated by a graded one. Todo 4's business —
+it does not gate the retraction.
+
+## The quantifier's replacement — path coverage, not a count
+
+`quill-builder-spec`'s rule *"Quantify a claim that more than one passage could carry"* has two
+halves, and only one is disproven. The remedy (`in exactly one place`) falls. The **problem** it
+names survives: `Then it states X` is satisfied by X appearing anywhere, so a coverage row whose
+claim is load-bearing across sections is under-specified.
+
+The correct quantifier is **path coverage**, and the driving case hands it over. A reader arriving at
+*Composing configuration* from the sidebar never read the lead — so the question was never *how many
+places* carry the claim, but *whether every path that needs it reaches it*:
+
+```gherkin
+Then it presents two values that cannot both be one house style
+And it states that contrast on each path the control flow routes to it
+```
+
+This is strictly stronger than what it replaces, it stays **inspection** (CFG branches are in the
+spec, passages are in the document — a comparison), and it freezes nothing on the never-freeze list.
+It also inverts the retracted rule's verdict on the Target article: the installer decision table was
+not a redundancy to be collapsed, it was the sidebar reader's only statement of the rule.
 
 ### Findings the commits will not show
 
