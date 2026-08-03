@@ -12,7 +12,7 @@ todos:
   - content: Author the .feature — boolean scenarios, quill static-inspection
     status: completed
   - content: Strike the unsupported quantifier clause from the suite before the gate freezes it
-    status: pending
+    status: completed
   - content: Spec gate — cold spec-judge, freeze, ledger gate line
     status: pending
   - content: Handoff — Warden placement pass, commit, follow-up drain
@@ -213,26 +213,25 @@ diagnose path is routed but only thinly frozen; the spec gate should decide whet
 
 ## NEXT — resume here
 
-**Do this first.** Strike one clause from
-`apps/website/.agents/spec/content/docs/agent-configuration/instruction-target/instruction-target.feature:126`
-— `And it makes that claim in exactly one place, later passages referring back`. It has no empirical
-warrant (see `.research/documentation-craft/conclusion.md` §1) and it is the only line here carrying
-a deadline: **the spec gate freezes it if the gate runs first.** One-line edit, independent of
-everything else, no dependency on the quill CR.
+**Todo 5 is done** — the clause was struck in `ee2666fa`, before this brief was last written.
+Verified by search across the whole suite and both quill bars: no recurrence phrasing survives here
+in any of its four wordings. **This CR is now decoupled from `quill-writing-quality`** and its gate
+can run independently.
 
-**Then the spec gate (todo 6).** Still blocked on authorization, not on work: it needs a cold
-`sdd-spec-judge` for grader independence (ADR-0016), and this session may not spawn subagents
-unless the user asks. Nothing is frozen and `status` stays `draft` until it runs.
+**The spec gate (todo 6) is the only remaining work, and it is blocked on authorization, not on
+drafting:** it needs a cold `sdd-spec-judge` for grader independence (ADR-0016), and this session may
+not spawn subagents unless the user asks. Nothing is frozen and `status` stays `draft` until it runs.
 
-### Blocking decisions
+**One thing changed underneath this CR:** the root website spec is now `status: implemented` (written
+by `quill-docs-section`, which landed six page nodes under a new `content/docs/quill/` grouping).
+This node still sits at `draft`, so this CR moves the root spec off `implemented` when it gates —
+expected, but the gate should say so rather than let the status flip silently.
 
-- **Does the gate wait for the quill CR?** `quill-writing-quality` will retract the recurrence
-  criterion the suite currently encodes. Striking the one clause above decouples the two; if that
-  strike happens, this gate can run independently. If it does not, freezing now locks in a criterion
-  we already know is wrong.
-- **V1/V2 have no scenario.** The diagnose path added to the CFG this session routes use case C2 but
-  freezes nothing. Either add a scenario or accept the path as unenforced — a spec-gate call, not a
-  drafting one.
+### Blocking decision left for the gate
+
+- **V1/V2 have no scenario.** The diagnose path added to the CFG routes use case C2 but freezes
+  nothing. Either add a scenario or accept the path as unenforced — a spec-gate call, not a drafting
+  one.
 
 ### Findings the commits will not show
 
