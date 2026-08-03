@@ -11,6 +11,8 @@ todos:
     status: completed
   - content: Author the .feature — boolean scenarios, quill static-inspection
     status: completed
+  - content: Strike the unsupported quantifier clause from the suite before the gate freezes it
+    status: pending
   - content: Spec gate — cold spec-judge, freeze, ledger gate line
     status: pending
   - content: Handoff — Warden placement pass, commit, follow-up drain
@@ -139,16 +141,117 @@ the hub is the page that owns the relationship:
 2. **`overview.md` links `../instructions.md`, which does not exist.** It is also the section's only
    relative-path internal link; every other one uses route form.
 
-## NEXT
+## Correction: the mixed-target file does not belong to prose matching
 
-Spec gate (todo 5). **Blocked on authorization**, not on work: the gate needs a cold `sdd-spec-judge`
-for grader independence (ADR-0016), and the conductor session may not spawn subagents unless the user
-asks. Nothing is frozen and `status` stays `draft` until it runs.
+Caught by the user, post-`## The contract now holds`. The article routed a **mixed-target file** to
+prose matching, and the spec encoded the same error in four places (T10, A1's outcome, CFG node
+`K1`, and the `a mixed-target file routes to splitting or prose matching` scenario).
 
-The article and its contract are now in agreement (20/20 by inline check), so the gate has a clean
-tree to judge. Two caveats for whoever runs it:
+It is wrong because **description matching matches the agent's situation, not the file's path** —
+which the article itself states one paragraph earlier ("Description matching reaches what a path
+cannot") and then forgets. Writing a TypeScript block inside an MDX page is a recognizable
+situation, so a TypeScript convention loads there without any path being involved.
 
-- **The scenario checks were run inline by the same session that authored both sides.** That is not
-  the independence the gate requires — a cold judge must re-derive them.
-- The article carried **uncommitted structural edits** throughout explore. Those are now committed
-  alongside the revision, so the churn that argued for delaying the freeze has settled.
+The corrected discriminator, now in the CFG as a decision node rather than a single outcome:
+**would splitting copy more than it separates?** No → split into single-target units, each loaded by
+description matching. Yes → one file, branched by prose matching (the `article-writer-voice` case:
+six shared rules, two registers). File granularity is an argument against the *glob*, never an
+argument for prose matching.
+
+Both sides corrected together; `pnpm verify` 35/35. Note this landed **after** the 20/20 inline
+check above, so that count no longer describes the current pair — another reason the gate's cold
+re-derivation is owed.
+
+## Cold `quill-judge` round — the first live run of the integrity bar
+
+Dispatched cold with the user's authorization; it read no prior verdict. **20/20 scenarios PASS**
+with a located passage named for each, and `IMPLEMENTATION_PASS: false` on one integrity `BLOCKER`.
+
+- **BLOCKER (fixed)** — the coexistence/conflict rule landed twice: L8 (`one of them has to win`)
+  and the installer decision table (`a real conflict — one has to win`), the second re-narrating
+  rather than referring back. This is the **third** recurrence of that claim duplicating; `00887022`
+  removed an earlier one. Fixed by anaphora — the section now applies *the rule from the opening* and
+  the table reads as a lookup — since deleting the table would strand scenarios 17 and 18.
+- **Second finding (fixed, ranked PLAUSIBLE)** — the Artifact section's trailing clause re-narrated
+  the path-cannot-resolve claim from the mechanisms section. Now a back-reference.
+- **Two content gaps (fixed)** — `Tone` was relied on at L68 before being glossed; the
+  glob-capable → file type matching route existed only as the *complement* of description matching's
+  four-case list, so an edit to that list would have silently broken it. Both now affirmative.
+- **Architect observation (acted on)** — the suite itself invited the duplication: one scenario binds
+  the coexistence claim to the opening while three bind assertions to "the article's treatment of
+  coexistence", and nothing forced those to be one passage. The claim is now quantified in the
+  contract (`in exactly one place, later passages referring back`), which moves it off the bar and
+  into the frozen suite where it belongs.
+- **Architect observation (open, not acted on)** — **T11** (the limit of specifying: isolation beats
+  scoping) and **T7**'s "the only target that can answer back" are delivered by the article but
+  covered by no scenario, so a revision could drop either silently. Adding scenarios is spec work the
+  spec gate should judge; left for that gate.
+
+The judge also recorded two rejected term-drift candidates (`carry`, `reach`) with its reasoning, so
+the negatives are auditable rather than merely absent.
+
+## CFG errors (three, found by the user)
+
+1. **Use case C2 was unrouted** — `R:combining` led only to `Z` (predicting a clash). Nothing in the
+   graph reached "an enabled config is shaping output I did not intend", so the CFG spent 4 of the 5
+   enumerated entry points. Caught by the completeness rule added to `quill-builder-spec` this
+   session (*the coverage table enumerates, the CFG must spend it*) — its first catch on a real spec.
+   Fixed by forking the combining branch: `W{predicting a clash, or diagnosing one?}`, with
+   `V{which target does the unit actually govern?}` → drifting / never scoped.
+2. **`C1`/`C2` denoted two different things** — CFG nodes (*lead defines* / *lead motivates*) and
+   use cases (*predict a clash* / *diagnose over-reach*), with the A1 scenario map referencing
+   `B:no → C1` two screens under a `### C1 —` heading meaning the other one. Nodes renamed `L1`/`L2`.
+3. **`A` was a decision node with one edge** — *"does the article require prior reading?"* had only a
+   `no` branch, and asked about the article rather than about the reader. Now a plain convergence
+   node.
+
+Also: the A2 map keyed *"an author comparing the three mechanisms"* to `K` (does one file mix
+targets?) rather than `M`, the node where the mechanism is actually chosen.
+
+**Open** — `V1`/`V2` are new outcomes with no scenario. C2 still has a single scenario, so the
+diagnose path is routed but only thinly frozen; the spec gate should decide whether it earns its own.
+
+## NEXT — resume here
+
+**Do this first.** Strike one clause from
+`apps/website/.agents/spec/content/docs/agent-configuration/instruction-target/instruction-target.feature:126`
+— `And it makes that claim in exactly one place, later passages referring back`. It has no empirical
+warrant (see `.research/documentation-craft/conclusion.md` §1) and it is the only line here carrying
+a deadline: **the spec gate freezes it if the gate runs first.** One-line edit, independent of
+everything else, no dependency on the quill CR.
+
+**Then the spec gate (todo 6).** Still blocked on authorization, not on work: it needs a cold
+`sdd-spec-judge` for grader independence (ADR-0016), and this session may not spawn subagents
+unless the user asks. Nothing is frozen and `status` stays `draft` until it runs.
+
+### Blocking decisions
+
+- **Does the gate wait for the quill CR?** `quill-writing-quality` will retract the recurrence
+  criterion the suite currently encodes. Striking the one clause above decouples the two; if that
+  strike happens, this gate can run independently. If it does not, freezing now locks in a criterion
+  we already know is wrong.
+- **V1/V2 have no scenario.** The diagnose path added to the CFG this session routes use case C2 but
+  freezes nothing. Either add a scenario or accept the path as unenforced — a spec-gate call, not a
+  drafting one.
+
+### Findings the commits will not show
+
+- **The cold judge round already ran** (d308d63c reconciles what it found). 20/20 scenarios PASS with
+  a located passage named for each; the one `BLOCKER` was an integrity finding, now fixed. Do not
+  re-run it as if the article were unjudged — re-run it to confirm the BLOCKER cleared.
+- **That judge finding was half a false positive**, and the lesson is load-bearing for this CR: the
+  two passages sat on different CFG branches, so a reader arriving at *Composing configuration* from
+  the sidebar had never read the lead. The prescribed anaphora fix made the article worse for that
+  reader. The article now restates rather than points.
+- **T11 and part of T7 are delivered but uncovered** by any scenario — a revision could drop either
+  silently. Flagged by the judge as an architect observation.
+- **Two cross-page defects remain parked and unowned** (`overview.md` never links Target; it links a
+  nonexistent `../instructions.md`). Recorded in the section grouping README until `overview` is
+  specified.
+
+### Do not relearn
+
+`## Settled (explore)` holds the granularity decision, the depth departure, and the node's shape.
+`## Correction: the mixed-target file does not belong to prose matching` and `## CFG errors` hold
+corrections already applied — they are history, not open work.
+

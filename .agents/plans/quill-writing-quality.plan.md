@@ -196,18 +196,51 @@ afterwards costs a re-freeze.
 Either land todo 1 before that gate runs, or strike that one clause from the suite now as a
 standalone correction. The second is cheaper and does not depend on this CR at all.
 
-## NEXT
+## NEXT — resume here
 
-Todo 1, but read the ordering hazard above first — the one-clause strike in
-`instruction-target.feature` is worth doing immediately and independently, because it is the only
-part of this CR with a deadline attached.
+**Do this first, and it does not need the rest of this CR.** Strike
+`And it makes that claim in exactly one place, later passages referring back` from
+`apps/website/.agents/spec/content/docs/agent-configuration/instruction-target/instruction-target.feature:126`.
+It is the one site of the retracted criterion with a deadline: `website-target-doc-spec` is parked at
+its spec gate, and a freeze locks the criterion into a suite. See `## Ordering hazard` above.
 
-Then todos 1–2 together. Nothing here is frozen and no quill spec node has been touched yet, and the
-corrections want a single explore pass with the new tier: correcting the integrity criteria without
-somewhere for the craft defects to go would leave them homeless, and re-partitioning the tiers is
-what decides where "somewhere" is.
+**Then todos 1–2 as one explore pass**, via `start-mission` against `plugins/quill`. They are one
+piece of work: retracting the recurrence criterion leaves the craft defects homeless, and
+re-partitioning the tiers is what decides where they land. Retract at all six live sites — verify by
+`grep -rn "exactly one place"`, not from memory.
 
-Start by reading `.research/documentation-craft/conclusion.md` in full. The CR's whole argument rests
-on it, and two of its load-bearing claims are marked **medium** confidence — that a judge can carry
-craft (our inference, not a finding) and that cross-page transfer holds (inferred from within-text
-results). Do not let the explore pass promote either to settled without saying so.
+### Blocking decisions
+
+1. **Reuse ACED's rubric machinery, or build quill's own?** Same shape (inline rubric, N runs,
+   thresholds, case-judge), but ACED grades agent configuration against simulated behavior while this
+   grades prose against a reader — the runner may transfer where the eval model does not.
+2. **Is a judged tier warranted at all?** The cheaper design is graded scenarios inside the doc
+   `.feature`. The CR must defeat it on two stated grounds (a catalog entry applies to every document;
+   a per-suite scenario can only encode a defect someone already anticipated). If those do not hold,
+   this CR shrinks to a criteria correction — decide before building.
+3. **Does a judged finding block?** Weigh with the asymmetry stated in `## Cost`: a false positive is
+   costlier than a miss, because it teaches the producer to ignore the judge.
+4. **Where the catalog lives** — inside `quill-builder-impl`, or its own loaded-by-name bar.
+
+### Findings the commits will not show
+
+- **The tier partition in this brief was wrong once already** and is corrected in 6262c73e: the
+  integrity criteria are not mechanically decidable, so most of the shipped integrity bar becomes the
+  seed of the defect catalog rather than a peer of it. Anyone resuming should treat "add a tier" as an
+  understatement of the change.
+- **Two of the research conclusion's load-bearing claims are marked medium confidence** — that a judge
+  can carry craft (our inference from the sources' 1990 vintage, not a finding) and that within-text
+  coherence results transfer across pages. Do not let an explore pass promote either to settled
+  without saying so.
+- **The dossier's citation was itself corrected** (df705cf2): the warrant is Experiment II's
+  controlled replication at Δ137 ms, p<.001 — not the 19 ms null, which is Experiment III and
+  non-significant. Cite E03; the null corroborates and cannot carry a design decision.
+- **Calibration is a gating prerequisite**, not a follow-up (todo 5). It is the empirical test the
+  "a judge can do it" inference lacks, and the first thing that will be dropped under time pressure.
+
+### Do not relearn
+
+`## What the research changed` and `## The design` hold settled ground, and
+`.research/documentation-craft/conclusion.md` is the source they compress — read it before reopening
+any of it. `## Scope` records what is deliberately out: cross-page ordering, foreshadow marking, and
+claim overlap between articles all belong to the formation loop, not here.
