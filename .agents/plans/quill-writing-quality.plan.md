@@ -10,7 +10,7 @@ todos:
   - content: "Add declaration-agreement — folded into the catalog as entry C1 (declaration mismatch), not a separate criterion"
     status: completed
   - content: Spec the judged tier — a second evaluation instrument beside static inspection
-    status: in_progress
+    status: completed
   - content: Author the defect catalog — named, citable bad-writing shapes, each with a near-miss that must NOT fire
     status: completed
   - content: Calibrate against the corpus before the tier gates — known-good and known-weak documents
@@ -199,6 +199,8 @@ instruments or a second agent runs the judged one.
    |---|---|---|
    | `apps/website/.agents/spec/.../instruction-target.feature` | :126 | ✅ `ee2666fa` |
    | `.agents/specs/quill/design/doc-eval-model.md` | :29 + the all-inspection framing | ✅ |
+| `.agents/specs/quill/glossary.md` | :18 — *"one claim per place"*, a 12th phrasing | ✅ |
+| `.agents/specs/quill/spec.md`, `design/README.md`, `sdd-roles/judge/README.md` | the all-inspection framing | ✅ |
    | `.agents/specs/quill/sdd-roles/doc-impl-bar/README.md` | :15, :23, :40 | ✅ |
    | `plugins/quill/skills/quill-builder-impl/SKILL.md` | criterion + key point 1 | ✅ |
    | `plugins/quill/skills/quill-builder-impl/README.md` | :9, :18 | ✅ |
@@ -222,46 +224,41 @@ standalone correction. The second is cheaper and does not depend on this CR at a
 
 ## NEXT — resume here
 
-**The deadline strike is landed** (`ee2666fa`) and `website-target-doc-spec` can now take its spec
-gate without freezing the disproven criterion.
+**Todos 1–5 are done.** Retraction (twelve sites, not six — see `## Done means`), the two-instrument
+re-partition, the nine-entry catalog, and the judged tier's mechanics all landed, spec side and impl
+side, with `pnpm verify` green at each commit.
 
-**The spec side of todos 1–2 is landed.** `doc-eval-model.md` and `doc-impl-bar/README.md` now carry
-the two-instrument partition, the retraction with its warrant, and the judged instrument's contract.
+**The CR is blocked on two things this session cannot do, and one input only the team can give.**
 
-**Todos 1–2 are done** across all eleven sites — spec side in `41d3f9d2`, impl side in the commit
-after it. Verified by searching both `exactly one place` *and* `restatement`; every surviving hit is
-a retraction statement, a plan, or the research dossier.
+1. **Todo 6 — calibration needs a cold agent.** The judged pass's first context must be *blind to the
+   catalog*. Any session that authored the catalog is disqualified from being its own blind reader,
+   so calibration cannot be self-run: it needs a dispatched subagent. This session was not authorized
+   to spawn one.
+2. **Todo 6 also needs the corpus named by the team.** The procedure in `quill-builder-impl` says so
+   in as many words — *a judge that picks its own corpus has chosen the evidence that suits it*.
+   Known-good is available (the Target article: 20/20, reviewed, reconciled). **Known-weak is not**,
+   and picking one myself would violate the rule I just wrote.
+3. **Todo 7 — the spec gate needs a cold spec-judge** for grader independence (ADR-0016), and its
+   ratification line is a human write that cannot be relayed
+   (`project_sdd_relayed_ratification_seam`). Both are outside what this session may do alone.
 
-**Todo 5 is done — the catalog is authored**, nine entries in three groups, in
-`quill-builder-impl/SKILL.md` (209 lines, in family with `quill-builder-spec`; the split threshold is
-not reached). Todo 3 folded in as entry **C1, declaration mismatch** — the spec's audience and
-prerequisites are the catalog's *input*, so a separate declaration-agreement criterion would put one
-criterion in two places.
+**Todo 8's Warden placement pass** is likewise a subagent. What is already done: the ledger is open
+at `.agents/specs/quill/ledger/quill-writing-quality.9f2b1c.jsonl` with a derived leash, and every
+unit is committed.
 
-**Resume at todo 6 — calibration. It is the gate on everything else.** Every entry is advisory until
-run against documents this repo already accepts and already considers weak, with a false-positive
-rate **reported rather than asserted**. Nothing blocks until that runs, so the catalog currently has
-no teeth by design. Suggested corpus: the Target article (known-good — 20/20 with one integrity
-finding that was half a false positive) against a document the team already considers weak. An entry
-that fires on an accepted document is miscalibrated and stays advisory.
+**So the honest state is: the CR is complete up to its gates, and parked at them.** Nothing here is
+frozen, `status` stays `draft`, and the catalog ships non-blocking — so the parked state is safe to
+sit in indefinitely.
 
-**The catalog is unrun.** Nine entries and their near-misses are reasoned, not measured. Group A is
-the one to watch: its findings are *negatives* over a named reader path, which is the hardest thing
-to evidence and the easiest to fabricate.
+### Findings from the closing pass
 
-### What todo 4 still owes
-
-The tier's contract is written — blind two-pass, deliberate-violation defense,
-advisory-until-calibrated, detect-never-certify — across `doc-eval-model.md`,
-`doc-impl-bar/README.md`, and the shipped bar. What remains is the open decision below, and the
-mechanics calibration will force: how a producer *records* a deliberate-violation rationale so the
-judge can read it, and where a per-entry calibration verdict is stored.
-
-### Still open
-
-**Does `quill-judge` run both instruments, or a second agent run the judged one?** One agent is
-simpler; two keeps a boolean instrument from being contaminated by a graded one. Todo 4's business —
-it does not gate the retraction.
+- **The judge would have blocked on every advisory finding** (`efb36742`). Its aggregation rule set
+  `IMPLEMENTATION_PASS` false on any evidenced integrity finding, and folding the catalog into that
+  pass silently made all nine entries blocking on the day they shipped. Worth remembering that
+  "advisory" has to be enforced at the *aggregator*, not only declared at the entry.
+- **The site count went from six to eleven to twelve.** `glossary.md` defined the integrity pass as
+  *"one claim per place"* — a phrasing neither `exactly one place` nor `restatement` finds. A
+  criterion gets paraphrased everywhere it is summarized.
 
 ## The quantifier's replacement — path coverage, not a count
 
