@@ -4,9 +4,9 @@ project-spec: plugins/quill
 status: draft
 todos:
   - content: Retract the recurrence criterion at all eleven live sites across nine files (see the corrected inventory in ## Done means)
-    status: in_progress
+    status: completed
   - content: Re-partition the two tiers by what is actually decidable mechanically — most integrity criteria are judgment, not inspection
-    status: in_progress
+    status: completed
   - content: Add declaration-agreement — a passage's presuppositions must match the spec's declared audience and prerequisites
     status: pending
   - content: Spec the judged tier — a second evaluation instrument beside static inspection
@@ -200,11 +200,11 @@ instruments or a second agent runs the judged one.
    | `apps/website/.agents/spec/.../instruction-target.feature` | :126 | ✅ `ee2666fa` |
    | `.agents/specs/quill/design/doc-eval-model.md` | :29 + the all-inspection framing | ✅ |
    | `.agents/specs/quill/sdd-roles/doc-impl-bar/README.md` | :15, :23, :40 | ✅ |
-   | `plugins/quill/skills/quill-builder-impl/SKILL.md` | criterion + key point 1 | pending |
-   | `plugins/quill/skills/quill-builder-impl/README.md` | :9, :18 | pending |
-   | `plugins/quill/skills/quill-builder-spec/SKILL.md` | the quantifier rule + its gherkin example + key point 7 | pending |
-   | `plugins/quill/agents/quill-judge.md` | :57 | pending |
-   | `plugins/quill/agents/quill-doc-writer.md` | :30 | pending |
+   | `plugins/quill/skills/quill-builder-impl/SKILL.md` | criterion + key point 1 | ✅ |
+   | `plugins/quill/skills/quill-builder-impl/README.md` | :9, :18 | ✅ |
+   | `plugins/quill/skills/quill-builder-spec/SKILL.md` | the quantifier rule + its gherkin example + key point 7 | ✅ |
+   | `plugins/quill/agents/quill-judge.md` | :57 + the precedence example | ✅ |
+   | `plugins/quill/agents/quill-doc-writer.md` | :30 | ✅ |
 2. Every criterion sits in the tier that matches how its verdict is reached, and the bar says which.
 3. The catalog separates documents this repo already accepts from documents it already considers
    weak, with the false-positive rate reported — not asserted.
@@ -228,24 +228,25 @@ gate without freezing the disproven criterion.
 **The spec side of todos 1–2 is landed.** `doc-eval-model.md` and `doc-impl-bar/README.md` now carry
 the two-instrument partition, the retraction with its warrant, and the judged instrument's contract.
 
-**Resume at the impl side of todos 1–2** — the five pending rows in `## Done means`, all under
-`plugins/quill/`. They are not deletions: each site needs a *different* replacement, listed below.
-Then todo 3 (declaration-agreement) and todo 5 (author the catalog) — the criteria migrated to
-judgment are currently named in the spec but have no catalog to live in yet.
+**Todos 1–2 are done** across all eleven sites — spec side in `41d3f9d2`, impl side in the commit
+after it. Verified by searching both `exactly one place` *and* `restatement`; every surviving hit is
+a retraction statement, a plan, or the research dossier.
 
-### Per-site replacements for the pending five
+**Resume at todo 5 — author the defect catalog.** This is now the critical path, because both bars
+and both agents already name a catalog that holds only **two** entries (term drift, contradiction,
+each with a near-miss). Seven are specified and unauthored: unresolvable presupposition, bare
+cross-reference, re-presented as new, declaration mismatch, claim without mechanism, orphan claim,
+undefined term at first use. `quill-builder-impl/SKILL.md` says so in those words, so the gap is
+declared rather than hidden — but it is a gap.
 
-- **`quill-builder-impl/SKILL.md`** — the largest edit. The recurrence criterion goes; term-class and
-  incompatible-claims move from *the bar* to *the catalog* within the same file; the enumeration rule
-  stays as the one inspection criterion. Key point 1 currently reads "four document-scoped criteria"
-  and must state the partition instead.
-- **`quill-builder-spec/SKILL.md`** — see `## The quantifier's replacement` below. Do not simply
-  delete the rule; the problem it names is real and its fix changes.
-- **`quill-judge.md:57` / `quill-doc-writer.md:30`** — the *Restatement* entry, and the instruction to
-  "fix a restated claim by making the later passage refer back". That prescribed fix is the **bare
-  cross-reference** defect and now fires rather than resolves.
-- **`quill-builder-impl/README.md:9, :18`** — the four-defect list and the cross-reference to the
-  spec bar's place-count rule.
+**Todo 3 (declaration-agreement) folds into todo 5**, not beside it. The brief's own catalog table
+already notes this: the spec's declared audience and prerequisites are the catalog's *input*, and
+listing declaration-agreement as its own criterion would put one criterion in two places.
+
+**Todo 4 (spec the judged tier) is largely absorbed.** The tier's contract — blind two-pass,
+deliberate-violation defense, advisory-until-calibrated, detect-never-certify — is written into
+`doc-eval-model.md`, `doc-impl-bar/README.md`, and the shipped bar. What remains of todo 4 is the one
+still-open decision below plus whatever the catalog's shape forces.
 
 ### Still open
 
