@@ -13,9 +13,9 @@ todos:
   - content: "Add the one-namespace-per-node identifier rule"
     status: completed
   - content: "Join the doc-type table to the north-star element"
-    status: in_progress
+    status: completed
   - content: "Add the intra-node reconciliation duty after an edit"
-    status: pending
+    status: in_progress
   - content: "Reconcile the stale readme against the two-instrument model"
     status: pending
   - content: "Correct the three artifacts that claim spec-judge: null means no judge agent — refuted by evidence"
@@ -297,7 +297,24 @@ Two findings from doing it, both worth not re-deriving:
 **Existing nodes were not renumbered.** That is a corpus migration touching twelve website nodes and
 their suites, not a bar edit — it needs its own CR, and folding it in makes this one unlandable.
 
-**Item 5 is now the live todo** — join the doc-type table to the north-star element.
+**Item 5 is landed** (`4649f520`) — element 3 of `quill-builder-spec` now states that the doc-type
+table’s *Success is* cell fixes the form the north star must take, with a row per type giving the
+claim and the shape of its failure mode. Read-check item 3 extended to match.
+
+**Zero corpus debt, verified before writing** — unlike item 4. All eleven authored nodes carrying a
+declared doc type already satisfy the rule: the four `reference` nodes wrote retrieval claims, the
+four `explanation` nodes wrote decision claims, the `how-to` wrote an unblocking claim. The bar
+codifies a join producers had been making by hand, so nothing needs revising to meet it.
+
+**Item 6 is now the live todo** — the intra-node reconciliation duty after an edit, and it is the
+one bar edit in this group with a **second half** the original brief did not have. Re-read item 7 of
+the body before writing it: the reconciliation sweep alone was *run* and *worked* on
+`website-target-doc-spec` (a cold judge found no staleness) and it still introduced a defect in each
+of two consecutive rounds — both the same shape, a `Then` that mistranscribes the clause it freezes.
+The producer verified references and never verified transcription. So the rule needs both halves:
+reconcile every referencing passage, **and** for every `Then` written or touched, quote the source
+clause beside it and classify same / narrower / wider / different. Where a `Then`’s only home is a
+CFG node label, say so — one defect existed precisely because a label was a claim’s sole home.
 
 ### What item 2 had to make true — kept for the impl gate
 
