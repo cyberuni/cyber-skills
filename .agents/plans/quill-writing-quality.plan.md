@@ -14,7 +14,7 @@ todos:
   - content: Author the defect catalog — named, citable bad-writing shapes, each with a near-miss that must NOT fire
     status: completed
   - content: Calibrate against the corpus before the tier gates — known-good and known-weak documents
-    status: pending
+    status: in_progress
   - content: Spec gate — cold spec-judge, freeze, ledger gate line
     status: pending
   - content: Handoff — Warden placement pass, commit, follow-up drain
@@ -228,7 +228,28 @@ standalone correction. The second is cheaper and does not depend on this CR at a
 re-partition, the nine-entry catalog, and the judged tier's mechanics all landed, spec side and impl
 side, with `pnpm verify` green at each commit.
 
-**The CR is blocked on two things this session cannot do, and one input only the team can give.**
+**Both blockers are now cleared and calibration is running.** The owner authorized cold subagent
+dispatch for this stack and named the corpus. Recorded here because a rate with no named corpus is
+not a measurement:
+
+| Role | Document | Ground |
+|---|---|---|
+| **known-good** | `apps/website/src/content/docs/agent-configuration/instruction-target.md` | 20/20 scenarios PASS under a cold `quill-judge`, reviewed and reconciled |
+| **known-weak** | `apps/website/src/content/docs/governances/skill-repo-structure.md` | named by the owner |
+
+Pass 1 was dispatched as **two separate blind contexts**, one per document, each given only the
+document, an audience, and one declared reader path — no catalog, no entry names, no coverage table,
+per the bar's leak rule.
+
+**One departure, recorded rather than hidden:** the known-weak document has **no spec node**, so it
+has no declared control-flow path and no audience row to hand its blind reader. Both were synthesized
+from the page's own headings and its stated subject. This is a real gap in the calibration procedure
+— it assumes every corpus document is specified, and a governance page is not. Either the procedure
+should say how to calibrate against an unspecified document, or the corpus should be drawn only from
+specified ones. **Do not let the resulting rate be read as though both documents were briefed
+equally.**
+
+**The historical blockers, for the record:**
 
 1. **Todo 6 — calibration needs a cold agent.** The judged pass's first context must be *blind to the
    catalog*. Any session that authored the catalog is disqualified from being its own blind reader,
