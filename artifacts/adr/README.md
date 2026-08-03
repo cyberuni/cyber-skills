@@ -29,13 +29,15 @@ This directory contains Architecture Decision Records (ADRs) for cyberplace — 
 | [0027](0027-spawn-delivers-first-turn.md) | `unit spawn` delivers the spawned peer's first turn (best-effort, `--no-wake` opt-out) | Accepted | 2026-07-12 |
 | [0028](0028-suite-design-test-levels.md) | The `.feature` is an acceptance suite — inner-rule combinatorics move down to unit tests | Accepted | 2026-07-17 |
 | [0029](0029-backfill-produces-and-rederives-from-the-cfg.md) | Backfilling a spec draws the CFG and re-derives the suite from it | Accepted | 2026-07-20 |
+| [0030](0030-multi-capability-skill-spec-mapping.md) | Multi-capability skill → spec/impl/test mapping and bidirectional discoverability | Accepted | 2026-07-21 |
+| [0031](0031-selection-is-not-visibility.md) | Skill Selection Is Not Skill Visibility | Accepted | 2026-07-24 |
 
 ## Creating a new ADR
 
 1. Copy [template.md](template.md) to `NNNN-title-with-dashes.md`.
 2. Fill in all sections; keep the record to 1–2 pages.
 3. Add a row to the index table above.
-4. Link supporting surveys in [docs/research/](../research/README.md) when the decision rests on ecosystem evidence.
+4. Link supporting surveys in [.research/](../../.research/) when the decision rests on ecosystem evidence.
 5. Submit a PR for review.
 
 ## Status legend

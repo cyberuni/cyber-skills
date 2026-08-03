@@ -78,7 +78,7 @@ Governances are **loaded into agent context** via `governance show`. They must e
 | Artifact                 | Role                                                                    | Loaded via `governance show`? |
 | ------------------------ | ----------------------------------------------------------------------- | ----------------------------- |
 | **`governances/*.md`**   | Version-pinned **standards** — requirements, archetypes, anti-patterns  | Yes                           |
-| **`docs/research/*.md`** | **Evidence** — repo surveys, reference implementations, RFC/issue links | No — repo checkout only       |
+| **`.research/<topic>/`** | **Evidence** — repo surveys, reference implementations, RFC/issue links | No — repo checkout only       |
 | **`artifacts/adr/*.md`** | **Decisions** — rationale, options considered, consequences             | No — repo checkout only       |
 
 **In governances, include:**
@@ -97,7 +97,7 @@ Governances are **loaded into agent context** via `governance show`. They must e
 
 **Where to put excluded content:**
 
-- Reference implementations and repo surveys → [`docs/research/`](../research/README.md) (for example [2026-05-skill-ecosystem-landscape.md](../research/2026-05-skill-ecosystem-landscape.md))
+- Reference implementations and repo surveys → [`.research/`](../../.research/) (for example [skill-ecosystem-landscape](../../.research/skill-ecosystem-landscape/conclusion.md))
 - Policy decisions and trade-offs → ADRs (this directory)
 - Authoring reminder → [`governances/README.md`](../../governances/README.md)
 
@@ -150,4 +150,4 @@ npx cyberplace@<version> governance show skill-design
 
 - [ADR-0003: Agent-first Authoring](0003-agent-first-authoring.md) — dense, self-contained Governance, Discipline, and Skill docs; references at end
 - [ADR-0002: External Governance Federation](0002-external-governance-federation.md) — federation deferred; domain governances co-located until npm packages exist
-- Research: [2026-05-skill-ecosystem-landscape.md](../research/2026-05-skill-ecosystem-landscape.md) — reference implementations for `skill-repo-structure` (not duplicated in governance)
+- Research: [2026-05-skill-ecosystem-landscape.md](../../.research/skill-ecosystem-landscape/conclusion.md) — reference implementations for `skill-repo-structure` (not duplicated in governance)

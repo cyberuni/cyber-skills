@@ -59,6 +59,9 @@ Read the file and evaluate every check. Produce one results table:
 | F5 | Frontmatter | `description` contains no code blocks or slash-command syntax | MEDIUM |
 | F9 | Frontmatter | `description` includes implicit trigger phrases or "even if they don't mention X" clause | MEDIUM |
 | F6 | Frontmatter | Cursor persona has `alwaysApply: false` | HIGH |
+| F10 | Frontmatter | Sets at least one field a skill cannot express (`tools`, `permissionMode`, `maxTurns`, `memory`, `mcpServers`, `isolation`) | HIGH |
+| F11 | Frontmatter | No skill in `skills:` sets `disable-model-invocation: true` | HIGH |
+| F12 | Body | Body is not duplicated in a skill or command elsewhere in the repo | MEDIUM |
 | B1 | Body | If persona: opens with "You are a [seniority] [role]…" | HIGH |
 | B2 | Body | Role stated in one sentence | MEDIUM |
 | B3 | Body | Each responsibility covers one bounded concern | MEDIUM |
@@ -70,7 +73,7 @@ Read the file and evaluate every check. Produce one results table:
 
 Mark each result: ✅ PASS · ⚠️ WARN · ❌ FAIL · ➖ N/A
 
-N/A rules: F6 → non-Cursor files; B1 → task agents (no role statement); B6 → very narrow single-action agents; F9 → descriptions already ≥150 chars with clear trigger coverage.
+N/A rules: F6 → non-Cursor files; B1 → task agents (no role statement); B6 → very narrow single-action agents; F9 → descriptions already ≥150 chars with clear trigger coverage; F10 and F11 → Cursor `.mdc` and Copilot CLI files.
 
 ### 3. Check definitions
 
@@ -117,7 +120,16 @@ Warn if the agent has broad responsibilities but no Out of scope section. Withou
 Warn if the body contains instructions any capable model already follows without being told — "write clean code", "be helpful", "provide useful error messages". These dilute the signal of the actual decisions the agent encodes.
 
 **B8 — Body length (MEDIUM)**
-Warn if the prompt body exceeds 200 lines. Extract reference material to sibling files and link from a References section.
+Warn if the prompt body exceeds 200 lines. Extract reference material into a skill and name it in the `skills:` frontmatter, which preloads its full content at startup. Prefer that over a sibling file the agent must read by path.
+
+**F10 — Artifact fit (HIGH)**
+Warn if the definition sets none of `tools`, `permissionMode`, `maxTurns`, `memory`, `mcpServers`, or `isolation` — the fields a skill cannot express. `model` and `effort` do not count: skills carry both. A definition using only those is usually a skill wearing an agent's frontmatter; recommend converting it via `define-skill`. ➖ N/A for Cursor `.mdc` and Copilot CLI files, which have no subagent-spawn path.
+
+**F11 — Preloaded skill invocability (HIGH)**
+For each entry in `skills:`, fail if that skill sets `disable-model-invocation: true`. Preloading draws from the pool the model may invoke, so such a skill is silently skipped at startup and the agent runs without content it was written to depend on. Fix by removing the flag and suppressing situational matching through a minimal description instead.
+
+**F12 — Shared body duplicated (MEDIUM)**
+Warn if the body duplicates text that also exists in a skill or command in the repo, or if a companion command loads this agent by reading its file path. Both indicate content that belongs in one skill named from `skills:`.
 
 ### 4. Report format
 
@@ -171,6 +183,7 @@ Each item: `[SEVERITY] file:line — description. Suggested fix: ...`
 
 ## References
 
-- [Claude Code sub-agents docs](https://code.claude.com/docs/en/sub-agents)
+- [Claude Code sub-agents docs](https://code.claude.com/docs/en/sub-agents) — frontmatter fields, `skills:` preloading
+- [Claude Code skills docs](https://code.claude.com/docs/en/skills) — what a skill can express, for F10
 - [Cursor rules docs](https://docs.cursor.com/context/rules)
 - [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices)

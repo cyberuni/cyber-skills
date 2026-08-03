@@ -6,6 +6,7 @@
   "scripts": {
     "astro": "astro",
     "build": "astro build",
+    "check:spec": "sdd-check-specs",
     "dev": "astro dev",
     "preview": "astro preview",
     "typecheck": "astro check"

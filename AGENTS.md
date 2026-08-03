@@ -7,7 +7,6 @@
 - **Unit of work:** one complete, reviewed, coherent, independently revertable change
 - **Auto-commit rule:** commit a unit of work automatically
 
-
 ## Delegation
 
 The higher your tier, the more you delegate. Push the work down, keep your own context for judgment. Brief every child: the context, the why, what done looks like. It starts blank and inherits nothing.
@@ -30,7 +29,7 @@ This repo is a skill library and CLI tool for AI agents (Claude Code, Cursor, Co
 - `packages/cyberplace/src/` — TypeScript source; domain folders: `audit/`, `awesome/`, `commit/`, `governance/`, `hook/`, `skill/`
 - `packages/cyberplace/governances/` — version-pinned agent-tool contracts shipped with the npm package; load via `cyberplace governance show <name>`
 - `artifacts/adr/` — architecture decision records
-- `docs/research/` — distilled background surveys (`YYYY-MM-<topic>.md`) linked from ADRs and governances (not loaded via CLI); `.research/<topic>/` holds the working dossier (topic/evidence/conclusion) the surveys distill from
+- `.research/<topic>/` — background research dossiers (`topic` / `evidence` / `conclusion` / `changes`) linked from ADRs and governances (not loaded via CLI); `conclusion.md` is the file other documents cite
 - `packages/cyberplace/bin/cyberplace.mjs` — slim tracked shim; delegates to `dist/cli.mjs`
 - `packages/cyberplace/dist/cli.mjs` — single bundled CLI (gitignored, built by tsdown); commands: `audit`, `awesome`, `commit`, `governance`, `hook`, `skill`
 
@@ -84,18 +83,10 @@ description: "One sentence trigger description — WHAT it does, WHEN to invoke 
 ...content...
 ```
 
-For **partial skills** (sub-skills — a reusable part of a larger capability, called **by name** by another skill, not triggered by a user situation), set `user-invocable: false` and lead the description with the `"Partial Skill:"` prefix — recommended form `"Partial Skill: invoke by name only — <identity>. <caller>."`. Keep the description minimal and non-trigger-shaped (a partial skill stays `disable-model-invocation: false` so its caller can invoke it by name, so the harness still sees the description). This is distinct from `metadata: internal: true`, which marks a *project-local internal* skill (marketplace visibility) — orthogonal to being a partial.
+For **name-only skills** (loaded **by name** by another skill, never matched to a user situation), set the description to exactly `"By name only"` and nothing else. The minimal description is the mechanism, not a label: the description is the only surface the model matches against, so anything added to it is another handle for a spurious match. Identity — what the skill is, who calls it, what it returns — goes in the body and README.
+
+`user-invocable` is a **visibility** flag only: it controls whether a skill appears in the user's command list and never determines how a skill is selected. A skill may legitimately be `user-invocable: false` and still situationally triggered. Both are distinct from `metadata: internal: true`, which marks a _project-local internal_ skill (marketplace visibility). See [ADR-0031](artifacts/adr/0031-selection-is-not-visibility.md).
 
 ## Language
 
 Write all content in en-US (American English spelling: "color", "organize", "behavior", etc.).
-
-## Skill Design Principles
-
-- **Agent-first** — dense, self-contained bodies; no links to other repository files; optional depth in References via `governance show` or skill-sibling files
-- **No rationale prose** — do not include `## Why` sections or causal "because…" explanation in skill bodies; ADRs record why
-- **Decisions over documentation** — encode what to decide and how, not reference material the model already knows
-- **Narrow and composable** — one workflow per skill; user-facing skills match situations, sub-skills are called explicitly by other skills
-- **No baked-in opinions** — detect the user's setup at runtime rather than assuming a specific stack
-
-Full authoring rules: `npx cyberplace@<version> governance show skill-design` (after build in this repo).

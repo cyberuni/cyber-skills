@@ -3,7 +3,7 @@ title: Constraints
 description: What constraints are — hard behavioral limits that override agent judgment, distinct from governance standards and tool permissions.
 ---
 
-**Constraints** are hard behavioral limits that override agent judgment. They are not normative standards (that is [governance](/concepts/governances/)) and not tool fences (that is [permissions](/concepts/permissions/)). A constraint says: regardless of what the agent decides is correct, this ceiling or boundary applies.
+**Constraints** are hard behavioral limits that override agent judgment. They are not normative standards (that is [governance](/agent-configuration/skills/governances/)) and not tool fences (that is [permissions](/concepts/permissions/)). A constraint says: regardless of what the agent decides is correct, this ceiling or boundary applies.
 
 **Tagline:** Governance defines what is correct. Constraints define what is bounded.
 
@@ -61,6 +61,6 @@ Structural constraints (`maxTurns`, `effort`) are bundled in the agent definitio
 ## Related
 
 - [Permissions](/concepts/permissions/) — tool-level capability boundaries
-- [Disciplines](/concepts/disciplines/) — always-on behavioral habits that encode soft guardrails
-- [Governances](/concepts/governances/) — normative standards for specific domains
-- [Agent Configuration](/concepts/agent-configuration/) — full picture of what shapes agent behavior
+- [Disciplines](/agent-configuration/skills/disciplines/) — always-on behavioral habits that encode soft guardrails
+- [Governances](/agent-configuration/skills/governances/) — normative standards for specific domains
+- [Agent Configuration](/agent-configuration/overview/) — full picture of what shapes agent behavior

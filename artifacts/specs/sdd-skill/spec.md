@@ -157,7 +157,7 @@ sdd
 - `artifacts/specs/sdd-plugin/spec.md` — defines the SDD plugin skill surface and lifecycle.
 - `artifacts/specs/sdd-spec-graph/spec.md` — defines the derived graph view for SDD specs.
 - `artifacts/specs/sdd/spec-digest/spec.md` — the digest the spec gate shows after this skill routes there.
-- `apps/website/src/content/docs/concepts/gateway-skill.md` — defines the gateway skill concept.
+- `apps/website/src/content/docs/agent-configuration/skills/gateway-skill.md` — defines the gateway skill concept.
 - `plugins/sdd/skills/sdd/SKILL.md` — the gateway skill specified here.
 
 ---
