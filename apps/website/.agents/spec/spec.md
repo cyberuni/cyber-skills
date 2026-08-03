@@ -7,9 +7,8 @@ project-path: apps/website
 # website — the cyberplace documentation site
 
 > Root project spec — the **descriptive** top index for the `website` project (the Astro site at
-> `apps/website`). Backfilled onto an existing site. One node
-> (`content/docs/agent-configuration/instruction-target/`) is authored and carries a `.feature`; the rest are **stubs**
-> still awaiting their explore grill. No suite is frozen — no gate has run.
+> `apps/website`). Backfilled onto an existing site. Ten nodes are authored and carry a `.feature`;
+> the remaining seven are **stubs** still awaiting their explore grill.
 
 ## What this is
 
@@ -17,7 +16,7 @@ project-path: apps/website
 using the [Starlight](https://starlight.astro.build) docs theme, styled with Tailwind 4, built to
 static files and published to GitHub Pages at `https://cyberuni.github.io/cyberplace/`.
 
-It publishes 76 authored pages across 16 sections (getting-started, agent-configuration, motive-model, sdd,
+It publishes 80 authored pages across 16 sections (getting-started, agent-configuration, motive-model, sdd,
 cli, governances, concepts, aced, quill, cyberlegion, cyberfleet, disciplines, universal-plugin,
 marketplace, tavern, plus root pages), and carries four interactive surfaces beyond plain prose: a
 marketplace search, a crew storefront, Mermaid diagram rendering, and a custom site title.
@@ -60,8 +59,8 @@ not nodes; the behavioral leaf is the **page**.
 a reader leaves with), its **required coverage** (the claims the document is incomplete without), and
 the **reader questions it must route**. It freezes what the document must land, never its section
 order or wording. This is the granularity quill is built for — it treats a document as an
-implementation artifact with verifiable structure, checked by static inspection against a frozen
-suite.
+implementation artifact with verifiable structure, checked by two instruments: inspection against a
+frozen suite, and a judged pass against a catalog of named prose defects.
 
 ### Depth: this project mirrors past two levels — deliberately
 
@@ -128,13 +127,23 @@ project adopted on the shape it has.
 
 ## Behavioral nodes
 
-All are **stubs** — `## Use Cases` present, no `.feature`, no authored control flow — **except**
-`content/docs/agent-configuration/instruction-target/`, which is authored (20 scenarios across 5
-use-cases spanning two audiences, scenario map 1:1). Filling the rest is the per-unit explore grill.
+Ten nodes are **authored** — `## What` / `## Use Cases` / `## Control Flow` / `## Scenario map`
+present, with a `.feature` bound 1:1 to the scenario map. The remaining seven are **stubs** —
+`## Use Cases` present, no `.feature`, no authored control flow. Filling those is the per-unit
+explore grill.
 
 | Node | Subject |
 |---|---|
-| [`content/docs/agent-configuration/instruction-target/`](./content/docs/agent-configuration/instruction-target/README.md) | the "Target" article — north star, required coverage, reader routing **(authored — the only node with a `.feature`)** |
+| [`content/docs/agent-configuration/instruction-target/`](./content/docs/agent-configuration/instruction-target/README.md) | the "Target" article — north star, required coverage, reader routing **(authored)** |
+| [`content/docs/motive-model/overview/`](./content/docs/motive-model/overview/README.md) | the Motive Model entry page — the premise, the AI-is-never-an-actor rule, the route **(authored)** |
+| [`content/docs/motive-model/four-actors/`](./content/docs/motive-model/four-actors/README.md) | the four motives, their objects and boundaries **(authored)** |
+| [`content/docs/motive-model/glossary/`](./content/docs/motive-model/glossary/README.md) | the definition of record for the model's load-bearing terms **(authored)** |
+| [`content/docs/quill/overview/`](./content/docs/quill/overview/README.md) | the Quill section's entry page — what Quill is and the route to its five siblings **(authored)** |
+| [`content/docs/quill/doc-eval-model/`](./content/docs/quill/doc-eval-model/README.md) | how Quill decides a document is correct — the two instruments **(authored)** |
+| [`content/docs/quill/production-chain/`](./content/docs/quill/production-chain/README.md) | Quill's three agents and the five SDD roles they fill **(authored)** |
+| [`content/docs/quill/init-quill/`](./content/docs/quill/init-quill/README.md) | registering Quill as a project's documentation SDD plugin **(authored)** |
+| [`content/docs/quill/quill-builder-spec/`](./content/docs/quill/quill-builder-spec/README.md) | the spec-gate Builder bar — what a documentation spec must contain **(authored)** |
+| [`content/docs/quill/quill-builder-impl/`](./content/docs/quill/quill-builder-impl/README.md) | the impl-gate Builder bar — the enumeration rule and the defect catalog **(authored)** |
 | [`components/marketplace-search/`](./components/marketplace-search/README.md) | browsing and filtering the skill marketplace |
 | [`components/tavern-storefront/`](./components/tavern-storefront/README.md) | browsing the crew storefront |
 | [`components/mermaid/`](./components/mermaid/README.md) | rendering Mermaid diagrams in docs pages |
@@ -147,20 +156,22 @@ use-cases spanning two audiences, scenario map 1:1). Filling the rest is the per
 
 Two gaps are **declared**, not silently omitted:
 
-1. **Seven of eight nodes are stubs.** The site is fully implemented and deployed; only
-   `content/docs/agent-configuration/instruction-target/` is captured as an authored contract. Each
-   remaining node needs its explore grill to produce `## What` / `## Use Cases` / `## Control Flow` /
-   `## Scenario map` and a `.feature`. On backfill the CFG is **drawn from the source**, not stopped
-   at Use Cases.
+1. **Seven of seventeen nodes are stubs.** The site is fully implemented and deployed; the four
+   non-content nodes (`components/*`, `styles/`, `tooling/*`) are captured only as stubs, as are the
+   remaining `components` leaves. Each needs its explore grill to produce `## What` / `## Use Cases` /
+   `## Control Flow` / `## Scenario map` and a `.feature`. On backfill the CFG is **drawn from the
+   source**, not stopped at Use Cases.
 
-2. **75 of 76 pages are unspecified.** A page earns a node when its contract is worth freezing.
-   Specified so far: `agent-configuration/instruction-target`. Outstanding — the two remaining
-   `agent-configuration` pages (`overview`, `instruction-purpose`), then `aced` (12 pages),
-   `concepts` (11), `motive-model` (9), `sdd` (8), `governances` (6), `cli` (5), `cyberfleet` (5),
-   `universal-plugin` (5), `getting-started` (3), `quill` (2), `cyberlegion` (2), `disciplines` (1),
-   `marketplace` (1), `tavern` (1), plus 2 root pages. Each is a future change request. The repo
-   registers **quill** for the `documentation` / `guide` / `reference` artifact types, so each runs
-   its production chain (`quill-spec-writer` → `quill-doc-writer` → `quill-judge`).
+2. **70 of 80 pages are unspecified.** A page earns a node when its contract is worth freezing.
+   Specified so far: `agent-configuration/instruction-target`, three `motive-model` pages
+   (`overview`, `four-actors`, `glossary`), and all six `quill` pages. Outstanding — the two
+   remaining `agent-configuration` pages (`overview`, `instruction-purpose`), the six remaining
+   `motive-model` pages, then `aced` (12 pages), `concepts` (11), `sdd` (8), `governances` (6),
+   `cli` (5), `cyberfleet` (5), `universal-plugin` (5), `getting-started` (3), `cyberlegion` (2),
+   `disciplines` (1), `marketplace` (1), `tavern` (1), plus 2 root pages. Each is a future change
+   request. The repo registers **quill** for the `documentation` / `guide` / `reference` artifact
+   types, so each runs its production chain (`quill-spec-writer` → `quill-doc-writer` →
+   `quill-judge`) — as the `quill` section itself did.
 
    **Two section-level defects are recorded but unowned** — `overview.md` never links the Target
    page, and it carries a broken relative link to `../instructions.md`. Both are the hub's contract
@@ -184,10 +195,11 @@ flag them.
 |---|---|
 | `build` | `tooling/site-config/` (behavior) |
 | `composition` | `content/docs/agent-configuration/instruction-target/` (behavior) |
-| `docs` | `components/mermaid/` (behavior) · `content/docs/agent-configuration/instruction-target/` (behavior) · `content/docs/motive-model/four-actors/` (behavior) · `content/docs/motive-model/glossary/` (behavior) · `content/docs/motive-model/overview/` (behavior) |
+| `docs` | `components/mermaid/` (behavior) · `content/docs/agent-configuration/instruction-target/` (behavior) · `content/docs/motive-model/four-actors/` (behavior) · `content/docs/motive-model/glossary/` (behavior) · `content/docs/motive-model/overview/` (behavior) · `content/docs/quill/doc-eval-model/` (behavior) · `content/docs/quill/init-quill/` (behavior) · `content/docs/quill/overview/` (behavior) · `content/docs/quill/production-chain/` (behavior) · `content/docs/quill/quill-builder-impl/` (behavior) · `content/docs/quill/quill-builder-spec/` (behavior) |
 | `marketplace` | `components/marketplace-search/` (behavior) · `components/tavern-storefront/` (behavior) |
 | `motive-model` | `content/docs/motive-model/four-actors/` (behavior) · `content/docs/motive-model/glossary/` (behavior) · `content/docs/motive-model/overview/` (behavior) |
 | `navigation` | `components/site-title/` (behavior) · `tooling/navigation/` (behavior) |
+| `quill` | `content/docs/quill/doc-eval-model/` (behavior) · `content/docs/quill/init-quill/` (behavior) · `content/docs/quill/overview/` (behavior) · `content/docs/quill/production-chain/` (behavior) · `content/docs/quill/quill-builder-impl/` (behavior) · `content/docs/quill/quill-builder-spec/` (behavior) |
 | `theming` | `components/mermaid/` (behavior) · `components/site-title/` (behavior) · `styles/` (behavior) |
 
 <!-- END generated: by-concept -->

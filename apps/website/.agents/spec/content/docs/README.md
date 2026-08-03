@@ -10,7 +10,14 @@ as their contract becomes worth freezing — not all at once.
 | Section | Grouping | Pages specified |
 |---|---|---|
 | `agent-configuration/` | [`agent-configuration/`](./agent-configuration/README.md) | 1 of 3 — `instruction-target` |
-| the other 15 sections | *not yet specified* — see the backfill gap in [`../../spec.md`](../../spec.md) | 0 of 73 |
+| `motive-model/` | [`motive-model/`](./motive-model/README.md) | 3 of 9 — `overview`, `four-actors`, `glossary` |
+| `quill/` | [`quill/`](./quill/README.md) | 6 of 6 — the whole section |
+| the other 13 sections | *not yet specified* — see the backfill gap in [`../../spec.md`](../../spec.md) | 0 of 62 |
+
+`quill/` is the first section specified **whole**. Six pages over one subject is the shape that
+manufactures overlap between siblings, so that grouping carries an explicit one-claim-one-owner
+boundary contract; a section specified page-by-page does not need one, and a section specified whole
+does.
 
 **What a page node owns:** the document's **north star** (the understanding a reader leaves with),
 its **required coverage** (the claims it is incomplete without), and the **reader questions it must
