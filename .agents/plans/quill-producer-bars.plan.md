@@ -11,9 +11,9 @@ todos:
   - content: "Add the spend-every-row-by-ID rule to the spec bar's completeness element"
     status: completed
   - content: "Add the one-namespace-per-node identifier rule"
-    status: in_progress
+    status: completed
   - content: "Join the doc-type table to the north-star element"
-    status: pending
+    status: in_progress
   - content: "Add the intra-node reconciliation duty after an edit"
     status: pending
   - content: "Reconcile the stale readme against the two-instrument model"
@@ -278,7 +278,26 @@ is why these edits are free. Each is a change to
 (read-check)** list at the file's end — that list restates every rule, so a rule added only to the
 body leaves it stale.
 
-**Item 4 is now the live todo** — the one-namespace-per-node identifier rule.
+**Item 4 is landed** (`e0f798c3`) — a new **Identifiers — one namespace per node** subsection in
+`quill-builder-spec`, plus read-check item 9. Entry points are keyed `UC1/UC2/UC3`; two alpha
+characters cannot collide with a single-letter mermaid label.
+
+Two findings from doing it, both worth not re-deriving:
+
+- **The root cause is *not* upstream this time** — checked, not assumed. SDD’s own spec nodes name
+  their use cases (`**bootstrap**`, `**greenfield**`) and carry no IDs at all, so no collision is
+  reachable there and `sdd:spec-format-governance` is silent on identifiers for good reason. IDs are
+  load-bearing only in doc specs, where coverage rows get cited from entry points and the scenario
+  map. Item 1’s "check upstream first" reflex was right to run and came back negative.
+- **The Warden’s count reproduces exactly**: 5 collisions, 2 nodes — 4 in `motive-model/glossary/`
+  (`A1 A2 T1 T2` are simultaneously entry points and graph nodes) and 1 in `motive-model/overview/`
+  (`P1`). The "~14 schemes" figure measures as **12 schemes across 12 nodes** carrying a Use Cases
+  ID column; directionally the same claim.
+
+**Existing nodes were not renumbered.** That is a corpus migration touching twelve website nodes and
+their suites, not a bar edit — it needs its own CR, and folding it in makes this one unlandable.
+
+**Item 5 is now the live todo** — join the doc-type table to the north-star element.
 
 ### What item 2 had to make true — kept for the impl gate
 
