@@ -79,18 +79,18 @@ Every purpose applies within both forms. A brief carries Procedure (what to do) 
 
 ## Composing configuration
 
-Separation pays off twice — once when you write configuration, once when you install it.
+This pays off twice: once when you write configuration, and again when you install someone else's.
 
-If you **write** it, the target is the seam to split on. A skill shaping both your replies and your written documents has to be adopted whole: a project that wants its prose conventions inherits its reply style along with them. Split it by target and each half can be adopted on its own.
+When you write it, cut along the target. A skill that shapes both your replies and your written documents can only be adopted whole, so a project that wants its prose conventions gets its reply style too, whether it wanted that or not. Split the skill at the target and each half becomes something a project can take on its own.
 
-If you **install** it, the target tells you whether two units can coexist, before you try them:
+When you install it, the target tells you in advance whether two units will fight. Compare what each one governs:
 
 | The two units govern | Result                           |
 | -------------------- | -------------------------------- |
 | different targets    | they never meet — enable both    |
 | the same target      | a real conflict — one has to win |
 
-The two skills named above sit in the first row. `article-writer-voice` governs Artifact; `i-have-adhd` governs User. Enable both and neither yields — the agent writes your documentation in careful, structured prose while answering you in short, front-loaded replies. Read as one house style they contradict. Read as two targets they are unrelated.
+`article-writer-voice` and `i-have-adhd` are that first row: one governs Artifact, the other User. Enable both and neither has to give way, because they never touch the same output — your documentation comes out in careful, structured prose while your replies stay short and front-loaded.
 
 ## Keeping targets apart within one session
 
