@@ -90,13 +90,3 @@ For **name-only skills** (loaded **by name** by another skill, never matched to 
 ## Language
 
 Write all content in en-US (American English spelling: "color", "organize", "behavior", etc.).
-
-## Skill Design Principles
-
-- **Agent-first** — dense, self-contained bodies; no links to other repository files; optional depth in References via `governance show` or skill-sibling files
-- **No rationale prose** — do not include `## Why` sections or causal "because…" explanation in skill bodies; ADRs record why
-- **Decisions over documentation** — encode what to decide and how, not reference material the model already knows
-- **Narrow and composable** — one workflow per skill; user-facing skills match situations, sub-skills are called explicitly by other skills
-- **No baked-in opinions** — detect the user's setup at runtime rather than assuming a specific stack
-
-Full authoring rules: `npx cyberplace@<version> governance show skill-design` (after build in this repo).
