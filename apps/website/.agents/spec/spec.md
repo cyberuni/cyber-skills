@@ -1,5 +1,5 @@
 ---
-status: implemented
+status: approved
 name: website
 project-path: apps/website
 approval:
@@ -18,11 +18,11 @@ approval:
     by: agent
     cause: dimension
     why:
-      floor: none — six new behavioral leaves, all additive. No pre-existing frozen scenario was narrowed or re-opened; before this CR no suite in this project was frozen at all.
-      blast: medium — the whole quill section (six nodes plus a new grouping), the root node table, the backfill-gap counts, and the by-concept index. Sibling sections untouched.
-      novelty: medium — first section specified whole rather than page by page, which forced an explicit one-claim-one-owner boundary contract; first end-to-end dogfood of quill's own production chain.
-      confidence: high — six of six cold sdd-spec-judges return {oracle,builder,architect} all PASS, ALIGNED true, each re-deriving counts and namespace disjointness independently. Five gate rounds, findings 8 → 5 → 3 → 0.
-      cr: quill-docs-section
+      floor: none — one new behavioral leaf under an existing grouping, purely additive. No pre-existing frozen scenario anywhere in this project was narrowed, rewritten or re-opened; the node's own suite was unfrozen throughout, so no Clearance floor could fire.
+      blast: low — a single page node (README + suite) and its parent grouping's findings list. No sibling node, no root node-table entry, and no published document changed at this gate.
+      novelty: low — the section's fourth specified page, against a layout and depth departure both already declared and argued in this spec.
+      confidence: high — four cold sdd-spec-judge rounds, each a fresh actor re-deriving the previous round's fixes rather than accepting them. Round 4 returns {oracle,builder,architect} all PASS, ALIGNED true, no failing scenario and no content gap, having independently re-derived the 29/29 map identity, traced all 14 coverage rows, walked every CFG edge, and spot-checked the producer's transcription audit across all three source kinds. Findings 7 → 7 → 1 → 0, with every pre-existing defect closed by round 3 and the last self-inflicted one closed without introducing another.
+      cr: website-target-doc-spec
 ---
 
 # website — the cyberplace documentation site

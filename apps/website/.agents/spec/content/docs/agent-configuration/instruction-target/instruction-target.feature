@@ -1,3 +1,4 @@
+@frozen
 Feature: instruction-target — the "Target" article
 
   Target exists to make agent configuration composable. An author splits config into
