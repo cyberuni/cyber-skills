@@ -94,7 +94,7 @@ scenario** in the scenario map — a row no scenario reaches would be unenforced
 | --- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | T5  | **The three**             | Artifact, User, Agent — where each output goes, the forms it covers, an example of each                                     |
 | T6  | **Artifact has a path**   | the only target with one, which is why file type matching reaches it and why one file can hold several targets              |
-| T7  | **User is the default**   | everything not written to a file or a brief; every purpose applies, not only Tone; the only target that can answer back     |
+| T7  | **User is the default**   | everything the agent neither writes to a file nor addresses to another agent; every purpose applies, not only Tone; the only target that can answer back |
 | T8  | **Agent: briefs vs mail** | a brief becomes the recipient's mission; mail arrives at an agent that already has one, so it competes and must stand alone |
 
 **Binding a target**
@@ -110,7 +110,7 @@ scenario** in the scenario map — a row no scenario reaches would be unenforced
 | #   | Topic                        | Must convey                                                                                                                          |
 | --- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | T12 | **Drift within a session**   | targets bleed by accumulation of unlabeled examples, running toward whichever target was served most                                 |
-| T13 | **The four arrangements**    | separate session / restate at production / produce early / scope the instruction — ranked by separation strength, each with its cost |
+| T13 | **The four arrangements**    | they remedy drift in an instruction governing a **produced artifact**, and the article says so rather than leaving it implied: separate session / restate at production / produce early / scope the instruction — ranked by separation strength, each with its cost |
 | T14 | **Orthogonality to Purpose** | a block's purpose is unchanged by which target receives it, so two units sharing a purpose compete only if they also share a target  |
 
 **Non-goals** — each with where it lives instead, so a reader who wants it is not simply left:
@@ -133,7 +133,7 @@ Grouped by audience. The author entry points concern **splitting**; the user ent
 | --- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | A1  | **Decide whether to split a file** — the author has one config file that shapes more than one kind of output | _Trigger:_ a file that feels like it is doing two jobs. _Inputs:_ the three targets and the mixed-target discussion. _Outcome:_ the author splits it into single-target units that description matching loads, or — where splitting would copy more than it separates — keeps it whole and branches by prose. |
 | A2  | **Bind a unit to its target** — the author has a single-target unit and must make it apply only there        | _Trigger:_ writing a skill, rule, or `AGENTS.md` section. _Inputs:_ the mechanisms table. _Outcome:_ the author picks file type, description, or prose matching.                                                      |
-| A3  | **Stop a unit bleeding** — the author's instruction is being ignored late in a long session                  | _Trigger:_ observed drift. _Inputs:_ the drift section and its four arrangements. _Outcome:_ the author picks an arrangement and knows its cost.                                                                      |
+| A3  | **Stop a unit bleeding** — the author's instruction for a produced artifact is being ignored late in a long session | _Trigger:_ observed drift while producing an artifact. _Inputs:_ the drift section and its four arrangements. _Outcome:_ the author picks an arrangement for the artifact they are producing and knows its cost.  |
 
 ### Agent config user
 
@@ -151,6 +151,17 @@ The two halves converge in one place: a **user** who diagnoses drift (`V1`) need
 **author** reaches from `D` (`P`), because having named the problem they still have to pick a remedy.
 The graph therefore routes `V1 --> P` rather than leaving the user at a leaf that names four options
 and no criterion.
+
+**The `P` chooser is scoped to a produced artifact, and that restriction is stated, not assumed.**
+All four arrangements and all three routing questions concern an artifact: whether it can be
+specified in a brief, whether the target can be restated at the moment of producing it, whether the
+session knows at the outset which artifact it will produce. Drift in an instruction governing the
+**User** or **Agent** target therefore reaches no row in this chooser, and that is an exclusion
+rather than a hole: drift runs toward whichever target the session has served most, and the User
+target's examples pile up fastest (T12, T7), so the instruction that gets drowned out is the one
+governing output the session has been producing least — in this article's treatment, a produced
+artifact. The contract requires the article to state that scope (T13) rather than let a reader infer
+it from the questions.
 
 ```mermaid
 graph TD
@@ -175,7 +186,7 @@ graph TD
 
   D -- "does this file do two jobs?" --> K{does one file mix several targets?}
   D -- "which target is this?" --> H{does the target have a path?}
-  D -- "it keeps bleeding" --> P{can the artifact be specified in a brief?}
+  D -- "it keeps bleeding" --> P{"remedying drift for a produced artifact — can the artifact be specified in a brief?"}
   D -- "how much instruction does this target need?" --> N{is that body of instruction substantial?}
 
   N -- yes --> N1["isolate it — its own subagent or session, with nothing to compete against"]

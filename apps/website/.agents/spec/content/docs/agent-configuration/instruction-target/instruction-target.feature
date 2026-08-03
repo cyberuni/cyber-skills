@@ -1,4 +1,3 @@
-@frozen
 Feature: instruction-target — the "Target" article
 
   Target exists to make agent configuration composable. An author splits config into
@@ -149,6 +148,7 @@ Feature: instruction-target — the "Target" article
     Given an author comparing the arrangements that keep targets apart
     When the article's list of arrangements is read
     Then it presents four arrangements
+    And it states that the four arrangements remedy drift in an instruction governing a produced artifact
     And they are ordered by how strongly each separates the targets
     And each carries the cost of adopting it
 
@@ -210,5 +210,5 @@ Feature: instruction-target — the "Target" article
     Given a user whose enabled unit is shaping their chat replies
     And that unit's body and description name no target
     When the article's account of the User target is read
-    Then it states that everything the agent produces other than a file or a brief goes to the user
+    Then it states that the user receives whatever the agent neither writes to a file nor addresses to another agent
     And it states that the User target is therefore always in force
