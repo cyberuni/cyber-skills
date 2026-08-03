@@ -4,7 +4,9 @@ project: quill
 project-path: plugins/quill
 status: draft
 todos:
-  - content: "Extend the three agent definitions' load lists instead of replacing the SDD list"
+  - content: "Fix the SDD plugin-contract role-loads table — the upstream cause, and the only item that changes what other plugins inherit"
+    status: pending
+  - content: "Extend the three agent definitions' load lists, and add the output fields five frozen scenarios already require"
     status: pending
   - content: "Add the spend-every-row-by-ID rule to the spec bar's completeness element"
     status: pending
@@ -16,161 +18,218 @@ todos:
     status: pending
   - content: "Reconcile the stale readme against the two-instrument model"
     status: pending
-  - content: "Resolve the null spec-judge contradiction with the SDD plugin contract"
+  - content: "Correct the three artifacts that claim spec-judge: null means no judge agent — refuted by evidence"
+    status: pending
+  - content: "Give the calibration table a state for an entry that ran and never fired"
     status: pending
 ---
 
-# CR quill-producer-bars — what dogfooding Quill on itself revealed about Quill
+# CR quill-producer-bars — what dogfooding Quill revealed about Quill
 
-**Provenance.** Every item here was discovered by running Quill's own production chain over six
-website pages documenting Quill (`quill-docs-section`). Nothing is speculative: each was found by a
-producer or a cold judge during that mission, and the ones marked **measured** carry a recurrence
-count across the six nodes.
+**Re-briefed after the session that produced it.** The original brief was written from
+`quill-docs-section`'s findings. Two subsequent missions — `website-target-doc-spec` and
+`quill-writing-quality` — changed what several items *are*, not just how urgent they are. Read this
+version; the differences are marked **CHANGED** and they are not cosmetic.
 
-**Why a separate CR.** `quill-docs-section` documents Quill; changing Quill inside it would mean the
-mission edits its own subject mid-flight. Every item below was recorded as a follow-up there and
-deliberately not fixed.
+**Provenance.** Every item was found by a producer or a cold judge running Quill's own chain. Items
+marked **measured** carry a recurrence count.
 
-## The findings, ranked by what they cost
+## The three things that changed
 
-### 1. All three agents replace the SDD load list instead of extending it — **blocking, measured**
+### 1. Item 1's root cause is upstream, in SDD — **CHANGED, and it splits**
 
-`quill-spec-writer` names its own Builder bar, the two format bars, and the ownership matrix, then
-stops. `sdd:spec-producer-governance` requires the resolved **oracle**, **builder**, and
-**architect** bars loaded **forward face**, so the producer self-aligns to the lens set it will be
-graded against backward. `quill-doc-writer` and `quill-judge` carry the same omission on the impl
-side, naming only the impl Builder bar and the ownership matrix.
+The original brief filed "all three Quill agents replace the SDD producer's governance load list
+instead of extending it" as a **Quill** defect, on the strength of the sibling plugin having the
+correct shape. That was the wrong conclusion from the right evidence.
 
-**Measured cost.** Six of six cold spec-judges blocked at governance pre-flight. When the six nodes
-were re-authored with the missing bars loaded, **six of six carried a real defect only those bars
-caught** — and none were cosmetic:
+`sdd:plugin-contract-governance` **contradicts itself**:
 
-| Defect | Caught by | Nodes |
+- `SKILL.md:47–49` — *"a producer self-aligns to exactly the bars its judge grades. The lens sets are
+  spec gate `{oracle, builder, architect}`…"*
+- `SKILL.md:53` — `| spec-producer | spec-format, suite-format, ownership, the resolved oracle-spec +
+  builder-spec bars |`
+
+The decisive evidence is the row **two lines below**, which the original brief never examined:
+`SKILL.md:56` gives impl-producer `ownership, the resolved builder-impl + architect-impl bars` —
+correctly carrying its architect bar against its own `{builder, architect}` set. **The spec-producer
+row is the lone outlier against its own stated lens set.** A dropped cell, not a deliberate
+narrowing.
+
+So the defect splits, and the two halves have different owners:
+
+| Agent | Under-loads | Owner |
 |---|---|---|
-| double-barreled north star (*name the outcome without "and"*) | oracle | 6 of 6 |
-| a page documenting only the plugin half of a **union** bar, so a reader following it would write a conforming suite and still fail the gate | builder (sdd half) | 1 |
-| a control-flow edge no scenario covered | builder (sdd half) | 2 |
-| a decision node with a dead branch | architect | 1 |
-| a lone negative with no positive companion | builder (sdd half) | 1 |
-| link scenarios asserting a sibling's **prose** rather than its **ownership**, which break when the sibling is trimmed | oracle | 1 |
+| `quill-spec-writer` | the oracle and architect **spec** bars | **`plugins/sdd/`** — it was built to the broken row |
+| `quill-judge` | `gate-validation`, `builder-impl`, `architect-impl` | **Quill** — the table and preamble agree here, so nothing excuses it |
+| `quill-doc-writer` | names the impl builder bar and ownership only | **Quill** |
 
-**The control that makes this conclusive:** the sibling plugin's agents name the full set, and so do
-SDD's own defaults. The correct shape already exists in the corpus — this is a Quill defect, not a
-gate defect.
+**Fix the table first.** A plugin author reading that row today builds exactly the list Quill ships.
+Fixing Quill without fixing the table means the next plugin repeats it, and this CR's whole
+justification is that the omission degrades every spec the producer authors.
 
-**Fix:** extend, never replace. Each agent's load list names its own bar *in addition to* the roles
-the SDD producer/judge procedure already requires.
+The measured cost stands unchanged and is still the strongest evidence in this brief: six of six cold
+spec-judges blocked at governance pre-flight, and when the six nodes were re-authored with the
+missing bars loaded, **six of six carried a real defect only those bars caught** — a double-barreled
+north star in 6 of 6, a page documenting only the plugin half of a union bar, two uncovered
+control-flow edges, a dead branch, a lone negative, and link scenarios asserting a sibling's prose
+rather than its ownership.
 
-### 2. The spec bar's completeness element does not require spending each row — **measured**
+### 2. Item 1 now has a frozen contract to implement against — **CHANGED**
 
-`quill-builder-spec` requires a completeness check ("the coverage list is complete when a document
-meeting every row cannot still trip the north star's failure mode") but never says the argument must
-**account for each row by ID**. Every instance below is the same shape: a summary claim quantifying
-over members it does not actually cover.
+The original brief called item 1 "a three-line change across `plugins/quill/agents/*.md`". It is no
+longer a prose edit. `quill-writing-quality` authored and froze four behavioral node suites (94
+scenarios) that **specify the correct behavior**:
 
-| Passage | Quantifies over | What broke |
-|---|---|---|
-| completeness check *"a page meeting O1–O11"* | 12 rows | O8 never spent; O7a hidden inside the range |
-| Use Cases intro *"every entry point ends at a destination"* | 6 entry points | two entry points named no leaf |
-| completeness check *"closed by S6"* | a narrowed scenario | the node's own table said it was **not** closed |
+- `sdd-roles/spec-writer/` (29) — the CFG **enters at the governance pre-flight**, with one row for
+  the registry binding `builder-spec` only (the packet must name the SDD-default oracle and architect
+  bars it fell back to) and one for all three slots bound. Two downstream rows make the omission cost
+  something a declaration alone cannot: a scope finding only the oracle bar reaches, and a deferral
+  only the architect bar reaches.
+- `sdd-roles/judge/` (40) — asserts the declared set contains **every** SDD default the matcher
+  resolves plus the Quill bar.
+- `sdd-roles/doc-writer/` (14) — `E1` asserts the union by name.
 
-Three instances across two nodes, and it was the **dominant regression class of the whole mission** —
-each surfaced only after a *different* fix moved what the summary referenced.
+**So this item is now an impl-gate task against a frozen contract, not an authoring task.** Run
+`quill-judge`… except that this CR must also fix `quill-judge`, so sequence accordingly (see
+`## Sequencing`).
 
-**Fix:** the completeness argument must spend every coverage row by ID, and a row it does not spend
-is a row nothing depends on and should be cut rather than left standing. One producer independently
-invented this exact rule and wrote it into its own spec — the strongest possible evidence the bar is
-missing it.
+### 3. Five frozen scenarios require output fields that do not exist — **NEW**
 
-### 3. No identifier-namespace rule — **measured**
+The suites specify a declaration the shipped agents cannot produce. This is legitimate spec-ahead
+under `sdd:suite-format-governance`'s *"when an act matters but records nothing, add the record — do
+not delete the act"*, and the cold judge ruled it so explicitly. But it is a **known impl-gate
+delta**, and it is work this CR owns:
 
-Two nodes independently shipped an ID collision: a CFG start node `S` colliding with use-case groups
-`S1`/`S2` in the same scenario-map tables, and `B1` used for both a coverage row and a catalog entry.
-Both were found only by a sweep, and one was introduced *by a remediation*.
+| Agent | Owes |
+|---|---|
+| `quill-spec-writer` | a `GOVERNANCES_LOADED` output field, **and** a recusal `STATUS` value plus a recusal step — its enum is `complete \| needs-input \| blocked`, and its `## Steps` has no recusal step at all |
+| `quill-doc-writer` | a `GOVERNANCES_APPLIED` output field |
+| `quill-judge` | the equivalent |
 
-**Fix:** a node's identifiers share one namespace — coverage rows, use-case groups, and CFG nodes may
-not reuse a token. Reference enumerated items by name, never by an invented index.
+The ACED siblings already carry the field. Without it, a skipped governance pre-flight is
+indistinguishable from a correctly-run one — which is exactly the failure `quill-docs-section` hit,
+where the conductor composed the relay from the agent definition because the producer had nothing to
+declare.
 
-### 4. The doc-type table is not joined to the north-star element
+## Items carried forward unchanged
 
-The bar's element 2 gives each doc type a "Success is" column; element 3 defines the north star
-type-agnostically. A reference page's north star is a **retrieval** claim and a tutorial's is a
-**capability** claim, and they grade differently — so a spec can declare `reference` and write an
-explanation's north star with nothing catching it. Producers had to make this join themselves on
-every node that declared `reference`.
+### 4. The spec bar's completeness element does not require spending each row — **measured**
 
-**Fix:** state the join — the north star's shape follows from the declared doc type.
+`quill-builder-spec` requires a completeness check but never says the argument must **account for
+each row by ID**. Three instances across two nodes, and the **dominant regression class of the whole
+mission** — each surfaced only after a *different* fix moved what the summary referenced.
 
-### 5. No intra-node reconciliation duty after an edit — **measured**
+**Fix:** the completeness argument must spend every coverage row by ID; a row it does not spend is a
+row nothing depends on and should be cut. One producer independently invented this exact rule and
+wrote it into its own spec.
 
-Four of four remediated nodes regressed in one round: every finding was *introduced* by the
-remediation rather than surviving it. Three were the identical shape — the producer changed the claim
-where the finding pointed and left the passages referencing it stale (a narrowed scenario left a
-completeness argument asserting the old wider closure; a reworded step left the `.feature` **preamble**
-carrying the original wording; a rewritten completeness argument stopped spending a row).
+### 5. No identifier-namespace rule — **measured, and now worse than filed**
 
-**Fix:** after changing a claim, reconcile every passage in the node that references it — the
-completeness argument, the CFG and its labels, the scenario map, and the `.feature`'s **preamble and
-section comments**, not only its scenarios. Report each check with its result, including "nothing":
-an unreported sweep is indistinguishable from an unrun one.
+Two nodes shipped ID collisions during `quill-docs-section`. The formation Warden then swept the
+corpus and found **five exact collisions in two further nodes** — `motive-model/glossary/` has four
+(CFG `A1 A2 T1 T2` identical to use-case ids `A1 A2 T1 T2` in the same file) and
+`motive-model/overview/` has one. It also found **no corpus-wide convention exists**: 14 authored
+nodes use ~14 schemes, and the entry-node id alone takes 7 forms.
 
-**Caveat, learned the same way:** a sweep is not self-certifying. The one node piloted through it
-caught five of six targeted items plus four unprompted defects, and still left one claim false. The
-sweep reduces rounds; it does not replace the cold judge.
+**Fix:** a node's identifiers share one namespace. `spec-writer`'s `UC` prefix is the only
+structurally collision-proof scheme in the corpus and is the natural candidate to standardize on.
 
-**The stale artifact is often the control-flow graph.** The last regression of the mission was prose
-and suite correctly updated with the diagram they describe left behind — and the diagram then said
-the opposite of both. A CFG is the artifact most likely to be forgotten, because it reads as
-scenery rather than as a claim.
+### 6. The doc-type table is not joined to the north-star element
 
-### 5a. A node whose subject is a rule should be checked against that rule
+A reference page's north star is a **retrieval** claim and a tutorial's is a **capability** claim, and
+they grade differently — so a spec can declare `reference` and write an explanation's north star with
+nothing catching it. Producers made this join themselves on every node that declared `reference`.
 
-Cheap, and it would have caught two of this mission's findings before the gate. The impl-bar page
-documents a rule against a routing that silently drops a member of a set the document enumerated —
-and its own control-flow graph did exactly that, dropping the enumeration rule's citation form from
-a routing over citation forms. The spec bar's own coverage-completeness rule, likewise, is what
-finally caught a completeness argument claiming twenty-seven spends against twenty-six rows.
+### 7. No intra-node reconciliation duty after an edit — **measured**
 
-Where a node documents a rule that could apply to a spec, applying it to **this** spec is a free
-pre-gate check. Worth stating in the spec bar so a producer runs it rather than discovering it.
+Four of four remediated nodes regressed in one round, every finding *introduced* by the remediation.
 
-### 6. The plugin readme predates the current model
+**CHANGED — the rule needs a second half.** `website-target-doc-spec` ran the reconciliation sweep
+and it worked: a cold judge checked every referencing passage and found **no staleness**. It still
+introduced a defect in each of two consecutive rounds, both the same shape — **a `Then` that
+mistranscribes the clause it freezes**. The producer verified *references* and never verified
+*transcription*. What closed it was a full transcription audit: every `Then` quoted beside its source
+clause and classified same / narrower / wider / different.
 
-It still leads the integrity row with *"no claim landed twice"* — the recurrence rule the doc-eval
-model **retracts** on measured grounds — classes all listed inter-passage defects as inspection when
-the model's own correction makes three of them judged, documents no judged tier at all, and omits the
-`governances` block entirely so a reader cannot learn the two bars are bound. That last omission is
-what the website page turned into a positive false claim.
+**Fix:** after changing a claim, reconcile every passage that references it — **and** for every `Then`
+written or touched, quote the source clause it freezes and confirm it asserts that proposition. Where
+a `Then`'s only home is a CFG node label, say so: one defect existed precisely because a label was a
+claim's sole home and nothing cross-checked it.
 
-### 7. Quill contradicts the SDD plugin contract on `spec-judge: null`
+**Caveat, unchanged:** a sweep is not self-certifying. It reduces rounds; it does not replace the cold
+judge.
 
-Three Quill artifacts say the spec gate applies the documentation criteria itself with no judge
-agent. The SDD plugin contract resolves an unfilled slot to the SDD default, and the spec gate spawns
-the cold default judge unconditionally — as it did throughout this mission. One of the two is wrong.
-The website contract was deliberately written to hold either way, so nothing blocks on the
-resolution, but it cannot stay unresolved.
+### 8. The plugin readme predates the current model — **verified still true**
 
-### 8. Smaller, recorded
+`plugins/quill/readme.md:17` still leads the integrity row with *"No claim landed twice"* — the
+recurrence rule the doc-eval model **retracts on measured grounds**. It classes all listed
+inter-passage defects as inspection where the model's own correction makes three of them judged,
+documents no judged tier, and mentions `governances` **nowhere** (grep: zero hits), so a reader cannot
+learn the two bars are bound at all.
 
-- The glossary hard-codes the catalog entry count, coupling the ubiquitous language to a number the
-  catalog will move.
-- The doc-eval model's instrument table gives the judged instrument's scope as *one check per
-  document*, undercounting a tier that carries one inspection rule **plus** the whole catalog.
-- The calibration table admits only `advisory` and `calibrated`, so an entry that **ran and never
-  fired** — which the prose says is untested, not calibrated — has no representable state.
-- `init-quill`'s reject-a-missing-`governances`-block rule has no reachable trigger: the skill
-  constructs the only payload it ever writes, and writes the block itself.
-- The spec bar requires every entry point to trace to a coverage row but never flags a **coverage row
-  no entry point reaches**, though it carries the symmetric rule for audiences and for
-  coverage-vs-scenarios.
+### 9. `spec-judge: null` — **CHANGED: settled by evidence, and Quill is the wrong side**
+
+The original brief said "one of the two is wrong" and left it open. It is no longer open.
+
+`plugins/quill/readme.md:36` claims `spec-judge: null` *"degenerates to static doc criteria run by
+`spec-gate` itself, no judge agent"*, and `sdd-roles/doc-spec-bar/README.md:25` says the same.
+**Across this session the SDD default cold judge was spawned unconditionally every time** — five
+rounds on the Target node, two on quill's own nodes. The SDD plugin contract is right; Quill's prose
+is wrong, in at least three artifacts.
+
+**Fix:** correct all three to say an unfilled slot resolves to the SDD default judge.
+
+### 10. Smaller, recorded
+
+- The glossary hard-codes the catalog entry count (`glossary.md:20`, *"nine named prose defects"*),
+  coupling the ubiquitous language to a number the catalog will move.
+- The doc-eval model's instrument table undercounts the judged tier's scope.
+- **The calibration table has no state for an entry that ran and never fired — now demonstrated, not
+  predicted.** Calibration run 1 produced exactly this: four of nine entries fired on neither
+  document, and three group-C cells were `uncitable` against an unspecified document. The table admits
+  only `advisory` and `calibrated`, so both had to be recorded in the *Corpus run* column as prose.
+- `init-quill`'s reject-a-missing-`governances`-block rule has no reachable trigger. **CHANGED:** the
+  registry spec-producer declined to spec it for that reason and recorded why. The useful repair is
+  to make it reachable — have step 3 validate the **found** entry, so a hand-edited or partially
+  migrated registry gets repaired. Note the identical unreachable edge is **frozen into the ACED
+  sibling suite** (`registry.feature:75`) in a project at `status: implemented`, so an impl gate
+  passed against a scenario no implementation can lose. That is its own question.
+- The spec bar flags no **coverage row no entry point reaches**, though it carries the symmetric rule
+  for audiences and for coverage-vs-scenarios.
+
+## Out of scope — routed elsewhere, do not absorb
+
+- **`doc-spec-bar`'s grading face has no home** (formation Warden, escalated as a Conflict). Quill
+  declares `spec-judge` unbound, so `spec-gate` enforces its criteria statically and **no node owns
+  that behavior** — all 23 covered criteria are covered only as producer obligations. That is a
+  *missing node*, not a bar edit, and it is a separate CR.
+- **The defect catalog is largely unfrozen.** 5 of 18 sub-criteria covered; `contradict`, `orphan`,
+  `presuppos`, `certif` appear in **zero** `.feature` files corpus-wide; three of nine entries have no
+  scenario contact at all, including **B3 contradiction**, which the calibration table calls the best
+  discrimination of the nine. Eight of nine near-misses are unfrozen. Separate CR — it is a suite to
+  author, not a bar to edit.
+- **A real calibration.** Run 1 moved no row and cannot: it needs five or six accepted documents
+  **each with a spec node**, plus two or three weak ones with specs. Its own mission.
 
 ## Sequencing
 
-Item 1 first and alone — it is the only one that changes what every future Quill spec is graded
-against, and items 2–5 are bar edits whose effect is only observable once producers actually load the
-bars. Items 6–8 are corrections to shipped prose and can ride together.
+**Item 1 first, and it is now two commits, not one.** Fix `sdd:plugin-contract-governance`'s table row
+before touching any Quill agent — otherwise the fix reads as a Quill-specific workaround and the next
+plugin inherits the same defect.
+
+**Then item 2 with item 3 together.** The agent load lists and the output fields are one coherent
+change: five frozen scenarios need both, and landing the load list without the declaration field
+leaves the suites still failing.
+
+**Then the bar edits (4–7),** whose effect is only observable once producers actually load the bars.
+
+**Then the corrections (8–10),** which can ride together.
+
+**Do not run `quill-judge` at this CR's impl gate until item 2 has landed** — this CR modifies the
+judge, so grading its own change with the unmodified agent grades the wrong artifact.
 
 ## NEXT
 
-Open this CR against `.agents/specs/quill/`. Item 1 is a three-line change across
-`plugins/quill/agents/*.md`; items 2–5 are edits to `quill-builder-spec` and `quill-builder-impl`.
+Open against `.agents/specs/quill/`, but **the first commit lands in `plugins/sdd/`** — one word at
+`plugin-contract-governance/SKILL.md:53`. Everything downstream depends on that being the stated
+contract rather than a local exception.
