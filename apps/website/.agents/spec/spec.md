@@ -1,5 +1,5 @@
 ---
-status: approved
+status: implemented
 name: website
 project-path: apps/website
 approval:
@@ -8,11 +8,11 @@ approval:
     by: agent
     cause: dimension
     why:
-      floor: none — no frozen scenario narrowed at impl. The single impl-gate failure was fixed in the document, never in the suite.
-      blast: medium — six documents published (four new, two revised and both previously stale against the registry), plus four sidebar entries. Nothing outside the website app changed.
-      novelty: medium-high — first end-to-end dogfood of quill's own chain, and the first blind-then-scored judged pass on real documents.
-      confidence: high — 125 of 125 frozen scenarios pass across six suites, each run by a cold quill-judge plus a document-scoped enumeration pass and a blind reader simulation. All judged findings advisory, none blocking. Website build green.
-      cr: quill-docs-section
+      floor: none at impl — no frozen scenario was narrowed here. The Clearance that fired earlier belongs to the spec gate's contract repair and was pre-authorized by the owner.
+      blast: low — two passages in one published article plus its verification record. No sibling page, no sidebar, no other suite.
+      novelty: medium — the first contract repair on this corpus driven by a Conflict the impl gate found inside an already-frozen suite, then re-gated and re-implemented in sequence.
+      confidence: high — a cold quill-judge returns 29 of 29 scenarios PASS with every passage independently located, the document-scoped enumeration rule clean across all four enumerated sets, and no inspection failure. It read the calibration table before aggregating and correctly held both judged findings advisory. Pass 1 ran blind in a separate context. It confirmed the old enumeration survives nowhere and all 30 verification quotes resolve.
+      cr: website-target-doc-spec
   spec:
     verdict: approve
     by: agent
