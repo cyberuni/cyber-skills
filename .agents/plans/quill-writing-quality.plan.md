@@ -3,7 +3,9 @@ cr-ref: quill-writing-quality
 project-spec: plugins/quill
 status: draft
 todos:
-  - content: Correct the integrity criteria — recurrence is not the defect, unresolvable presupposition is
+  - content: Retract the recurrence criterion at all six live sites (impl bar, spec bar x2, doc-impl-bar README, key-point lists, and the instruction-target suite)
+    status: pending
+  - content: Re-partition the two tiers by what is actually decidable mechanically — most integrity criteria are judgment, not inspection
     status: pending
   - content: Add declaration-agreement — a passage's presuppositions must match the spec's declared audience and prerequisites
     status: pending
@@ -53,12 +55,26 @@ Full dossier in `.research/documentation-craft/`; three findings drive this CR.
 
 ### Two instruments, split by how a verdict is reached
 
-| | **Inspection** (exists) | **Judgment** (new) |
+| | **Inspection** | **Judgment** (new) |
 |---|---|---|
-| Carries | existence, structure, completeness, reader-path, integrity | craft defects |
-| Verdict | boolean, mandatory citation | graded against a rubric |
-| Anchor | the frozen `.feature` + `quill-builder-impl` | the defect catalog |
+| Carries | existence, structure, completeness, reader-path; route-vs-enumeration | every prose-semantic criterion, including most of what the integrity bar now holds |
+| Decides by | comparing two structured artifacts, or matching a pattern | simulating a reader |
+| Verdict | boolean, mandatory citation | graded, citation + location |
+| Anchor | the frozen `.feature` + the spec's own tables | the defect catalog |
 | Fails on | a condition not met | a defect confirmed and not defended |
+
+**The partition has to be redrawn, and this is the review's main finding.** The integrity criteria
+were built as *inspection*, but none of them is mechanically decidable. Deciding that a passage
+presupposes something, that no antecedent is retrievable, that a term has changed subject class, or
+that two claims cannot both hold — each requires reading as a reader, not matching a pattern. They
+were only ever "inspection" because evidence-with-citation made them *feel* mechanical.
+
+So the honest split is by **what decides the verdict**, not by which file the criterion lives in.
+Inspection keeps what compares two structured things: does the file exist, is the heading present,
+does the CFG spend the coverage table's enumeration. Everything prose-semantic moves to judgment —
+which means **the existing integrity bar is largely the seed of the defect catalog**, not a peer of
+it. That is a larger change than "add a tier", and it should be stated plainly at the spec gate
+rather than discovered during implementation.
 
 The judged tier is **not** a second spec gate and **not** a style preference. It runs a catalog of
 named defects, and the producer may mark any finding as a deliberate violation with a rationale the
@@ -90,13 +106,34 @@ findings are arguments rather than conditions.
 | **Bare cross-reference** | a pointer stands where the reader needs the content now | a pointer to genuinely out-of-scope depth, with a forwarding address |
 | **Re-presented as new** | already-established content carried with new-information marking, as if first stated | a legitimate **echo** — content restated but marked as given |
 | **Declaration mismatch** | prose presupposes a sibling the spec declares *not* prerequisite | prose restating that sibling's claim in full |
+| *(the spec's declared audience and prerequisites are this catalog's **input**, not a separate tier — an earlier draft listed declaration-agreement as an inspection criterion and as a catalog entry, which is one criterion in two places)* | | |
 | **Claim without mechanism** *(explanation type only)* | a chain of assertions with no causal step, in a doc type whose job is the causal step | a definition, a table row, a summary recap |
-| **Orphan claim** | a claim landed and never used, connected, or paid off | a deliberate non-goal, declared as such |
+| **Orphan claim** | a claim landed and never used, connected, or paid off | a claim that *is* the payoff — a north-star statement, or a coverage row the spec requires for its own sake |
 | **Undefined term at first use** | a load-bearing term relied on before it is glossed or linked | a term the declared audience owns |
 
 `Claim without mechanism` returns here deliberately. It was ruled out of the inspection bar earlier
 this session on the grounds that *"no citation settles it"* — which was the right call for a lint and
 the wrong one for a judge.
+
+### The alternative the design must argue against
+
+**Do nothing structural: put graded scenarios in the doc `.feature`.** ACED already grades inline
+`@rubric` scenarios inside a suite, so a "judged tier" may be an unnecessary invention — the catalog
+could be a set of scenarios the spec-producer includes per document. Reasons to reject it are real
+but must be *stated*, not assumed: a catalog entry applies to every document (authoring it per suite
+duplicates it 76 times), and a defect the spec did not anticipate is exactly what the judged tier
+exists to catch — a per-suite scenario can only encode a defect someone already thought of. If those
+two reasons do not survive scrutiny, the cheaper design wins and this CR shrinks to a criteria
+correction.
+
+### Cost, and the failure mode of getting it wrong
+
+A judged tier adds a rebuttal loop to the impl gate. If the catalog is chatty, every document
+acquires a round of defend-or-fix, and the predictable outcome is that the tier gets routed around —
+disabled, or its findings waved through. A false positive here is more expensive than a miss: a miss
+ships a weak paragraph; a false positive teaches the producer to ignore the judge. Calibration
+below is what keeps that from happening, and open decision 3 (does a judged finding block?) should
+be settled with this asymmetry in view.
 
 ### Calibration is a gating prerequisite, not a follow-up
 
@@ -139,11 +176,36 @@ above require.
 4. **Whether `quill-judge` runs both tiers or a second agent runs the judged one.** One agent is
    simpler; two keeps a boolean instrument from being contaminated by a graded one.
 
+## Done means
+
+1. The recurrence criterion appears nowhere — verified by search, not by memory. Current live sites:
+   `quill-builder-impl` (criterion + key point), `quill-builder-spec` (the scenario-map rule + its
+   key point), `doc-impl-bar/README.md`, and `instruction-target.feature:126`.
+2. Every criterion sits in the tier that matches how its verdict is reached, and the bar says which.
+3. The catalog separates documents this repo already accepts from documents it already considers
+   weak, with the false-positive rate reported — not asserted.
+4. A judged finding a producer disputes has a defined path that does not require a human.
+
+## Ordering hazard — this CR and `website-target-doc-spec` collide
+
+`instruction-target.feature:126` carries `And it makes that claim in exactly one place, later
+passages referring back` — added this session, before the research. That CR is parked at its spec
+gate. **If its gate runs first, the disproven criterion gets frozen into a suite**, and retracting it
+afterwards costs a re-freeze.
+
+Either land todo 1 before that gate runs, or strike that one clause from the suite now as a
+standalone correction. The second is cheaper and does not depend on this CR at all.
+
 ## NEXT
 
-Todo 1. Nothing here is frozen and no quill spec node has been touched yet — the corrections and the
-new tier want a single explore pass, since correcting the integrity criteria without the judged tier
-would leave the craft defects with no home at all.
+Todo 1, but read the ordering hazard above first — the one-clause strike in
+`instruction-target.feature` is worth doing immediately and independently, because it is the only
+part of this CR with a deadline attached.
+
+Then todos 1–2 together. Nothing here is frozen and no quill spec node has been touched yet, and the
+corrections want a single explore pass with the new tier: correcting the integrity criteria without
+somewhere for the craft defects to go would leave them homeless, and re-partitioning the tiers is
+what decides where "somewhere" is.
 
 Start by reading `.research/documentation-craft/conclusion.md` in full. The CR's whole argument rests
 on it, and two of its load-bearing claims are marked **medium** confidence — that a judge can carry
