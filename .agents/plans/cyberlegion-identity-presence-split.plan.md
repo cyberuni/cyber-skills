@@ -1,6 +1,6 @@
 ---
 name: cyberlegion-identity-presence-split
-status: active
+status: deprecated
 todos:
   - content: "split identity/identity.feature: extract the standing-identity (9 scenarios) and main-pane (8 scenarios) clusters into a new node (proposed presence/), verbatim/coverage-preserving; identity/ retains register/whoami/who/bare-status/prune/self-id-recovery/harness-detection/touch"
     status: pending
