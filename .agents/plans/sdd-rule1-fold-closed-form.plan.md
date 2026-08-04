@@ -17,14 +17,14 @@ todos:
     status: completed
     note: two cold sdd-spec-judge rounds — R1 architect blocker (bullet placement) remediated, R2 ALIGNED true all lenses. Self-asserted by:agent (ledger seq:2). STOP for Council.
   - id: deliver
-    status: in_progress
-    note: sync shipped skills — suite-format-governance (fold subsection in CFG area), spec-producer-governance (fold instruction BEFORE scenario authoring per architect finding), builder-spec-governance (pointer). pnpm verify.
+    status: completed
+    note: synced 3 shipped skills — suite-format-governance (fold subsection in CFG area), spec-producer-governance (fold instruction at FRONT of step 4, before scenario authoring), builder-spec-governance (coverage pointer). pnpm verify 35/35.
   - id: impl-gate
-    status: pending
-    note: dispatch cold sdd-impl-judge SYNCHRONOUSLY; self-assert by:agent; STOP for Council.
+    status: completed
+    note: cold sdd-impl-judge IMPLEMENTATION_PASS, first round — all 6 frozen scenarios matched 1:1 to a non-vacuous shipped instruction, frozen .feature untouched, 0 absorption findings. Self-asserted by:agent (ledger seq:3). STOP for Council.
   - id: handoff
-    status: pending
-    note: followup line(s) (unconditional — incl. the WAW-mutex 'roughly four' count nit); relay verdict packets up.
+    status: completed
+    note: two backlog followups recorded (seq:4 WAW-mutex count nit, seq:5 optional step-5 defense-in-depth). Verdict packets relayed up. Council owes both human ratifications + merge.
 ---
 
 # Codify SDD Rule 1 — closed-form fold before by-example
@@ -36,11 +36,11 @@ Do NOT re-litigate or re-dogfood — codify narrow + qualified.
 
 ## NEXT — resume here
 
-Spec gate is JUDGE-PASSED (by:agent, ledger seq:2) and STOPPED for Council. Remaining: deliver the
-shipped-skill impl edits (fold instruction BEFORE scenario authoring), `pnpm verify`, run the cold
-impl-judge synchronously, self-assert the impl gate by:agent (ledger seq), write followup lines, and
-STOP. The Council owes both human ratifications (spec + impl) and the merge — never relayed, never
-self-asserted.
+BOTH gates JUDGE-PASSED and self-asserted by:agent, STOPPED for Council. Nothing left for the
+automaton. The in-session channel-holder (Council) owes, positionally and un-relayably: the spec-gate
+human ratification (ledger seq:2 → a by:<name> line), the impl-gate human ratification (ledger seq:3
+→ a by:<name> line), and the merge/PR. Deliver commit is on this worktree branch; a changeset for the
+`cyber-sdd` package change is included. Two non-blocking backlog followups stand (seq:4, seq:5).
 
 ## The codified rule (narrow + qualified)
 
