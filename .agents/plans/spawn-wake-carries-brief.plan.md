@@ -8,10 +8,10 @@ tier: opus
 todos:
   - content: "explore — re-spec brief delivery: wake carries the instruction, hook-inject retired"
     status: done
-  - content: "spec gate R3 — ALIGNED true, all 3 lenses PASS; awaiting owner ratification"
-    status: in_progress
+  - content: "spec gate — RATIFIED by owner; status approved, ledger seq 2, commit 81f4d38c"
+    status: done
   - content: "deliver — doorbell/session/inject-inbox change + per-scenario verification"
-    status: pending
+    status: in_progress
   - content: "impl gate — sdd-impl-judge PASS; rebase onto main; owner ratifies"
     status: pending
   - content: "handoff — superseding ADR + PR; file CR-B/CR-C follow-ups"
@@ -96,55 +96,57 @@ never fails a spawn.
 
 ## NEXT
 
-**Spec gate R3 returned ALIGNED true — all three lenses PASS. Awaiting owner ratification.**
+**Spec gate LANDED — `81f4d38c`. Deliver is the live frontier.**
 
-Pre-flight passed both rounds (judge independently derived the same seven; `expected ⊆ declared`).
-R3 lenses: **oracle PASS, builder PASS, architect PASS**. `SCENARIOS_FAILING: []` — 24/24 in
-`mail/surface`, 51/51 in `unit/lifecycle`. No blocker, no open questions.
+Owner ratified in-session. Root `spec.md` is `status: approved` with `approval.spec`
+(`by: unional`, `cause: ceiling`, floor `clearance`); the prior CR's stale `approval.impl` was
+removed (its durable record survives as seq 7 of the `github-339` shard). This CR's own durable gate
+line is **seq 2** of `ledger/spawn-wake-carries-brief.8de937.jsonl` — it does not rest on
+github-339's floor. `pnpm verify` green, 35/35.
 
-### What R2 found and how R3 closed it
+Judge verdicts: R3 `oracle PASS / builder PASS / architect PASS`, ALIGNED true, `SCENARIOS_FAILING []`
+— 24/24 `mail/surface`, 51/51 `unit/lifecycle`.
 
-- **F1 (builder FAIL) — barred edge with no firing-direction companion.** The `Given` pinned the
-  brief file and an unread message but not the peer's registry status; under the only constructible
-  fixture (`active`) the un-retired `inject-inbox.ts:40` branch is inert, so a partial implementer
-  passed every `Then`. **Owner chose remedy 1 (freeze the retirement), live this session.** Added
-  `surface.feature` "a peer record carrying a legacy spawning status still gets no brief" — a record
-  migrated from an older hub, asserting no brief section **and** that the record keeps its migrated
-  status. R3 re-ran the miss test: that scenario kills the partial implementer **two independent
-  ways** (branch fires and emits `## Your brief`; branch flips the record). The two scenarios are
-  legitimate permutation coverage — same edge, different path class, and different `Then` sets
-  (`:23` asserts brief-file immutability, `:31` record-status immutability, which `:23` cannot
-  assert at all since its peer carries the status spawn now writes).
-- **F2 — prose out-claimed the suite.** The call-ordinality claim ("on the first hook call as on
-  every later one") lost its backing scenario. Rewritten as a **convergence over record status**
-  ("whatever status the peer's record carries", naming the legacy case), which is what the suite now
-  covers. R3 confirmed the behavior-table row enumerates exactly the four scenarios in that group.
-- **R2 blocker — illegal gate transition.** Root `spec.md` re-opened `implemented → draft` (a legal
-  edge; the only in-edge to `approved` is `draft → approved`). The `approval` block was deliberately
-  **left in place** — R3 walked the illegal-tuple list by hand and ruled it legal and correct:
-  `approval` is the overwritten current-state twin this gate rewrites on approve, the durable record
-  is the ledger, and clearing it would be the producer writing a gate-owned field.
+### Deliver — what has to land
 
-Also applied: step-down ordering in the `mail/surface` group (happy path leads, barred follow); a
-`Then` asserting "brief file left on disk, **unread by the hook**" (a non-act with no readable
-artifact, two conditions in one step) became "still exists with its contents unchanged"; and R3's one
-non-blocking `CONTENT_GAP` — `unit/lifecycle/README.md` had dropped the `(mail/surface)` attribution
-for "nothing later flips it" — was restored.
+Against the now-frozen suites. Nothing here is settled by the gate; the impl-judge re-derives each
+scenario's oracle independently.
 
-### Resume here — the gate's own write, on owner ratification
+- `store/store.ts:20` — `AgentStatus` loses `spawning`. **But see the read-tolerance requirement
+  below — do not just delete the union member.**
+- `session.ts:201` — spawn registers `status: active` (was `spawning`).
+- `runtime/inject-inbox.ts` — **both** sites removed (the `:40` injection branch and its status
+  flip). Do not disturb the mail / owner-mail / setup-nudge surfacing around it, nor the
+  auto-register branch (`unit/registry/README.md:119`'s "hook-failed pane" still refers to it).
+- `console/doorbell.ts` — `SPAWN_DOORBELL` rewritten to instruct "read the brief at <path> and
+  begin", naming the path and not carrying the body.
+- `WakeSpawnInput` threaded with the brief path — `wakeSpawn` takes no brief today.
+- `session.test.ts`, `inject-inbox.test.ts` updated.
+- **The superseding ADR for `artifacts/adr/0027-spawn-delivers-first-turn.md`** — the ledger grant
+  binds it to *this* CR, not a follow-up. Both judge rounds flagged it; the impl gate must not waive
+  it.
 
-1. **Owner ratifies the spec gate** (leash `auto-none` over a Clearance floor — not self-assertable,
-   not relayable; the write is positional and in-session).
-2. Write `approval.spec` (`verdict: approve`, `by: <owner>`, floor `clearance` — granted live before
-   drafting) and advance `status: draft → approved`.
-3. **Append this CR's own `gate: spec, verdict: approve` ledger line.** R3 flagged this specifically:
-   the retained `approval` block and the existing shards both still carry github-339's spec-gate
-   line, so once status returns to `approved` the mechanical durable-gate floor **cannot distinguish
-   this CR's gate from the prior one**. This gate must not rest on the existing floor.
-4. Stage the two `.feature` files with the gate commit (freeze is the gate commit; precedent
-   `0ae65ed5` kept `@frozen` in place through a narrowing rewrite).
+### The load-bearing impl constraint (from the chosen F1 remedy)
 
-Then deliver (see below).
+`surface.feature`'s legacy scenario asserts *"the peer's record still carries the status it was
+migrated with"*. Once `spawning` leaves `AgentStatus`, the store must **round-trip an off-enum status
+value** — a read that coerces, validates against the union, or normalizes an unknown status will fail
+that scenario. `admin migrate` carries agent records from older hubs, so the fixture is real, not
+hypothetical. This is the price of freezing the retirement; it was the owner's call and it is now
+frozen contract.
+
+### Environment note — correcting a stale carry
+
+`check-suite` **does** run in this repo. Invoke it through the package entrypoint
+(`pnpm --filter cyberlegion check:spec`, i.e. `sdd-check-specs`), which reports "suite checks OK".
+Only invoking `spec-gate/scripts/check-suite.mts` directly with `node` fails
+(`ERR_MODULE_NOT_FOUND` — that path's engine resolution is npx-only). Earlier rounds of this mission
+recorded "check-suite cannot run here" and judged suite form by hand; that was wrong, and the linted
+result is green either way.
+
+`align-spec` compares against **HEAD**, so an uncommitted narrowing shows as a `check:spec` FAIL
+("escalate a Clearance CR, do not silently rewrite"). That is the guard working; it clears once the
+gate commit lands. Expect it again during deliver only if scenarios move.
 
 ### Defects fixed and verified held
 
