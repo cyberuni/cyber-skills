@@ -17,14 +17,23 @@ todos:
     status: completed
     note: CUT as separate rule — collapses into Rule 1 (matrix = draw every independent cell as a CFG branch). github-278 confirms.
   - id: codify-sdd-rule1-cr
-    status: pending
-    note: open sdd governance CR — Rule 1 + matrix corollary. NOT yet started.
+    status: completed
+    note: Shipped as CR sdd-rule1-fold-closed-form (PR opened, awaiting merge). Both gates Council-ratified. NOTE — a spec-gate round-2 judge verdict was recorded by the automaton from a COORDINATOR RELAY (the judge's reply failed to route by name); a security monitor flagged it; remediated by a FRESH first-hand cold spec-judge re-verification before ratification (ledger seq:6). Lesson: judge verdicts are non-relayable into durable records, same as human ratification.
   - id: codify-aced-entry5-cr
     status: pending
     note: open aced CR — producer pre-flight (verify harness claims vs primary docs; grep before coining a term). NOT yet started.
   - id: cut-a-cluster-seq42-pre-judge
     status: completed
     note: Council CUT the seq42 pre-judge use-case-coverage extension (A-cluster) as already-implemented — both checks shipped in check-spec-state.mts; recurrences do NOT land in an extendable prose/EARS form. See Resolved decisions.
+  - id: rule-7f906e-three-findings
+    status: completed
+    note: 2026-08 doctrine pass (shard 7f906e) drafted 3 open findings + 2 resolved tombstones. Council KEEP all three; CRs shipped and merged — PR #390 (metaphor-free mechanical check, #387), PR #392 (Warden split-axis check #388 + Clearance back-fit proof #389). #388's presence-split itself stays killed; only its lesson was kept. See Resolved decisions → 7f906e run.
+  - id: full-backlog-retro
+    status: completed
+    note: 69 entries triaged + Council-ruled (accept full triage; CR-4 KEEP narrow). 37 CUT / 9 RESOLVED / 11 DUPLICATE / 7 new KEEP (queued as CR-1..CR-7) + 2 pre-ratified f5152c KEEPs. See Resolved decisions → Full-backlog retro.
+  - id: queued-ratification-backlog
+    status: pending
+    note: 7 new KEEP CRs (CR-1..CR-7) recorded; build AFTER Rule 1 (sdd) + Entry 5 (aced). Suggested order CR-2 → CR-1 → rest. Council held these this session.
 ---
 
 # Doctrine-loop strategy keep-or-cut + rule dogfood
@@ -33,6 +42,20 @@ Strategist outer-loop (doctrine-loop) run to completion, then Council keep-or-cu
 one-rule-at-a-time dogfood of the two survivors before any governance edit.
 
 ## NEXT — resume here
+
+**Current status (2026-08):** the 7f906e run's three findings are ruled KEEP and shipped (PR #390,
+#392 — merged). The full ~69-entry backlog was triaged and Council-ruled (accept triage, CR-4 KEEP
+narrow — see "Full-backlog retro"). **Rule 1 (sdd) is shipped** (CR sdd-rule1-fold-closed-form, PR
+open, ratified with a provenance correction). **Entry 5 (aced) and the 7 new KEEP CRs are PAUSED** by
+Council decision, pending a harness rethink: the hand-dispatched headless-automaton pattern hit three
+failure modes this session — (1) the gate-bounce (every human gate bounces back to the in-session
+channel-holder, since a relayed ratification is never valid), (2) a name-routing wait-loop (a nested
+judge's reply to its parent automaton fails to route by name, stalling the mission), and (3) the
+relay-taint (relaying a judge verdict for the automaton to record corrupts durable provenance — a
+security monitor flagged it). Resume Entry 5 + CR-1..CR-7 only under a tighter harness (in-session
+gating, or a workflow where judges are self-observed and no verdict is ever relayed).
+
+**Next action (superseded — see status above):** the two f5152c KEEPs below; Rule 1 is now done.
 
 **Next action:** open the **sdd** governance CR for Rule 1 (below) via `start-mission` against the
 sdd project spec — target `authoring/suite-format` (+ `builder-spec-governance`); author the suite
@@ -141,6 +164,50 @@ recommending the Council ratify seq42's pre-judge mechanical extension. **Cut as
   `prose-impl-contradiction` enum/sweep and the structural step-identity diff — which the seq42
   lineage was absorbing as "reinforcement," inflating its recurrence count with defects it never
   claimed to catch. Those two remain in the untouched-unratified set for their own keep-or-cut.
+
+### 7f906e run (2026-08 doctrine pass) — 3 findings, all KEEP + shipped
+The later doctrine pass (shard `strategy.7f906e.jsonl` in the cyberlegion + website ledgers) drafted
+three `open` findings and two `resolved` tombstones. Council ruled and the keeps are already merged:
+
+| Finding (shard/seq) | Verdict | Landing |
+|---|---|---|
+| `github-172-doorbell-focus-gate` (cyberlegion seq3, #387) — 3rd metaphor-leak into the metaphor-free package, caught only by manual judge grep | **KEEP** | mechanical `check:metaphor-free` guard — PR #390 (merged) |
+| `cyberlegion-identity-presence-split` (cyberlegion seq4, #388) — a wrong-axis split CR superseded before landing | **split stays KILLED; lesson KEEP** | Warden split-axis-vs-capability-boundary check — PR #392 (merged) |
+| `website-target-doc-spec` (website seq1, #389) — the pre-repair-draft-failure proof that a Clearance repair isn't a back-fit | **KEEP** | `remediation-governance` 5th rule — PR #392 (merged) |
+| `github-158-focus-cross-workspace` (cyberlegion seq1) | resolved (tombstone) | already shipped #162/PR #168 |
+| `at-default-tab` (cyberlegion seq2) | resolved (tombstone) | closed by cli-realign per-backend frozen scenarios |
+
+Same mechanism as the f5152c run: `ratified: false` stays forever; KEEP = the CR exists. These three
+CRs exist and merged, so the ruling is discharged.
+
+### Full-backlog retro (2026-08) — ruled
+Council-directed keep-or-cut over the full corpus (21 tracked shards, 69 unratified entries = 33
+previously ruled + 36 fresh). Triaged by a Fable pass, each RESOLVED backed by a cited current-code
+check. **Council accepted the full triage.** Same mechanism: `ratified: false` stays forever; KEEP =
+a CR exists.
+
+- **Non-keeps ruled (accepted, do NOT re-open):** 37 CUT (n=1 / redundant / trigger already fixed /
+  positive-precedent notes), 9 RESOLVED (gap already closed in current code — the corpus self-healed;
+  e.g. `prose-impl-contradiction` cause enum, step-identity structural diff, internal-description
+  lint, sdd-new path prune), 11 DUPLICATE collapsing into the 5 clusters below.
+- **5 reinforcement clusters:** A-cluster (settled CUT); durable-footprint (→ CR-4); cold-instrument
+  (→ CR-1); enum-conformance (→ CR-2); plan-drift (→ CR-3).
+
+**New KEEP queue (7 CRs) — ratification backlog, build after the 2 pre-ratified f5152c KEEPs:**
+
+| CR | Head entry | Target | Lesson |
+|---|---|---|---|
+| CR-1 cold-instrument | sdd `2d9bbc` seq1 | `impl-producer-governance` + `builder-impl-governance` (echo aced) | when the subject IS a measurement instrument, mutation-sweep first; adopt/drop a rule only on non-author evidence; revived rule stated abstractly + ablation-tested |
+| CR-2 cause-enum conformance | sdd `0bfda2` seq2 | `combat-log-governance` + conductor | write-time enum validate/nudge + a sanctioned novel-shape path (nearest bucket + followup proposing enum growth) — off-enum causes silently break the loop's own recurrence detector |
+| CR-3 plan-finalize backstop | aced `193814` seq3 | conductor/handoff | reconcile plan todos + `## NEXT` to landed state at finalize; Council to decide terminal `status` vs today's dispatch-flag-only semantics |
+| CR-4 durable footprint | sdd `317dd8` seq2 | `plan-retirement` / ledger | **KEEP narrow** (Council ruling): one ledger line (outcome class + whether a gate cycle ran) per concluded non-gated mission |
+| CR-5 retired-term drift registry | aced `193814` seq2 | new mechanical check | register a retired path/term → verify-time corpus-wide grep flags survivors |
+| CR-6 shared-primitive sibling followup | cyberlegion `dae416` seq1 | `start-mission` handoff | a CR touching a shared primitive files a `followup` naming siblings it may obsolete (routes via the existing followup channel) |
+| CR-7 ACED untradeable-boolean | sdd `2d9bbc` seq2 (residual) | `aced-builder-spec` + `aced-scenario-writer` | a whole-output untradeable behavior is one boolean `@quality` scenario, never a rubric dimension |
+
+**Execution (Council ruling): Rule 1 + Entry 5 first, hold the 7.** Open the two pre-ratified f5152c
+CRs one at a time (sdd Rule 1, then aced Entry 5). The 7 above are a recorded ratification backlog;
+suggested build order when resumed: CR-2 (loop is self-blinding) → CR-1 (highest-recurrence) → rest.
 
 ## Verification method (for the CRs)
 A completeness/consistency bar is itself the class of thing that diverges producer-judge loops, so it
