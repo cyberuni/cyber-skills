@@ -17,8 +17,8 @@ todos:
     status: completed
     note: CUT as separate rule — collapses into Rule 1 (matrix = draw every independent cell as a CFG branch). github-278 confirms.
   - id: codify-sdd-rule1-cr
-    status: pending
-    note: open sdd governance CR — Rule 1 + matrix corollary. NOT yet started.
+    status: completed
+    note: Shipped as CR sdd-rule1-fold-closed-form (PR opened, awaiting merge). Both gates Council-ratified. NOTE — a spec-gate round-2 judge verdict was recorded by the automaton from a COORDINATOR RELAY (the judge's reply failed to route by name); a security monitor flagged it; remediated by a FRESH first-hand cold spec-judge re-verification before ratification (ledger seq:6). Lesson: judge verdicts are non-relayable into durable records, same as human ratification.
   - id: codify-aced-entry5-cr
     status: pending
     note: open aced CR — producer pre-flight (verify harness claims vs primary docs; grep before coining a term). NOT yet started.
@@ -44,11 +44,18 @@ one-rule-at-a-time dogfood of the two survivors before any governance edit.
 ## NEXT — resume here
 
 **Current status (2026-08):** the 7f906e run's three findings are ruled KEEP and shipped (PR #390,
-#392 — merged). Council directed a keep-or-cut retro over the **full ~67-entry unratified backlog**
-(all corpus shards, a superset of the f5152c run below). A corpus-wide triage is underway; its output
-is a per-entry keep/cut/already-resolved recommendation sheet for the Council's ruling. Two f5152c
-KEEPs remain unbuilt and are the only pre-ratified actionable items so far: **Rule 1 (sdd)** and
-**Entry 5 (aced)**.
+#392 — merged). The full ~69-entry backlog was triaged and Council-ruled (accept triage, CR-4 KEEP
+narrow — see "Full-backlog retro"). **Rule 1 (sdd) is shipped** (CR sdd-rule1-fold-closed-form, PR
+open, ratified with a provenance correction). **Entry 5 (aced) and the 7 new KEEP CRs are PAUSED** by
+Council decision, pending a harness rethink: the hand-dispatched headless-automaton pattern hit three
+failure modes this session — (1) the gate-bounce (every human gate bounces back to the in-session
+channel-holder, since a relayed ratification is never valid), (2) a name-routing wait-loop (a nested
+judge's reply to its parent automaton fails to route by name, stalling the mission), and (3) the
+relay-taint (relaying a judge verdict for the automaton to record corrupts durable provenance — a
+security monitor flagged it). Resume Entry 5 + CR-1..CR-7 only under a tighter harness (in-session
+gating, or a workflow where judges are self-observed and no verdict is ever relayed).
+
+**Next action (superseded — see status above):** the two f5152c KEEPs below; Rule 1 is now done.
 
 **Next action:** open the **sdd** governance CR for Rule 1 (below) via `start-mission` against the
 sdd project spec — target `authoring/suite-format` (+ `builder-spec-governance`); author the suite
