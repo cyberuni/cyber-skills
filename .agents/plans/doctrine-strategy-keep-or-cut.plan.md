@@ -20,8 +20,8 @@ todos:
     status: completed
     note: Shipped as CR sdd-rule1-fold-closed-form (PR opened, awaiting merge). Both gates Council-ratified. NOTE — a spec-gate round-2 judge verdict was recorded by the automaton from a COORDINATOR RELAY (the judge's reply failed to route by name); a security monitor flagged it; remediated by a FRESH first-hand cold spec-judge re-verification before ratification (ledger seq:6). Lesson: judge verdicts are non-relayable into durable records, same as human ratification.
   - id: codify-aced-entry5-cr
-    status: pending
-    note: open aced CR — producer pre-flight (verify harness claims vs primary docs; grep before coining a term). NOT yet started.
+    status: completed
+    note: Shipped as CR aced-producer-preflight (PR opened, awaiting merge). Placed as a producer-PROCESS behavior on the scenario-writer (graded by simulation), not a builder-spec output criterion. Both gates Council-ratified in-session under the HARDENED harness — spec-judge self-observed, impl gate re-verified FIRST-HAND by a fresh cold aced-impl-judge (2/2, verify 35/35), no relay anywhere. Clean close-out, no security flag (contrast Rule 1).
   - id: cut-a-cluster-seq42-pre-judge
     status: completed
     note: Council CUT the seq42 pre-judge use-case-coverage extension (A-cluster) as already-implemented — both checks shipped in check-spec-state.mts; recurrences do NOT land in an extendable prose/EARS form. See Resolved decisions.
