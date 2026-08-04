@@ -11,9 +11,9 @@ todos:
   - content: "spec gate — RATIFIED by owner; status approved, ledger seq 2, commit 81f4d38c"
     status: done
   - content: "deliver — doorbell/session/inject-inbox change + per-scenario verification"
+    status: done
+  - content: "impl gate — rebased; R1-R9 remediated; R10 verifying; owner ratifies"
     status: in_progress
-  - content: "impl gate — sdd-impl-judge PASS; rebase onto main; owner ratifies"
-    status: pending
   - content: "handoff — superseding ADR + PR; file CR-B/CR-C follow-ups"
     status: pending
 ---
@@ -96,16 +96,53 @@ never fails a spawn.
 
 ## NEXT
 
-**Spec gate LANDED — `81f4d38c`. Deliver is the live frontier.**
+**Impl gate, round 10 in flight. Deliver is committed and rebased onto `origin/main`.**
 
-Owner ratified in-session. Root `spec.md` is `status: approved` with `approval.spec`
-(`by: unional`, `cause: ceiling`, floor `clearance`); the prior CR's stale `approval.impl` was
-removed (its durable record survives as seq 7 of the `github-339` shard). This CR's own durable gate
-line is **seq 2** of `ledger/spawn-wake-carries-brief.8de937.jsonl` — it does not rest on
-github-339's floor. `pnpm verify` green, 35/35.
+Implementation landed as specced; every gate round since has been about **verification**, not about
+the shipped behavior — no round has found the implementation wrong. `pnpm verify` green throughout
+(35/35 tasks, 450 tests, up from 405 at the start of deliver).
 
-Judge verdicts: R3 `oracle PASS / builder PASS / architect PASS`, ALIGNED true, `SCENARIOS_FAILING []`
-— 24/24 `mail/surface`, 51/51 `unit/lifecycle`.
+### The finding that shaped this gate
+
+Every round found the same defect class: **a frozen clause bound at a seam where the real behavior
+stays mutable**. Concretely — a value compared against itself (the expected value derived from the
+subject), a wire whose call site no test drives, or a multi-clause `Then` where only the first clause
+is asserted. The count per round went 8 → 3 → 5 → 5 → 5, and R8's judge diagnosed why it was not
+converging: **each round bound one verb and left its siblings.** One round fixed spawn's ring target
+and left nudge's; the next fixed nudge's and left read's; a regex loosened in one place stayed tight
+in its co-located twin.
+
+R8 and R9 therefore swept the **class** rather than the reported points:
+- every verb that drives a pane asserts *where*, not only *what* (spawn ring, both nudge paths, read,
+  clear, focus) — and `close`, which drives a *worktree*, asserts which path it removes;
+- every guard with an "and nothing happened" clause is driven against a live backend, so it can
+  distinguish *refused before acting* from *could not have acted*;
+- constants are bound to an independent semantic shape, never to themselves.
+
+**Calibration is two-directional and must stay that way.** Each bar is checked both that the mutant
+dies *and* that a contract-satisfying reword survives. R9 caught three bars that had become too
+tight (clause-order coupling, a blanket `not` rejection, a blanket "no exec at all"), each of which
+would have failed a conforming reimplementation. When adding a bar here, run both halves.
+
+### Owner decisions taken during deliver
+
+1. **Scope (R5).** Re-freezing both suites pulled 14 pre-existing unbound scenarios into this gate.
+   Owner ruled: **close all 14 before ratifying** rather than scope them out. Done, plus everything
+   rounds 6–9 surfaced on top.
+
+### Remaining known residual (declared, not a blocker)
+
+`cli.ts` flag→seam forwarding is unbound: `cli.ts` is a module-scope `parseAsync` with no exports,
+and `unit spawn` needs a live multiplexer, so the e2e harness cannot drive it. **Pre-existing and
+equivalently exposed on `origin/main`** — the same `noWake: opts.wake === false` wire existed before.
+A judge round noted a `tmux` shim on `PATH` in `cli.e2e` would close the whole class; that is a
+follow-up CR, not this one.
+
+### Then
+
+On R10 pass: **owner ratifies the impl gate** (leash `auto-none`), write `approval.impl` + a
+`gate: impl` ledger line, advance `status: implemented`, then handoff — PR, and file the CR-B/CR-C
+follow-ups plus the ones below.
 
 ### Deliver — what has to land
 
