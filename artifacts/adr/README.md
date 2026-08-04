@@ -26,11 +26,12 @@ This directory contains Architecture Decision Records (ADRs) for cyberplace — 
 | [0024](0024-cyberlegion-cli-node-alignment.md) | cyberlegion spec nodes align to the command tree and the mux/legion layer split | Proposed | 2026-07-09 |
 | [0025](0025-mission-graph-compiler-scheduler-model.md) | Mission-graph model — an optimizing compiler + CPU instruction scheduler, not an Agile taxonomy | Accepted | 2026-07-12 |
 | [0026](0026-mission-graph-store.md) | Mission-graph store — SDD-native, per-repo, git-tracked; no beads/Dolt/global hub | Accepted | 2026-07-12 |
-| [0027](0027-spawn-delivers-first-turn.md) | `unit spawn` delivers the spawned peer's first turn (best-effort, `--no-wake` opt-out) | Accepted | 2026-07-12 |
+| [0027](0027-spawn-delivers-first-turn.md) | `unit spawn` delivers the spawned peer's first turn (best-effort, `--no-wake` opt-out) | Superseded by [0032](0032-spawn-wake-carries-the-brief-instruction.md) | 2026-07-12 |
 | [0028](0028-suite-design-test-levels.md) | The `.feature` is an acceptance suite — inner-rule combinatorics move down to unit tests | Accepted | 2026-07-17 |
 | [0029](0029-backfill-produces-and-rederives-from-the-cfg.md) | Backfilling a spec draws the CFG and re-derives the suite from it | Accepted | 2026-07-20 |
 | [0030](0030-multi-capability-skill-spec-mapping.md) | Multi-capability skill → spec/impl/test mapping and bidirectional discoverability | Accepted | 2026-07-21 |
 | [0031](0031-selection-is-not-visibility.md) | Skill Selection Is Not Skill Visibility | Accepted | 2026-07-24 |
+| [0032](0032-spawn-wake-carries-the-brief-instruction.md) | The spawn wake carries the brief instruction — naming the brief's path, retiring hook-injection | Accepted | 2026-08-04 |
 
 ## Creating a new ADR
 
