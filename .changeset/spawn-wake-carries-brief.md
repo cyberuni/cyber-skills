@@ -17,8 +17,9 @@ pane, so the wake stays one bounded line however large the brief is.
 
 What changes for consumers:
 
-- `SPAWN_DOORBELL` (constant) is replaced by `spawnDoorbell(briefPath)` (function).
-- `WakeSpawnInput` gains a required `briefPath`.
+- `spawnAndWake` is the composed operation to reach for — it spawns the peer AND delivers its first
+  turn, deriving the doorbell's brief path from the record it just wrote. `spawn` alone still opens a
+  peer that sits idle, brief unread.
 - `mail hook` never emits a `## Your brief` section, on the first call or any later one.
 - The `spawning` agent status is retired — `unit spawn` registers a peer `active` outright, since
   nothing flips it any more. A record migrated from an older hub may still carry `spawning`; reads
