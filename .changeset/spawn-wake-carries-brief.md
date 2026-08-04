@@ -21,8 +21,9 @@ What changes for consumers:
 - `WakeSpawnInput` gains a required `briefPath`.
 - `mail hook` never emits a `## Your brief` section, on the first call or any later one.
 - The `spawning` agent status is retired — `unit spawn` registers a peer `active` outright, since
-  nothing flips it any more. A record migrated from an older hub may still carry `spawning`; it is
-  preserved verbatim, never coerced or normalized.
+  nothing flips it any more. A record migrated from an older hub may still carry `spawning`; reads
+  preserve it verbatim and never coerce or normalize it. (`unit register` still asserts `active`, as
+  it always has — that is an explicit re-registration, not a read normalizing a value.)
 - `--no-wake` changed meaning without changing its flag: previously *no turn, brief auto-loaded*; now
   *no turn and brief unread on disk*. A caller driving the first turn itself must convey the path.
 
