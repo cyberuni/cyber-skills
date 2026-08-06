@@ -23,8 +23,20 @@ todos:
     content: "Surface the terminal-status-vs-dispatch-flag decision as an open marker in the spec"
     status: completed
   - id: spec-gate
-    content: "Spec gate — cold spec-judge; emit verdict packet; STOP (gated CR, no self-ratification)"
-    status: in_progress
+    content: "Spec gate — 4 cold spec-judge rounds; Council ruled Option B; ratified in-session"
+    status: completed
+  - id: deliver
+    content: "Deliver: wire the backstop into start-mission SKILL.md + sdd-automaton.md; changeset"
+    status: completed
+  - id: rebase-onto-target
+    content: "Rebase onto main after CR-1/CR-2 landed; kept both cause-enum and plan-brief bands"
+    status: completed
+  - id: impl-gate
+    content: "Impl gate — cold impl-judge IMPLEMENTATION_PASS true, 9/9 scenarios; ratified in-session"
+    status: completed
+  - id: handoff
+    content: "Handoff: reconcile this brief (dogfood), land as PR, drain the 2 recorded followups"
+    status: completed
 ---
 
 # cr3-plan-finalize-backstop — handoff reconciles the plan brief to landed state
@@ -86,10 +98,22 @@ reconcile `todos` + `## NEXT` only, terminal-ness stays derived). Recommendation
 The marker is deliberate and load-bearing: an open marker blocks advance to `approved`
 (`lifecycle-governance`), which is what makes this gate un-self-assertable and forces the ruling.
 
-## NEXT — resume here
+## NEXT — landed
 
-**At the spec gate, awaiting Council ratification.** The 8-scenario additive band and the README
-section are drafted and cold-judged; `pnpm verify` green; suite diff is 8 added / 0 modified /
-0 removed, so freeze self-clears and no Clearance is owed. **Do not self-ratify.** The Council
-rules the terminal-`status` question; a follow-on round then adds the one scenario the ruling
-determines and re-runs the gate.
+**CR-3 is done — nothing to resume.** Both gates ratified in-session by the Council (`by: unional`,
+never self-asserted, no judge verdict relayed); ledger shard carries the durable `leash`, both `gate`
+lines, and 2 `followup` records.
+
+**Shipped:** 9 additive scenarios on `mission/conductor` (0 modified / 0 removed against the rebased
+target — freeze self-clears, no Clearance owed), wired into `start-mission`'s SKILL.md autonomy bar
+and `sdd-automaton.md`. Changeset `cyber-sdd: minor`.
+
+**Council ruling:** Option B — the plan-level `status` stays the dispatch-flag-only enum
+`active | approved`; the backstop writes no terminal value; terminal-ness stays derived
+(`todos-all-done ∧ source-closed`). This now agrees with the same ruling made for the Scanner
+realization in `scanner-stale-plan-status`. A 9th guard scenario freezes it.
+
+**This brief was reconciled by the backstop it specifies** — todos to their terminal state, this
+anchor rewritten, and the plan-level `status` deliberately left at `active`, per the ruling.
+
+Retirement is the doctrine loop's call once this is distilled — not handoff's.
