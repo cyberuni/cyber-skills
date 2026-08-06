@@ -15,9 +15,19 @@ todos:
   - content: "Spec gate: self-grill, run check-spec-state + check-suite, cold sdd-spec-judge rounds to convergence (3 rounds, ALIGNED)"
     status: completed
   - content: "STOP: emit spec-gate verdict packet for Council ratification (gated CR — no self-ratification)"
+    status: completed
+  - content: "Spec gate ratified by unional in-session: approval.spec + durable gate line written, retired-terms.feature frozen"
+    status: completed
+  - content: "Deliver: build the engine, wire check:specs, seed the registry, fix the survivor the seed exposed"
+    status: completed
+  - content: "Impl gate: 2 cold impl-judge rounds; round 1 blocked (the guard failed its own check chain once tracked), round 2 IMPLEMENTATION_PASS"
+    status: completed
+  - content: "Close the judge's exit-code residual with a main()-level binding test plus its clean-path control"
+    status: completed
+  - content: "Impl gate ratified by unional: approval.impl + durable gate line written"
+    status: completed
+  - content: "Handoff: open the PR against main carrying the combat log"
     status: in_progress
-  - content: "[BLOCKED on Council] on ratification: write approval.spec + the durable gate line, freeze the .feature, then deliver the engine + seed the registry"
-    status: pending
 ---
 
 # CR-5 — retired-term drift registry
@@ -111,14 +121,32 @@ Two non-blocking observations carried to the impl gate: only one of the three "g
 sub-cases has a dedicated scenario (mirrors the precedent), and `the registry loads one registered term
 per entry` asserts a parsed result rather than a CLI-observable artifact.
 
+## Impl gate — two cold judge rounds
+
+| Round | Verdict | What it caught |
+|---|---|---|
+| 1 | `IMPLEMENTATION_PASS: false` | 17/17 scenarios passed on independent re-derivation, but the guard **failed its own check chain at the delivery commit**: the skill's operating doc wrote a live registered term in its worked example, and once the new files were tracked the sweep flagged it. Root cause — the sweep was verified against the pre-stage tree, where untracked files are outside it by design. Secondary: the ACED readme fix asserted a git-ignore that nothing delivers |
+| 2 | `IMPLEMENTATION_PASS: true` | no blocker; one residual, closed in-CR |
+
+Round 1's fix was to rewrite the example to **placeholders**, not to widen the self-exclusion set —
+the spec's own narrowing note says only the document that *defines the ban* gets out, and a skill's
+operating doc does not define it.
+
+Round 2's residual was worth closing rather than filing: a `return 0` on the violations path survived
+all 18 tests, because every scenario asserted the violation *list* and none asserted the exit code
+that makes the guard bite. Closed with a `main()`-level test over a real git fixture plus its
+clean-path control, both ablation-checked (breaking the violations exit fails exactly one test).
+
+## Lesson worth keeping
+
+**Run a corpus guard against the *tracked* tree, not the working tree.** Both gates caught the same
+blind spot one document apart: new files are untracked until staged, `git ls-files` cannot see them,
+so a guard verified pre-`git add` is verified against a tree that excludes exactly the files the CR
+is adding. Stage first, then sweep.
+
 ## NEXT
 
-**STOPPED at the spec gate awaiting Council ratification.** No `approval` frontmatter was written, no
-`.feature` was frozen, and the durable gate line records `verdict: pause` — this is a gated CR, so the
-ratification is not the conductor's to write and is not relayable.
-
-On a Council **approve**: write `approval.spec` on the root `spec.md`, append the durable `gate`
-approve line, freeze `retired-terms.feature`, then deliver — build
-`plugins/sdd/skills/check-retired-terms/`, wire it into the root `check:specs` chain, seed
-`.agents/sdd/retired-terms.toml` with the `artifacts/specs/` entry, and **fix** the three survivor
-lines in `plugins/aced/readme.md` (do not allow-list them).
+Landed through both gates and ratified by unional. Handoff: PR against `main` carrying the combat
+log. The two recorded followups (a correction-cause enum with no bucket for a governance pre-flight
+miss; nothing registering a retired term at the moment a mission retires a convention) stay in the
+ledger for a later drain.
