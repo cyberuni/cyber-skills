@@ -33,7 +33,7 @@ todos:
     note: 69 entries triaged + Council-ruled (accept full triage; CR-4 KEEP narrow). 37 CUT / 9 RESOLVED / 11 DUPLICATE / 7 new KEEP (queued as CR-1..CR-7) + 2 pre-ratified f5152c KEEPs. See Resolved decisions → Full-backlog retro.
   - id: queued-ratification-backlog
     status: in_progress
-    note: 7 new KEEP CRs (CR-1..CR-7). CR-2 (cause-enum conformance) SHIPPED under the hardened harness (PR open; impl re-verified first-hand; also discharged the 263-op6-m2 gate-cause-enum followup by reconciling dimension|ceiling → dimension|clearance|ceiling). Remaining: CR-1 (cold-instrument, next), CR-3..CR-7. New backlog followup logged: check-spec-state.mts does not mechanically enforce approval.<gate>.cause legality (prose-only) — candidate future CR.
+    note: 7 new KEEP CRs (CR-1..CR-7). SHIPPED (PRs open, impl re-verified first-hand): CR-2 cause-enum conformance (also discharged 263-op6-m2 via dimension|clearance|ceiling); CR-1 cold-instrument doctrine (placement escalated → Council Option A: rule 1 on impl-producer, rules 2-3 on doctrine/scanner + spec-producer authoring bars; 13 scenarios/3 nodes). Remaining: CR-3 (plan-finalize backstop, next), CR-4 (durable footprint, KEEP narrow), CR-5 (retired-term drift registry), CR-6 (shared-primitive sibling followup), CR-7 (ACED untradeable-boolean). Backlog followups logged: check-spec-state doesn't enforce approval.<gate>.cause legality (prose-only); cold-instrument rule-3 self-application (grounded in corpus recurrence = non-author evidence).
 ---
 
 # Doctrine-loop strategy keep-or-cut + rule dogfood
