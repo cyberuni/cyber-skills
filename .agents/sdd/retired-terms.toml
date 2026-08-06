@@ -1,0 +1,18 @@
+# Registry of retired paths, directories, and naming conventions. Read by
+# plugins/sdd/skills/check-retired-terms — see that skill's README and
+# .agents/specs/sdd/corpus/retired-terms/README.md for the format and rationale.
+#
+# `term` is matched as literal, case-sensitive text — no globs, no regular expressions. An `allow`
+# entry sanctions an occurrence that is still correct (durable history, or a term retired for one
+# usage while another usage stays live) — never one that is merely inconvenient.
+
+[[retired]]
+term = "artifacts/specs/"
+since = "304-m2-eval-suite-sweep"
+replacement = "a colocated project-spec node under .agents/specs/<project>/"
+scope = ["plugins/", ".agents/specs/"]
+allow = [
+  ".agents/specs/sdd/DESIGN-NOTES.md",
+  ".agents/specs/sdd/glossary.md :: motive-model",
+  ".agents/specs/sdd/design/actors-governance.md :: motive-model",
+]
