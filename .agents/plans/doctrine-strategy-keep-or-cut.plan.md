@@ -32,8 +32,8 @@ todos:
     status: completed
     note: 69 entries triaged + Council-ruled (accept full triage; CR-4 KEEP narrow). 37 CUT / 9 RESOLVED / 11 DUPLICATE / 7 new KEEP (queued as CR-1..CR-7) + 2 pre-ratified f5152c KEEPs. See Resolved decisions → Full-backlog retro.
   - id: queued-ratification-backlog
-    status: pending
-    note: 7 new KEEP CRs (CR-1..CR-7) recorded; build AFTER Rule 1 (sdd) + Entry 5 (aced). Suggested order CR-2 → CR-1 → rest. Council held these this session.
+    status: in_progress
+    note: 7 new KEEP CRs (CR-1..CR-7). CR-2 (cause-enum conformance) SHIPPED under the hardened harness (PR open; impl re-verified first-hand; also discharged the 263-op6-m2 gate-cause-enum followup by reconciling dimension|ceiling → dimension|clearance|ceiling). Remaining: CR-1 (cold-instrument, next), CR-3..CR-7. New backlog followup logged: check-spec-state.mts does not mechanically enforce approval.<gate>.cause legality (prose-only) — candidate future CR.
 ---
 
 # Doctrine-loop strategy keep-or-cut + rule dogfood
