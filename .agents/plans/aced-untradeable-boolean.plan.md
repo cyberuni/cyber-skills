@@ -2,7 +2,7 @@
 cr-ref: aced-untradeable-boolean
 project: aced
 project-path: plugins/aced
-status: in-progress
+status: complete
 source: doctrine retro (doctrine-strategy-keep-or-cut.plan.md), CR-7 of the 7-CR KEEP queue
 ledger-shard: .agents/specs/aced/ledger/aced-untradeable-boolean.ad573b.jsonl
 todos:
@@ -11,19 +11,19 @@ todos:
     status: complete
   - id: explore
     content: "resolve-governances; add whole-output entry point to aced-builder-spec Selection bar + additive scenarios on scenario-writer (+ spec-validator judge face); grill w/ cold spec-judge to ALIGNED"
-    status: pending
+    status: complete
   - id: spec-gate
     content: "spec-judge ALIGNED; additive/self-clearing; self-assert approve by:agent to shard; STOP (no by:name, no status)"
-    status: pending
+    status: complete
   - id: deliver
     content: "author bar SKILL.md criterion + aced-scenario-writer/aced-spec-validator agent instructions to pass frozen suite; pnpm verify; rebase onto main"
-    status: pending
+    status: complete
   - id: impl-gate
     content: "cold impl-judge synchronous; every frozen scenario verified; self-assert approve by:agent to shard; STOP"
-    status: pending
+    status: complete
   - id: handoff
     content: "record followups to shard; report verdict packet up relay; NO PR/merge/ratify"
-    status: pending
+    status: complete
 ---
 
 # CR: ACED untradeable-boolean (CR-7)
@@ -103,6 +103,13 @@ grew a scenario in this CR.
 
 ## NEXT
 
-Explore: `resolve-governances` over the project registry; draft the bar edit + the additive scenarios on
-scenario-writer and spec-validator; dispatch the cold `aced-spec-validator` spec-judge synchronously;
-iterate to ALIGNED (cap 3), then the spec gate.
+**Landed.** Both gates Council-ratified in-session (`by: unional`), impl gate ratified on an explicit
+confirmation rather than an inferred acknowledgement. Judges cold, synchronous and self-observed
+throughout; no verdict relayed at any point.
+
+Commits on `cyberlegion/unit-bcb2e09a2fba63bc`: spec+suite, deliver, impl-gate record. `pnpm verify`
+35/35, `check-spec-structure` no blocking findings, both suites ADDITIVE and self-clearing.
+
+Nothing left in this CR. The three `followup` lines on the ledger shard are **recorded but not
+drained** — no issues filed, since outward filing was not authorized. A later drain re-derives what is
+outstanding by dedupe against the forge, so the retry is idempotent.
