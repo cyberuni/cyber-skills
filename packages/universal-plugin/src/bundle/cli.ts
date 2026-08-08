@@ -10,6 +10,10 @@ import { discoverWorkspace, realVersionSource, writePinsMap } from './fs.js'
 
 const TRUNCATE_THRESHOLD = 20
 const NEXT_STEP = '→ review and commit the pinned skills\n'
+/** Every referenced package skipped: nothing was rewritten, so the next step is to check the
+ *  workspace resolution rather than to commit a bundle that does not exist. */
+const NOTHING_RESOLVED_STEP =
+	'→ nothing was pinned — confirm --root is inside the workspace that owns these packages before releasing\n'
 
 interface BundleCliOptions {
 	dryRun?: boolean
@@ -69,7 +73,11 @@ export function bundleCommand(): Command {
 				if (result.pins.length === 0) {
 					process.stderr.write('nothing to bundle\n')
 				}
-				process.stderr.write(NEXT_STEP)
+				// A run where every referenced package was skipped must not sign off with "review and
+				// commit the pinned skills" — that reads as a clean bundle, and is how an unpinned
+				// release ships unnoticed (#315).
+				const noneResolved = result.pins.length > 0 && skipped === result.pins.length
+				process.stderr.write(noneResolved ? NOTHING_RESOLVED_STEP : NEXT_STEP)
 			} catch (err) {
 				process.stderr.write(`${err instanceof Error ? err.message : String(err)}\n`)
 				process.exit(1)
