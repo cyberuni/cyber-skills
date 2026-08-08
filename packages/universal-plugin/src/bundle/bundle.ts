@@ -124,5 +124,13 @@ export function bundlePins(pinFs: PinFs, versionSource: VersionSource, opts: Bun
 		pins.push({ package: pkg, current, resolved: target, status: changed ? 'pinned' : 'unchanged' })
 	}
 
+	// Every referenced package skipped is not the same as nothing to do: the skills DID ask for pins
+	// and none was rewritten. It can be legitimate (a plugin whose pins are all external), so it is a
+	// warning rather than a failure — but it must never read as a clean bundle, or a release ships
+	// unpinned skills with no signal.
+	if (pins.length > 0 && pins.every((pin) => pin.status === 'skipped')) {
+		warnings.push(`resolved 0 of ${pins.length} referenced package(s) against the workspace — no pins were rewritten`)
+	}
+
 	return { pins, warnings }
 }
