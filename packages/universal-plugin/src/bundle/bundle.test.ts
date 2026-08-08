@@ -207,4 +207,40 @@ describe('bundlePins — empty state', () => {
 
 		expect(result.pins).toEqual([])
 	})
+
+	// Scenario: nothing to do is silent — an empty candidate set is correctly empty, not a
+	// zero-resolution, so it must not carry the zero-resolution warning.
+	it('emits no zero-resolution warning when there was nothing to resolve', () => {
+		const fs = fakeFs({ '/skills/x/SKILL.md': 'no references here' })
+		const workspace = fakeWorkspace({})
+
+		const result = bundlePins(fs, workspace)
+
+		expect(result.warnings).toEqual([])
+	})
+})
+
+// ── Zero resolution is not a clean bundle (#315) ──
+// Scenario: every referenced package skipped warns that nothing resolved
+describe('bundlePins — zero resolution', () => {
+	it('warns when every referenced package was skipped', () => {
+		const fs = fakeFs({ '/skills/x/SKILL.md': 'npx cyberplace@0.0.9 and npx cyberfleet@0.0.1' })
+		const workspace = fakeWorkspace({})
+
+		const result = bundlePins(fs, workspace)
+
+		expect(result.pins.every((p) => p.status === 'skipped')).toBe(true)
+		expect(result.warnings.some((w) => w.includes('resolved 0 of 2'))).toBe(true)
+	})
+
+	// The warning keys on "none resolved", not on "some were skipped" — a partial skip alongside a
+	// real pin is an ordinary successful bundle.
+	it('does not warn when at least one package resolved', () => {
+		const fs = fakeFs({ '/skills/x/SKILL.md': 'npx cyberplace@0.0.9 and npx gherkin-cli@0.0.1' })
+		const workspace = fakeWorkspace({ cyberplace: '0.1.0' })
+
+		const result = bundlePins(fs, workspace)
+
+		expect(result.warnings.some((w) => w.includes('resolved 0'))).toBe(false)
+	})
 })

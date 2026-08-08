@@ -248,6 +248,69 @@ test('plugin bundle leaves an external pin untouched', () => {
 	}
 })
 
+// ── Zero resolution is not a clean bundle (#315) ──
+
+// Scenario: a run that resolved no package at all does not report a clean bundle
+test('plugin bundle does not report success when every referenced package was skipped', () => {
+	const root = mkBundleFixture('universal-plugin-bundle-zero-')
+	try {
+		writeSkill(root, 'x/SKILL.md', 'npx gherkin-cli@0.0.1 and npx some-other-cli@1.0.0')
+		const result = runBundle(root)
+		expect(result.stdout).toMatch(/pinned 0, unchanged 0, skipped 2/)
+		expect(result.stderr).toMatch(/resolved 0 of 2 referenced package\(s\) against the workspace/)
+		// the success next-step must not appear — that is what let a zero-resolution read as clean
+		expect(result.stderr).not.toMatch(/review and commit the pinned skills/)
+		expect(result.stderr).toMatch(/nothing was pinned/)
+	} finally {
+		fs.rmSync(root, { recursive: true, force: true })
+	}
+})
+
+// Scenario: a partially-skipped bundle is an ordinary success
+test('plugin bundle still reports the success next-step when at least one package resolved', () => {
+	const root = mkBundleFixture('universal-plugin-bundle-partial-')
+	try {
+		writeWorkspacePkg(root, 'cyberplace', '0.1.0')
+		writeSkill(root, 'x/SKILL.md', 'npx cyberplace@0.0.9 and npx gherkin-cli@0.0.1')
+		const result = runBundle(root)
+		expect(result.status).toBe(0)
+		expect(result.stderr).toMatch(/review and commit the pinned skills/)
+		expect(result.stderr).not.toMatch(/resolved 0 of/)
+	} finally {
+		fs.rmSync(root, { recursive: true, force: true })
+	}
+})
+
+// Scenario: the same bundle resolves the same workspace whatever cwd it ran from
+test('plugin bundle resolves the workspace from a nested root regardless of cwd', () => {
+	const monorepo = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'universal-plugin-bundle-cwd-')))
+	try {
+		fs.writeFileSync(path.join(monorepo, 'pnpm-workspace.yaml'), 'packages:\n  - "packages/*"\n  - "plugins/*"\n')
+		fs.mkdirSync(path.join(monorepo, 'packages', 'cyberplace'), { recursive: true })
+		fs.writeFileSync(
+			path.join(monorepo, 'packages', 'cyberplace', 'package.json'),
+			JSON.stringify({ name: 'cyberplace', version: '0.1.0' }),
+		)
+		const plugin = path.join(monorepo, 'plugins', 'demo')
+		fs.mkdirSync(path.join(plugin, '.plugin'), { recursive: true })
+		fs.writeFileSync(path.join(plugin, '.plugin', 'plugin.json'), JSON.stringify({ name: 'demo' }))
+		writeSkill(plugin, 'x/SKILL.md', 'npx cyberplace@<version>')
+
+		// `--root .` from inside the plugin dir — the invocation that used to skip everything
+		const result = spawnSync('node', [bin, 'plugin', 'bundle', '--root', '.'], {
+			cwd: plugin,
+			encoding: 'utf8',
+			env: { ...process.env, NODE_NO_WARNINGS: '1' },
+		})
+
+		expect(result.status).toBe(0)
+		expect(fs.readFileSync(path.join(plugin, 'skills', 'x', 'SKILL.md'), 'utf8')).toBe('npx cyberplace@0.1.0')
+		expect(result.stdout).toMatch(/pinned 1, unchanged 0, skipped 0/)
+	} finally {
+		fs.rmSync(monorepo, { recursive: true, force: true })
+	}
+})
+
 // Scenario: bundle writes a .plugin/pins.json map of resolved workspace versions
 test('plugin bundle writes .plugin/pins.json mapping resolved workspace versions', () => {
 	const root = mkBundleFixture('universal-plugin-bundle-pinsmap-')

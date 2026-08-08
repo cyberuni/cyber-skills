@@ -85,6 +85,35 @@ Feature: plugin bundle — materialize the release form
     And stdout is TOON with a pins row for "gherkin-cli" whose "status" is "skipped"
     And the exit code is 0
 
+  # ── Zero resolution ──
+
+  Scenario: a run where every referenced package was skipped does not report a clean bundle
+    Given a skill "skills/x/SKILL.md" contains "npx gherkin-cli@0.0.1" and "npx some-other-cli@1.0.0"
+    And there is no workspace package "gherkin-cli" and no workspace package "some-other-cli"
+    When I run "universal-plugin plugin bundle"
+    Then stdout contains the aggregate summary "pinned 0, unchanged 0, skipped 2"
+    And stderr contains "resolved 0 of 2 referenced package(s) against the workspace"
+    And stderr does not contain "review and commit the pinned skills"
+    And stderr contains "nothing was pinned"
+
+  Scenario: a bundle that resolved at least one package keeps the success next-step
+    Given a skill "skills/x/SKILL.md" contains "npx cyberplace@0.0.9" and "npx gherkin-cli@0.0.1"
+    And there is no workspace package "gherkin-cli"
+    When I run "universal-plugin plugin bundle"
+    Then stderr contains "review and commit the pinned skills"
+    And stderr does not contain "resolved 0 of"
+    And the exit code is 0
+
+  # ── Cwd independence ──
+
+  Scenario: bundle resolves the workspace from a nested plugin root whatever cwd it ran from
+    Given a plugin project at "plugins/demo" whose monorepo root declares "pnpm-workspace.yaml"
+    And a skill "plugins/demo/skills/x/SKILL.md" contains "npx cyberplace@<version>"
+    When I run "universal-plugin plugin bundle --root ." with the cwd at "plugins/demo"
+    Then "plugins/demo/skills/x/SKILL.md" contains "npx cyberplace@0.1.0"
+    And stdout contains the aggregate summary "pinned 1, unchanged 0, skipped 0"
+    And the exit code is 0
+
   # ── Write control ──
 
   Scenario: --dry-run reports resolved pins without writing them
