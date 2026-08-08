@@ -6,13 +6,16 @@ import type { BundlePin, VersionSource } from './bundle.js'
 const DEFAULT_GLOBS = ['packages/*']
 
 /** Walks up from `start` looking for `pnpm-workspace.yaml`; falls back to `start` itself when no
- *  ancestor declares one (the workspace glob then resolves relative to `start`). */
+ *  ancestor declares one (the workspace glob then resolves relative to `start`). `start` is resolved
+ *  to an absolute path first — a relative one (`.`) would end the walk on its first step, silently
+ *  making workspace discovery depend on the cwd the command was invoked from. */
 function findMonorepoRoot(start: string): string {
-	let dir = start
+	const from = path.resolve(start)
+	let dir = from
 	for (;;) {
 		if (fsNode.existsSync(path.join(dir, 'pnpm-workspace.yaml'))) return dir
 		const parent = path.dirname(dir)
-		if (parent === dir) return start
+		if (parent === dir) return from
 		dir = parent
 	}
 }

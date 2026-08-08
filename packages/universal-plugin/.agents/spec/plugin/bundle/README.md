@@ -49,6 +49,18 @@ output per the AXI contract:
   for concrete-looking pins; no pins row is emitted for a package inside a pin-exempt skill.
 - **External pins skipped** — a pin for a package with **no workspace entry** is left untouched with
   status `skipped`; there is no local version to resolve and `bundle` never falls back to guessing.
+- **Zero resolution is not a clean bundle** — skills that reference pins of which **every** one was
+  skipped is a distinct state from *nothing needed pinning*: the skills asked for pins and none was
+  rewritten. `bundle` says so — a stderr warning naming the count (`resolved 0 of N referenced
+  package(s) against the workspace`) and a corrective next-step in place of the success one, so a
+  release can never read a zero-resolution as a bundled plugin. It stays exit 0 because a plugin whose
+  pins are all **external** is a legitimate zero-resolution; the invocation error that used to hide
+  here is prevented at the source by cwd independence, below.
+- **Cwd independence** — the same plugin resolves the same workspace whichever directory `bundle` ran
+  from: `--root` is taken as an absolute path and workspace discovery **walks up** for the
+  `pnpm-workspace.yaml` marker. Running `--root .` from inside a plugin directory therefore pins
+  exactly as `--root plugins/<name>` from the monorepo root does, rather than resolving no packages
+  and reporting them all skipped.
 - **Version-map artifact** — alongside the skill rewrites, `bundle` writes `<root>/.plugin/pins.json`,
   a flat `{ "<package>": "<resolvedVersion>" }` map of the workspace-resolved pins (`pinned` +
   `unchanged`), so a bundled plugin's skills can read the shipped version programmatically — e.g. an
@@ -85,6 +97,8 @@ Every scenario in [`bundle.feature`](./bundle.feature) maps to one of these beha
 | **best-effort broken entry** | unreadable workspace `package.json` warns + skips, exit 0 |
 | **doc-example ignore** | pin-exempt skill never rewritten (concrete or placeholder, workspace or not); no pins row |
 | **external pins skipped** | no workspace entry → left untouched, status `skipped` |
+| **zero resolution** | every referenced package skipped → warning naming the count + corrective next-step, never the success one; a partial skip stays an ordinary success |
+| **cwd independence** | `--root .` from a nested plugin dir resolves the same workspace as `--root plugins/<name>` from the monorepo root |
 | **version-map artifact** | writes `.plugin/pins.json` (workspace-resolved `{pkg: version}`); excludes external/`skipped`; `--dry-run` skips it |
 | **`--dry-run`** | reports resolved pins without writing (skill files or `.plugin/pins.json`) |
 | **TOON pins + aggregate (#1,#2,#4)** | pins rows (`package, current, resolved, status`) + `pinned N` aggregate |
