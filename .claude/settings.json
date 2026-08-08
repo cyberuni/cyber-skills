@@ -9,13 +9,6 @@
       "WebFetch(domain:github.com)"
     ]
   },
-  "enabledPlugins": {
-    "aced@cyberplace": true,
-    "quill@cyberplace": true,
-    "sdd@cyberplace": true,
-    "cyberfleet@cyberplace": true,
-    "cyberlegion@cyberplace": true
-  },
   "hooks": {
     "SessionStart": [
       {
@@ -29,18 +22,19 @@
     ],
     "PostToolUse": [
       {
+        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
             "command": "node scripts/legion-mail-hook.mjs --event PostToolUse"
           }
-        ],
-        "matcher": "Write|Edit"
+        ]
       }
     ]
   },
   "statusLine": {
     "type": "command",
     "command": "# sdd-statusline:begin\n# sdd-statusline:mode:own-line\n__sdd_orig() {\n~/.claude/statusline.sh\n}\n__sdd_base=\"$(__sdd_orig 2>/dev/null)\"\n__sdd_file=\".agents/sdd/statusline\"\nif [ -s \"$__sdd_file\" ]; then\n  __sdd_val=\"$(cat \"$__sdd_file\")\"\n  printf '%s\\n%s\\n' \"$__sdd_base\" \"$__sdd_val\"\nelse\n  printf '%s\\n' \"$__sdd_base\"\nfi\n# sdd-statusline:end"
-  }
+  },
+  "enabledPlugins": {}
 }
