@@ -14,7 +14,7 @@ todos:
     status: done
   - content: "impl gate — 13 rounds, all remediated; SUSPENDED pending the spec redo below"
     status: in_progress
-  - content: "spec conformance — CFG + scenario map on both touched nodes; REDO COLD (was retrofitted)"
+  - content: "spec conformance — cold re-derivation DONE (40 holes found); map rewrite + hole-closing scope BLOCKED on the owner"
     status: in_progress
   - content: "handoff — superseding ADR + PR; file CR-B/CR-C follow-ups"
     status: pending
@@ -98,23 +98,72 @@ never fails a spawn.
 
 ## NEXT — resume here
 
-### The next action
+### The cold redo RAN. It found what the retrofit could not. — 2026-08-09
 
-**Re-derive both nodes' scenario sets COLD from their CFGs, then diff against the frozen suites.**
-Work in a scratch file, not in the READMEs. For each node in turn — `packages/cyberlegion/.agents/spec/mail/surface/`, then `unit/lifecycle/`:
+Both nodes were re-derived blind (a cold agent per node, fed only the implementation and the node's
+`## What` / `## Use Cases`, never the `.feature` or the existing map), then diffed three ways.
+Artifacts, in the session scratchpad — **copy them into the repo or re-run before they age out**:
 
-1. Read only the implementation (`src/runtime/inject-inbox.ts`; `src/session.ts`, `src/cli-input.ts`,
-   `src/decommission.ts`, `src/console/doorbell.ts`) and the node's `## What` / `## Use Cases`.
-   **Do not open the `.feature` or the existing `## Scenario map` while deriving.**
-2. Enumerate every `(path class, edge)` pair the CFG requires — one per pair, every guard paired
-   with a positive companion.
-3. **Only then** open the frozen suite and diff three ways: pairs with no scenario (coverage holes),
-   scenarios with no pair (orphans / co-owned / not-acceptance), pairs whose scenario exists but
-   under a different path class than derived.
-4. Bring the diff back as the finding. The map is then rewritten from the derivation, not from the
-   suite.
+- `derived-mail-surface.md`, `derived-unit-lifecycle.md` — the blind CFGs + required `(path class, edge)` pairs
+- `diff-mail-surface.md`, `diff-unit-lifecycle.md` — the three-way diffs
 
-### Why — the defect this redo exists to correct
+**Result: 40 coverage holes and ~11 vacuous scenarios across two suites the retrofitted map
+reported as 1:1.** That settles the premise — a backward-built map cannot surface a hole, and this
+one didn't.
+
+**`mail/surface`** — 10 absent pairs, 7 vacuous scenarios, 3 orphans. The worst is structural: every
+one of the 24 frozen scenarios runs `--event SessionStart`, and no scenario asserts the value of the
+echoed `hookEventName`. A mutant that hardcodes `hookEventName: 'SessionStart'` and drops
+`PostToolUse` from `EVENTS` **passes the entire frozen suite** — half the event contract is
+unwitnessed. The vacuity class is one mechanism repeated: a negative of the form "the payload
+contains no X" is satisfied trivially when `parts.length === 0` returns `null`, and five Givens
+establish nothing else in `parts` (scenarios 12, 14, 20, 21, 23; 16 and 17 at risk).
+
+**`unit/lifecycle`** — 30 holes, 4 vacuous, no whole-scenario orphans. Strong where the authors
+argued in prose (the four-verb live-target floor is complete in all eight refusal directions;
+ring-warns vs nudge-fails-loud is sound both ways). Weak exactly where the backward map could not
+look: **the creation half of spawn**. The entire PC-F create-route compound guard (atomic vs plain,
+and the `at` half) is unfrozen; `--worktree-path` has a refusing direction with no admitting
+companion; default worktree path, default branch, worktree marker, `--handle`/`spawnedBy` forks all
+unasserted. Two ordering promises are pinned only by "it threw": **S2** asserts the primary-checkout
+refusal's error and "no session is opened" but never "no worktree created" — the plain route creates
+one and still passes; **S36** asserts the removal-failure throw and the surviving record but never
+that the pane was spared, which is the half of "aborts before any reap" that makes a retry possible.
+
+### Three implementation defects the cold read found (reported, not fixed)
+
+Not spec defects — real code, found because a cold reader walked the graph without the suite telling
+it what to expect:
+
+1. **`findPaneByAgentId` returns a sanitized filename, not a pane id.** `paths.sanitizePane` maps
+   every non-`[A-Za-z0-9_-]` char to `_`, and the lookup returns the filename stem — so tmux pane
+   `%3` round-trips as `_3`, which is then handed to `adapter.focus`/`nudge`/`read`/`teardown` as a
+   real pane id. Only the `rec.pane?.id` route is safe. `removePaneIndex` still works (sanitize is
+   idempotent), so the failure is asymmetric. The pane-index resolution route has **no scenario at
+   all** — plausibly why this was never caught.
+2. **`decommission`'s dirty check reads a failed git as clean.** `isDirty` is `!!exec(...)` and
+   `realExec` returns `null` on failure, so a `git status` that errors collapses to "clean" and the
+   worktree is removed without `--force`. This is the gate protecting uncommitted work. cyber-mux's
+   own `readDirty` distinguishes "git could not answer" deliberately; this local reimplementation
+   reaches the same value by accident.
+3. **A pane in an unstorable multiplexer auto-registers, then still injects nothing.** `currentPane`
+   admits wezterm/zellij; `storablePane` does not — so `register` writes a record with `pane: null`,
+   `resolveSelfId` still yields nothing, and a junk record accrues on every hook call. The two
+   functions disagree about what "in a pane" means.
+
+Also: `spawnAndWake`'s brief-path guard is unreachable (`spawn` always sets a non-empty path and is
+its only caller) despite a comment claiming it "is not defensive padding"; and `decommission`
+bypasses `removeWorktreeSafely`, so on herdr the workspace binding is never released.
+
+### BLOCKING — the scope call this reopens
+
+The owner granted Clearance on resume to "fix everything the redo finds". That grant was given
+before the size was known. 40 holes is a **node-wide re-spec of two nodes**, and most of it is
+pre-existing and unrelated to this CR's subject — label derivation, `read --lines`, the `clear`
+refusal taxonomy, `close` tolerance. Closing it all here abandons the medium blast the spec gate
+ratified. **Decide before touching either suite** (see `## Resolved decisions` once settled).
+
+### Why — the defect this redo existed to correct
 
 The conformance work (`c6525a22` → `ea4930bb`) **retrofitted** the map: the CFGs were drawn from the
 code correctly, but the map was then built by taking each existing scenario and finding an edge for
@@ -256,10 +305,9 @@ gate commit lands. Expect it again during deliver only if scenarios move.
 - Architect observation: `--no-wake` changed meaning without changing text — previously "no turn,
   brief auto-loaded"; now "no turn **and** brief unread on disk". Caller-side, relevant to CR-C.
 
-Known environment limitation, pre-existing: `check-suite` cannot run in this repo
-(`ERR_MODULE_NOT_FOUND` — the engine is npx-only; re-confirmed this session). Suite form here is
-judged, not linted; do not treat a missing check-suite run as a gate failure. `check-spec-state.mts`
-does run and currently reports clean.
+(A carried claim that `check-suite` cannot run here has been struck — it was wrong. See
+**Environment note** above: it runs via `pnpm --filter cyberlegion check:spec`. `check-spec-state.mts`
+also runs and reports clean.)
 
 Deliver (after the gate, not before) still has to land: `store/store.ts` `AgentStatus` loses
 `spawning`; `session.ts` registers `active`; both `runtime/inject-inbox.ts` sites removed;
