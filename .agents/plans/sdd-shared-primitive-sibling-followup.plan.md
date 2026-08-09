@@ -19,12 +19,15 @@ todos:
   - id: replan-D-decision
     status: completed
     note: RULED by Council in-session — Option C (declared-term sweep). Option B struck on evidence. See "Resolved decisions".
+  - id: retract-r2
+    status: completed
+    note: Commit bf9310bb. Withdrew the 11 R2 scenarios, their map section, the R2-shaped CFG branch, and the R2 prose. Needed as its own commit because align-spec diffs the working tree against HEAD, and HEAD carried this CR's own unratified draft — so any removal reads as a Clearance narrowing until it lands. Not a real narrowing: main has none of the 11.
   - id: author-spec-c
-    status: pending
-    note: Re-derive the rule + suite against the C design. Draw the CFG first; do not start from the R2 scenarios.
+    status: completed
+    note: Commit d224512a. 8 scenarios, closed form stated before the CFG was drawn, each conjunct its own decision node. All three open questions closed and all four carried defects cleared — see "Resolved decisions". check:spec + pnpm verify green; align-spec reports no drift (additive, self-clears).
   - id: spec-gate-c
-    status: pending
-    note: Cold sdd-spec-judge. Load the full pre-flight governance set this time — both prior rounds ran short.
+    status: in_progress
+    note: Cold sdd-spec-judge. Pre-flight declared: spec-producer, suite-format, spec-format, oracle-spec, builder-spec, architect-spec, lifecycle, combat-log, resolve-governances.
 ---
 
 # CR-6 — a shared-primitive CR files a sibling followup
@@ -38,37 +41,29 @@ Do **not** re-litigate the keep, and do **not** re-open the `D` question — Cou
 
 ## NEXT — resume here
 
-**Next action:** author the rule and suite for **Option C** on
-`.agents/specs/sdd/mission/handoff/`, via `start-mission`. Draw the CFG from the C rule **first**,
-then derive the scenarios from its edges — do **not** patch the 11 R2 scenarios sitting on the
-branch; they encode the superseded R2 rule. Then `pnpm --filter cyber-sdd check:spec` and
-`pnpm verify`.
+**Next action:** run the **cold `sdd-spec-judge`** over the C spec + suite. The spec is authored and
+committed (`bf9310bb` retraction, `d224512a` the C derivation); nothing is frozen beyond the
+pre-existing file freeze, no gate line is written, and no verdict is self-asserted.
 
-**The C rule, in one line:** a CR that changes a shared primitive **declares the vocabulary that
-primitive owns**; a sweep reports every **frozen** `.feature` **outside the mission's touched set**
-carrying those terms; that set is `D`, and the followup names it.
+If the judge blocks: this is **round 3 on the node but round 1 on the C rule** — the R2 loop's
+regression stop does not carry over, because the rule under test changed. Remediate under
+`remediation-governance` as a fresh loop.
 
-**Still open — decide while authoring, do not rediscover:**
+**The C rule as shipped, closed form:**
 
-1. **Is `derived` observable?** (round-2 blocker, narrowed but not closed). The `followup` line
-   schema carries no origin field, so `Then no derived followup line names X` can be settled by no
-   artifact. Options: add an origin field (widens the CR into `combat-log-governance`); or scope
-   the negative scenarios' `Given` to exclude the case where the mission independently identified
-   a follow-up naming X — a `Given`-level fix, untested by any judge.
-2. **Where does the declared vocabulary live?** A registry file (CR-5's
-   `.agents/sdd/retired-terms.toml` is the precedent) vs. a per-CR declaration in the ledger.
-3. **Does the sweep engine ship in this CR or a sibling?** Shipping it makes this an engine CR,
-   past `blast: low` / `auto-spec`. Specifying the behavior and deferring the engine keeps the leash.
-4. Carried from round 2, unactioned: the node's **Subject** still says handoff carries the
-   mission's *identified* follow-ups; the README cell explaining the unfrozen case imports a
-   **per-node lifecycle status** that `lifecycle-governance` says no node may carry (the scenario
-   is right, the prose is wrong); the convergence scenario's apparatus appears **verbatim** in the
-   README prose (absorption); the same-channel scenario asserts a **drain** outcome under a
-   non-drain `When`.
+> `D` = { node `N` : `N`'s suite carries a term the primitive declares it owns, **and** `N` is
+> outside the mission's touched set, **and** `N`'s suite is `@frozen` }
 
-**Pre-flight debt.** Round 1 flagged six undeclared governances, round 2 flagged two. Loading
-`gate-validation-governance` at the stop is what established that **no gate line may be written
-here**. `spec-format-governance` is now loaded and discharged (see "Adjacent work landed").
+One follow-up per primitive when `D` is non-empty; none when empty. Each conjunct is its own
+decision node, so each mutation of the rule breaks a distinct scenario.
+
+**Pre-flight, discharged.** Round 1 flagged six undeclared governances, round 2 two. The set was
+resolved mechanically this time (`resolve-governances --artifact-type spec`) rather than
+hand-enumerated, and loaded before a line was written: `spec-producer-governance`,
+`suite-format-governance`, `spec-format-governance`, `oracle-spec-governance`,
+`builder-spec-governance`, `architect-spec-governance`, `lifecycle-governance`,
+`combat-log-governance`. `gate-validation-governance` was loaded at the round-2 stop and is what
+established that **no gate line may be written here**.
 
 ## Resolved decisions
 
@@ -113,6 +108,37 @@ here**. `spec-format-governance` is now loaded and discharged (see "Adjacent wor
 - **A primitive with generic vocabulary sweeps badly.** This works because `tmux` is distinctive;
   a ledger field name or a common verb would not be. The rule must say what happens then rather
   than pretend it does not arise.
+
+### The three open questions — closed while authoring
+
+1. **Is `derived` observable? — the question dissolves.** The word is not asserted anywhere. Once
+   handoff identifies a sibling follow-up it **is** an identified follow-up; record, classify,
+   propose and drain draw no distinction, so the `followup` line needs **no origin field** and
+   `combat-log-governance` is untouched. The negatives assert *"no followup line naming the
+   primitive is appended"*, with a `Given` that pins the mission's own identified follow-up to an
+   unrelated subject — observable, and no schema widening.
+2. **Where the declared vocabulary lives — out of scope, deliberately.** The terms reach handoff as
+   an **input**, beside the touched set and the identified follow-ups. Naming a concrete registry
+   path would either fail `check-spec-state`'s referenced-artifact check (the file does not exist)
+   or drag the engine in. Recorded in the node's prose as an out-of-scope question belonging with
+   the engine — **not** an `<!-- open: -->` marker, which would block the gate.
+3. **The sweep engine ships in a sibling CR.** This node specifies the *decision*; the matcher that
+   walks tracked suites is a separate capability on CR-5's shipped pattern. Keeps `blast: low` /
+   `auto-spec` intact, exactly as the leash derivation anticipated.
+
+### The four carried defects — cleared
+
+- **Subject** now says handoff carries the mission's follow-ups *and the one class it identifies
+  itself*, rather than only the identified ones.
+- **The unfrozen guard** keys on the suite file's `@frozen` tag. The prose says so outright: a
+  capability node carries no lifecycle status of its own, the project has one lifecycle on the root
+  `spec.md`. The illegal `draft`/`deprecated` per-node reading is gone.
+- **The absorption is gone with the rule.** Location never enters the C rule, so the
+  "own folder vs unrelated folder" convergence scenario and its verbatim README twin both went.
+  Checked: the new `Given` apparatus (a rate-limit primitive owning `token-bucket`) appears
+  nowhere in the README.
+- **The same-channel scenario** no longer asserts a drain outcome under a non-drain `When`. It is
+  now a classification-convergence scenario: `When handoff classifies the follow-ups`.
 
 ### Settled, and carried through the re-plan however the details land
 
