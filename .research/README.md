@@ -35,6 +35,7 @@ Not every dossier has all five. `conclusion.md` is the file other documents cite
 | [agent-harness-landscape](agent-harness-landscape/) | The `agent-harness-landscape` skill; any content comparing agent harnesses |
 | [agent-plan-persistence](agent-plan-persistence/) | ADR-0015, SDD `provenance-model`, the plan/ledger/cursor design |
 | [agent-session-wake](agent-session-wake/) | cyberfleet comms-wake PoC, inter-session messaging, future fleet wake-seam ADR |
+| [cfg-derivation-direction](cfg-derivation-direction/) | `sdd:spec-format-governance` + `sdd:suite-format-governance` backfill rule; any corpus-wide uplift of behavioral nodes to the four-section shape |
 | [cli-output-format](cli-output-format/) | `agent-tool-output` governance, ADR-0004 |
 | [cross-project-knowledge-sharing](cross-project-knowledge-sharing/) | Cross-repo governance federation |
 | [documentation-craft](documentation-craft/) | quill's doc-integrity criteria, the doc spec's prerequisite declaration, a prospective formation-loop check for cross-page claim overlap |
