@@ -196,7 +196,53 @@ workspace" was unrepresentable, not unbound.)
   supersession was "absent from the diff" is resolved. 0027 correctly retains turn-delivery and
   overturns only the payload/context split.
 
-### Impl conformance LANDED (`dcb9026f`) — cold impl-judge running
+### IMPL GATE — round 1 `change` (remediated), round 2 INCOMPLETE. Resume here.
+
+**Round 1 verdict: `change`, `IMPLEMENTATION_PASS: false`.** Headline, and it held up: **no scenario
+failed because the implementation is wrong.** Zero behavioral non-conformance across all 122 graded
+by hand. All 21 findings were verification gaps — frozen `Then` clauses no test could lose. Rollup
+101 fully bound / 20 partially / 1 wholly unbound. Remediated in `37f9bbde` (498 → 511).
+
+**Round 2 DIED on a session limit before emitting a verdict.** Several of its parallel graders
+finished first and their results are real and usable — but **~30 of 122 scenarios are covered, not
+all.** Do not treat the impl gate as passed.
+
+What the completed graders returned:
+
+- **`unit/lifecycle` close family (12 scenarios, feature lines 371–471): ALL PASS**, every conjunct
+  severably mutation-killed. It independently confirmed the round-1 repairs are load-bearing —
+  skipping the reap when a sibling is registered now goes red, and the abort-before-teardown
+  ordering conjunct dies when the teardown block is moved above the removal block.
+- **`mail/surface` scenarios 1–18: 16 PASS, 2 PARTIAL** — a real finding, now fixed in `74b792fe`
+  (511 → 513). Both auto-register scenarios froze "And the command exits 0" and neither clause was
+  bound: `process.exitCode = 1` on the successful register, or inside its best-effort catch, left
+  the entire suite green while every hook call from a real live pane would fail the harness turn.
+
+**Still ungraded by any completed grader:** `mail/surface` 19–35, and `unit/lifecycle` outside the
+close family — spawn resolution, worktree/label, `--cwd` and first-turn, and the four live-target
+verbs. Round 2 must be re-run over those.
+
+Two carried observations from the round-2 graders, neither blocking:
+
+1. **Both primary-checkout close fixtures are narrow.** They register `worktree.root = '/repo'`,
+   which does not exist on disk, so `worktreeExists` is false and the "no worktree removal is
+   attempted" conjunct is satisfied by the already-gone arm rather than by the refusal. Deleting the
+   guard outright leaves that conjunct green (the throw/record/pane assertions still catch it). A
+   fixture whose primary root exists would make it carry its own weight.
+2. **`decommission.test.ts:268`** (`existsSync(store.root)`) observes hub creation, not the reap; the
+   real conjunct is carried by the bystander test.
+
+### Two traps that cost real time — read before resuming
+
+- **The e2e drives the BUILT `dist/cli.mjs`.** A `src`-only mutation is invisible to it. The
+  exits-0 mutation above looked like a survivor until `pnpm build` was included in the loop. Any
+  mutation check touching `cli.e2e.test.ts` must rebuild.
+- **`detectHarness` tests key PRESENCE for the cursor/codex families**, not value. Blanking a signal
+  still detects a harness. This suite runs under a harness, and ambient `CODEX_COMPANION_*` keys were
+  enough to make a "register must fail" fixture succeed. `baseEnv` now treats an explicit `undefined`
+  as removal; use `withoutHarnessSignals`.
+
+### Impl conformance LANDED (`dcb9026f`) — superseded by the above
 
 Tests **467 → 498**. **No implementation change was required** — every frozen scenario already
 conformed, which is what you expect when a re-derivation finds holes in the spec rather than in the
