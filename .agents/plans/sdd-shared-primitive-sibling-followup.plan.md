@@ -42,6 +42,32 @@ Nothing here is self-asserted and nothing is frozen. The branch carries the roun
 `check:spec` 6/6). **Resume by ruling the `D` question below, then re-authoring — do not patch the
 current draft.**
 
+## Post-rebase status (rebased onto origin/main, 56 commits)
+
+Rebase was **clean, no conflicts**; `pnpm verify` 35/35, `check:spec` 6/6, suite still
+`11 added / 0 modified / 0 removed` against the new base. Three things changed underneath:
+
+- **CR-3 did not collide.** It landed on `mission/conductor` (the execution-state sibling of the
+  correction-line finalize backstop), **not** on handoff — `.agents/specs/sdd/mission/handoff/` has
+  no commits on main since this CR branched. The scoping caution in this brief was correct but moot.
+- **The queue moved: 5 of 7 KEEPs are shipped** (CR-1, CR-2, CR-3, CR-5, CR-7). Only CR-4 (paused at
+  its spec gate) and this one remain.
+- **Blocker 2 still stands.** The `followup` line schema on main still carries no origin or
+  provenance field, so `derived` remains unobservable.
+
+**What this changes for the ruling — a possible Option C′.** CR-5 shipped `check-retired-terms`, a
+corpus-wide guard engine wired into the root check chain. That is a live precedent for the
+**plumbing** Option B/C needs, and it lowers that half of the cost materially. It does **not** touch
+Blocker 1, which is a *definition* problem, not a wiring one: `check-retired-terms` greps for a
+**lexical** term, while `D` as specified is a **semantic** relation ("frozen scenarios assert
+behavior the artifact realizes") that no grep can compute. The opening it does create is a bounded
+lexical proxy — *frozen `.feature` files in this project that name the artifact* — which is
+computable today on the shipped pattern, at a precision cost that would have to be accepted
+explicitly rather than discovered later. Council's call; recorded here, not adopted.
+
+The ADR-0021 cross-reference resolver Option B depends on is still **unbuilt** — confirmed on the
+rebased tree.
+
 ## The gap being closed
 
 A spec gate grades **only its own diff**. So a CR that adds or changes a **shared cross-cutting
