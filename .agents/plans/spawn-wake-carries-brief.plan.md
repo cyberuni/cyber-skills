@@ -12,12 +12,14 @@ todos:
     status: done
   - content: "deliver — doorbell/session/inject-inbox change + per-scenario verification"
     status: done
-  - content: "impl gate — 13 rounds, all remediated; SUSPENDED pending the spec redo below"
-    status: in_progress
+  - content: "impl gate (1st pass) — 13 rounds, all remediated; superseded by the re-cut suites"
+    status: done
   - content: "spec conformance — cold re-derivation + both nodes re-cut (35 and 87 scenarios); all 40 holes closed"
     status: done
-  - content: "spec gate (2nd pass) — blast medium->high in spec.md, then cold spec-judge; owner re-ratifies"
-    status: pending
+  - content: "spec gate (2nd pass) — RATIFIED e446192d; 6 rounds, suites frozen at 35 and 87"
+    status: done
+  - content: "impl gate — conformance for the 38 new scenarios, then cold impl-judge"
+    status: in_progress
   - content: "handoff — superseding ADR + PR; file CR-B/CR-C + the 3 impl-defect follow-ups + 2 relocations"
     status: pending
 ---
@@ -157,7 +159,57 @@ Also: `spawnAndWake`'s brief-path guard is unreachable (`spawn` always sets a no
 its only caller) despite a comment claiming it "is not defensive padding"; and `decommission`
 bypasses `removeWorktreeSafely`, so on herdr the workspace binding is never released.
 
-### DONE — both nodes re-cut. Next action: re-run the spec gate at blast `high`.
+### SPEC GATE RATIFIED (2nd pass) — `e446192d`. Next action: impl-gate conformance.
+
+Root spec is `status: approved`; both suites frozen at **35** (`mail/surface`) and **87**
+(`unit/lifecycle`). Ledger seq 3 carries the gate line under Clearance. Cold judge round 6:
+oracle/builder/architect all PASS, ALIGNED true, no findings.
+
+**Six rounds, five of them one migrating defect class** — an absence assertion that could not fail.
+Worth carrying, because it cost more than everything else in this mission combined:
+
+- R1/R2 — refusals asserting the throw but not the absence of what the guard prevents. Fixed at the
+  sites each verdict named; recurred at new sites both times.
+- R3 — a mechanical sweep closed every *absent* absence and **introduced inert ones**. Its predicate
+  was syntactic ("an absence Then exists"); existence is not loseability.
+- R4 — applied R3's invariant to all 104 absence assertions, closed 10, missed one by using the
+  corollary (bind the noun) as the whole rule.
+- R5 — one site: an **absence wearing positive syntax** ("the registry holds the same records it
+  held before"), which is why five keyword-keyed sweeps walked past it.
+- R6 — swept a third axis (state-preservation vocabulary) plus the residual carrying no marker at
+  all. Zero findings.
+
+**The invariant, in its complete form:** every absence `Then` must be loseable on its own scenario's
+`Given` — name the wrong implementation W *and the concrete artifact it produces*. Binding the noun
+is necessary, not sufficient. If no W is representable, **strike the assertion**; do not narrow the
+`Given` until it looks bound. (One assertion was struck on exactly that ground: `MuxPlacement` is a
+closed four-literal enum carrying no workspace identity, so "the placement does not name the focused
+workspace" was unrepresentable, not unbound.)
+
+### Deliver is COMPLETE — verified against the tree, not assumed
+
+- `store/store.ts` — `AgentStatus` is `'active' | 'idle' | 'stale' | 'exited' | 'paused'`; `spawning`
+  gone, and the record type is `AgentStatus | (string & {})` so a migrated legacy value round-trips.
+- `session.ts` registers `active`; both `inject-inbox.ts` sites removed; `SPAWN_DOORBELL` names the
+  brief path; `WakeSpawnInput` threaded.
+- **ADR-0032 exists and ADR-0027 is marked superseded by it** — the carried finding that the
+  supersession was "absent from the diff" is resolved. 0027 correctly retains turn-delivery and
+  overturns only the payload/context split.
+
+### The impl gate is the next action
+
+`pnpm --filter cyberlegion test` is 467/467 green, but that reflects **only the pre-existing suite**.
+The 38 scenarios this CR added have no tests. Before spawning the cold `sdd:sdd-impl-judge`:
+
+1. Write conformance for all 38 new scenarios and report, per scenario, whether it needed an
+   implementation change or only a test.
+2. **`src/runtime/inject-inbox.test.ts:117` constructs `env: {}`** — the bare-environment fixture
+   that R5's fix just specified away. The frozen `Given` now requires a detectable harness signal.
+   That test must be updated or it is a false green.
+3. The impl-judge re-derives each scenario's oracle independently (ADR-0016); the gate is not
+   settled by the producer's self-report.
+
+### (superseded) both nodes re-cut — kept for the record
 
 Both suites are re-cut from the derivation and committed (`fd2f0a5a` mail/surface 24 → **35**;
 `bc432b41` unit/lifecycle 60 → **87**). All 40 holes closed, all vacuous scenarios fixed in place,
