@@ -29,3 +29,7 @@ What changes for consumers:
   *no turn and brief unread on disk*. A caller driving the first turn itself must convey the path.
 
 Supersedes ADR-0027; see ADR-0032.
+
+Note for readers of the 0.2.0 entry above: it describes the first-turn doorbell as waking a peer
+whose "brief is injected into context by its own SessionStart hook". That was accurate when it
+shipped and is what this release retires — the hook injects no brief, and the wake names the file.
