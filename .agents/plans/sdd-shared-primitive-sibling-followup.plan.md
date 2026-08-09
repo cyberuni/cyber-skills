@@ -57,13 +57,28 @@ regression stop does not carry over, because the rule under test changed. Remedi
 One follow-up per primitive when `D` is non-empty; none when empty. Each conjunct is its own
 decision node, so each mutation of the rule breaks a distinct scenario.
 
-**Pre-flight, discharged.** Round 1 flagged six undeclared governances, round 2 two. The set was
-resolved mechanically this time (`resolve-governances --artifact-type spec`) rather than
-hand-enumerated, and loaded before a line was written: `spec-producer-governance`,
-`suite-format-governance`, `spec-format-governance`, `oracle-spec-governance`,
-`builder-spec-governance`, `architect-spec-governance`, `lifecycle-governance`,
-`combat-log-governance`. `gate-validation-governance` was loaded at the round-2 stop and is what
-established that **no gate line may be written here**.
+**Pre-flight — round 3's declared set.** Round 1 flagged six undeclared governances, round 2 two,
+round 3 **one**. The set was resolved mechanically this time
+(`resolve-governances --artifact-type spec`) rather than hand-enumerated:
+
+`spec-producer-governance`, `suite-format-governance`, `spec-format-governance`,
+`oracle-spec-governance`, `builder-spec-governance`, `architect-spec-governance`,
+`lifecycle-governance`, `combat-log-governance`, **`gate-validation-governance`**.
+
+All but the last were loaded **before** a line was written. `gate-validation-governance` was
+**not** — the producer reasoned that loading it at the round-2 stop carried over. It does not: the
+judge's pre-flight is `expected ⊆ declared` on **this round's** declaration, and it is deliberately
+mechanical, because a producer who skipped pre-flight and one who ran it look identical from the
+output. Round 3's first judge dispatch blocked on exactly that, before any lens ran.
+
+Loaded at the gate, and the artifact re-checked against it: **nothing to fix**. Its per-node
+`spec-type` checks pass (the node is `behavioral` and has `## Use Cases`; its frontmatter is
+`spec-type` + `concept` only, so it carries no root-only lifecycle field), and its legal-state
+tuples bind the root `spec.md`, which this CR does not touch. The miss cost a judge dispatch, not a
+correction.
+
+**Carry this forward:** the pre-flight is a *per-round* declaration. A governance loaded in an
+earlier round of the same CR does not count toward a later one.
 
 ## Resolved decisions
 
