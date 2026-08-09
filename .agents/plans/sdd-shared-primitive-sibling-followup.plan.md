@@ -1,6 +1,6 @@
 ---
 cr-ref: sdd-shared-primitive-sibling-followup
-status: draft
+status: ratified
 leash: auto-spec
 blast: low
 todos:
@@ -29,8 +29,8 @@ todos:
     status: completed
     note: PASSED. Cold sdd-spec-judge, ALIGNED true, oracle/builder/architect all PASS, no blocker, no failing scenario, no content gap. Round 1 on the ruled rule (the two prior rounds' rules were struck). Self-asserted by:agent within the auto-spec leash; durable gate line at ledger seq:2; status NOT written. First dispatch blocked at pre-flight over a missing gate-validation-governance declaration — logged as a judge-iteration correction (combat log seq:5, off-enum cause flagged cause-candidate).
   - id: council-ratification
-    status: pending
-    note: BLOCKING — a human gate write. The self-assertion is provisional and sits in the review queue. Council either ratifies (rewrites by:agent -> by:<name> in approval.spec and appends a ratified gate line) or kicks back. Cannot be relayed or self-asserted; needs the in-session position holding the user channel.
+    status: completed
+    note: RATIFIED by unional, in-session, positionally. approval.spec rewritten by:agent -> by:unional (cause + why retained, matching CR-5's ratified record in the same file); ratified gate line appended at ledger seq:3, append-only, leaving the provisional seq:2 standing. status deliberately NOT written — see "Resolved decisions". check:spec 6/6.
 ---
 
 # CR-6 — a shared-primitive CR files a sibling followup
@@ -44,23 +44,26 @@ Do **not** re-litigate the keep, and do **not** re-open the `D` question — Cou
 
 ## NEXT — resume here
 
-**Next action:** **Council ratification of the spec gate.** Everything inside the leash is done and
-the mission is parked on a human gate write that cannot be relayed or self-asserted.
+**This dispatch is complete.** The spec gate passed (cold `sdd-spec-judge`, ALIGNED true, all three
+lenses PASS) and was **ratified by unional in-session**. The contract is agreed and `@frozen`.
 
-The spec gate **passed and is self-asserted provisionally**: cold `sdd-spec-judge` returned
-ALIGNED true with all three lenses PASS, no blocker and no failing scenario; `approval.spec` on the
-root `spec.md` reads `by: agent` with its `why` derivation, and the durable gate line sits at ledger
-seq:2. **`status` was deliberately not written** and stays `implemented`. The suite stayed `@frozen`
-throughout — the net diff against `main` is ADDITIVE (8 added / 0 modified / 0 removed, confirmed by
-`classify-edit-class`), so it self-cleared and owes no Clearance.
+**Next action: land it, then open the deliver mission.** Handoff for this dispatch is the branch
+`cyberlegion/unit-c1932c3b4794a682` -> a PR. Nothing else here is owed.
 
-Council ratifies by rewriting `approval.spec.by: agent` to `by: <name>` and appending a ratified
-`gate` line — or kicks back with findings, which re-enter under `remediation-governance`.
+**What is owed NEXT, as separate missions — none of it in this dispatch's scope:**
 
-**After ratification, the deliver phase is still owed and is OUT of this dispatch's scope:** the
-shipped `start-mission` SKILL.md step 4 and the `automaton` agent do not yet enact the rule. File
-that as its own mission, together with the two siblings this CR deliberately deferred — the sweep
-engine, and where the declared vocabulary is stored.
+1. **The deliver phase for this rule.** The contract is frozen but nothing enacts it: the shipped
+   `start-mission` SKILL.md step 4 and the `automaton` agent do not identify the sibling follow-up.
+   This is the direct follow-on and should be filed first.
+2. **The sweep engine.** The matcher that walks tracked suites for declared terms. CR-5's
+   `check-retired-terms` (declared registry + corpus-wide sweep over tracked files) is the shape.
+   Run its guards against the **tracked** tree — CR-5 self-fired twice on exactly that.
+3. **Where the declared vocabulary is stored.** Settled with the engine, not before. A durable
+   registry keyed on the primitive beats a per-CR declaration (declare once, no per-mission
+   forgetting), but that is a recommendation, not a ruling.
+4. **Splitting the node.** `mission/handoff/` is ~52 scenarios against a 40 threshold. The judge
+   flagged it, and `.research/cfg-derivation-direction/` independently found 6 consensus coverage
+   holes a backfilled scenario map could not surface. Pre-existing; do not fold into CR-6.
 
 **The C rule as shipped, closed form:**
 
@@ -167,6 +170,24 @@ earlier round of the same CR does not count toward a later one.
   nowhere in the README.
 - **The same-channel scenario** no longer asserts a drain outcome under a non-drain `When`. It is
   now a classification-convergence scenario: `When handoff classifies the follow-ups`.
+
+### Why the gate did not write `status`
+
+`spec-gate`'s verb table says an `approve` writes `status: approved`. It was **not** written here,
+deliberately, and the plan's leash said so from the start.
+
+The transition that verb encodes is **Draft -> Approved**. This spec is `status: implemented`, and
+this CR never took it to `draft`: the change is **additive** to an already-`implemented` node's
+`@frozen` suite, which `lifecycle-governance` says **self-clears** — it widens the contract, cannot
+break existing implementation, and folds in under the conductor's authority. There was no
+Draft -> Approved transition to perform.
+
+Writing `approved` would have **regressed** the project's lifecycle state, discarding the recorded
+fact that the impl gate has passed. `check-spec-state` confirms the tuple is legal as left: status
+`implemented`, `approval.spec` ratified, `approval.impl` still carrying CR-5's ratification, and a
+durable spec `gate` line in the ledger.
+
+Read the verb table as governing the transition it names, not as an unconditional write.
 
 ### Settled, and carried through the re-plan however the details land
 
