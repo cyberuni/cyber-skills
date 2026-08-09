@@ -30,6 +30,6 @@ What changes for consumers:
 
 Supersedes ADR-0027; see ADR-0032.
 
-Note for readers of the 0.2.0 entry above: it describes the first-turn doorbell as waking a peer
+Note for readers of the 0.2.0 entry: it describes the first-turn doorbell as waking a peer
 whose "brief is injected into context by its own SessionStart hook". That was accurate when it
 shipped and is what this release retires — the hook injects no brief, and the wake names the file.
