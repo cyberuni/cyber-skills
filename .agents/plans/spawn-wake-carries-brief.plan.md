@@ -14,9 +14,11 @@ todos:
     status: done
   - content: "impl gate — 13 rounds, all remediated; SUSPENDED pending the spec redo below"
     status: in_progress
-  - content: "spec conformance — cold re-derivation DONE (40 holes found); map rewrite + hole-closing scope BLOCKED on the owner"
-    status: in_progress
-  - content: "handoff — superseding ADR + PR; file CR-B/CR-C follow-ups"
+  - content: "spec conformance — cold re-derivation + both nodes re-cut (35 and 87 scenarios); all 40 holes closed"
+    status: done
+  - content: "spec gate (2nd pass) — blast medium->high in spec.md, then cold spec-judge; owner re-ratifies"
+    status: pending
+  - content: "handoff — superseding ADR + PR; file CR-B/CR-C + the 3 impl-defect follow-ups + 2 relocations"
     status: pending
 ---
 
@@ -155,7 +157,29 @@ Also: `spawnAndWake`'s brief-path guard is unreachable (`spawn` always sets a no
 its only caller) despite a comment claiming it "is not defensive padding"; and `decommission`
 bypasses `removeWorktreeSafely`, so on herdr the workspace binding is never released.
 
-### SETTLED — close all 40 here; blast goes medium → high
+### DONE — both nodes re-cut. Next action: re-run the spec gate at blast `high`.
+
+Both suites are re-cut from the derivation and committed (`fd2f0a5a` mail/surface 24 → **35**;
+`bc432b41` unit/lifecycle 60 → **87**). All 40 holes closed, all vacuous scenarios fixed in place,
+the Conflict pair fixed rather than disclosed, both maps rewritten from the derived graphs. All six
+`check:spec` checks green — `align-spec` cleared once the narrowing landed in HEAD, as predicted.
+`pnpm --filter cyberlegion test` 467/467. The 27 + 11 new scenarios have **no tests yet**; that is
+the impl gate's job, and the green 467 reflects only the pre-existing suite.
+
+**The next action is the spec gate, and it is a re-judge of two whole nodes, not a delta.** Before
+spawning the cold `sdd:sdd-spec-judge`:
+
+1. **Rewrite `approval.spec.why.blast` in `packages/cyberlegion/.agents/spec/spec.md`** — it still
+   says `medium` and describes a two-node delta. It is now `high`: two suites roughly doubled.
+2. Root `spec.md` is `status: draft`; the gate must re-pass and be **re-ratified by the owner**
+   before the impl gate resumes. Leash is `auto-none` — emit the verdict and stop; do not
+   self-assert over a Clearance floor.
+3. Expect more rounds than a delta review would take.
+
+Then the impl gate (13 rounds already banked, all remediated — but 38 new scenarios now need
+conformance), then handoff.
+
+### The scope decision behind this — close all 40 here; blast medium → high
 
 The size concern was put to the owner (40 holes is a node-wide re-spec of two nodes, most of it
 pre-existing and off this CR's subject) and the owner **reaffirmed the grant as given: close every
@@ -328,6 +352,27 @@ with that path (`wakeSpawn` takes no brief today); the store's read path made to
 `spawning` value (see the impl-gate risk above); `session.test.ts` and `inject-inbox.test.ts`
 updated. Plus the superseding ADR for 0027 — in this CR, not a follow-up.
 
-Follow-up to record at handoff (not yet filed): dropping `spawning` loses the registry's only
-signal for "spawned, ring failed, never took its turn". Owner accepted this knowingly; if the fleet
-view later wants to surface stuck ships, that signal needs rebuilding.
+## Follow-ups to file at handoff (none yet filed)
+
+1. **`decommission`'s dirty check reads a failed git as clean** — silent data loss; file first.
+   `isDirty` is `!!exec(...)` and `realExec` returns `null` on failure, so a `git status` that errors
+   collapses to "clean" and the worktree is removed without `--force`. No scenario freezes this, so
+   nothing blesses it.
+2. **`findPaneByAgentId` returns a sanitized filename, not a pane id** — tmux `%3` round-trips as
+   `_3` and is handed to the backend as a real pane id. Only the `rec.pane?.id` route is safe.
+3. **A pane in an unstorable multiplexer accrues a junk record per hook call** — `currentPane` admits
+   wezterm/zellij, `storablePane` refuses them; the two disagree about "in a pane".
+4. **Scenario relocations blocked by node scope**: the legacy-status round-trip assertion belongs to
+   `unit/registry`, and `only the dedicated mail hook command produces the payload` belongs to
+   `init/`. Coverage is kept in `mail/surface` meanwhile — relocate, don't duplicate.
+5. **`cli.e2e.test.ts:490`** still carries a Conflict-workaround comment of the class fixed in
+   `inject-inbox.test.ts`; it was outside the producer's edit scope.
+6. **`unit/lifecycle`'s `SPBK -- yes` edge** (the post-creation backstop) has no scenario — closing
+   it needs a backend fixture that lies about the root it created.
+7. **Eight of twelve behavioral nodes still lack the four sections**, so `check-suite`'s map lint is
+   silently skipped on them — the same blind spot this CR just proved costly, still live corpus-wide.
+8. **`spawning` is gone, and with it the registry's only signal** for "spawned, ring failed, never
+   took its turn". Owner accepted this knowingly; if the fleet view later wants to surface stuck
+   ships, that signal needs rebuilding.
+9. **CR-B** (`cyberlegion-plugin` lifecycle abstraction) and **CR-C** (`cyberfleet-plugin` Operator
+   adoption, plus its stale hook prose and `--no-wake`'s changed meaning).
