@@ -22,7 +22,7 @@ todos:
     status: done
   - content: "impl gate R1 change (21 verification gaps) — all remediated in 37f9bbde + 74b792fe"
     status: done
-  - content: "impl gate R2 — INCOMPLETE, judge died on a session limit; ~30 of 122 graded, re-run the rest"
+  - content: "impl gate R2 — INCOMPLETE, judge died on a session limit; re-run ALL 122 (orphaned partials are leads, not scope)"
     status: in_progress
   - content: "handoff — PR; file the 13 follow-ups (ADR-0032 already landed, not owed)"
     status: pending
@@ -108,14 +108,44 @@ never fails a spawn.
 
 ### The next action
 
-**Re-run impl-gate round 2 over the ungraded scenarios only.** Spawn `sdd:sdd-impl-judge` cold and
-scope it to what no completed grader covered: `mail/surface` scenarios **19–35**, and all of
-`unit/lifecycle` **except** the close family (feature lines 371–471, already graded PASS with every
-conjunct severably mutation-killed). That is roughly 92 of 122. Brief it that rounds 1 and 2 found
-**no behavioral non-conformance at all** — every finding to date is a verification gap — and hand it
-the two traps in *Traps that cost real time* below.
+**Re-run impl-gate round 2 over ALL 122 frozen scenarios.** Spawn `sdd:sdd-impl-judge` cold.
 
-Then handoff: PR, and file the 13 items in `## Follow-ups`. Tree is clean at `84a6c2d7`;
+**Scope is all 122 — not the ungraded remainder.** An earlier draft of this anchor said to scope it
+to the ~92 no completed grader covered. That was wrong and is corrected here. Round 2's judge died
+on a session limit; two of its sub-graders finished first and returned PASS for the `unit/lifecycle`
+close family (feature lines 371–471) and for `mail/surface` 1–18. Those results are **orphaned** —
+their parent never synthesized them, so no judge ever stood behind them. Handing them to a new judge
+as settled makes its verdict rest on a claim it did not commission. That is the relayed-verdict
+seam, and this CR's blast is `high`.
+
+**The judge should absolutely split the work** — 122 oracles do not fit one context, and the last
+run fanned out to 8 parallel graders. Fan-out *inside one adjudication* is correct: the judge picks
+the split, briefs the graders, and synthesizes. What is not correct is inheriting a dead judge's
+graders across sessions. One judge, all 122, split however it likes.
+
+Re-grading the ~30 is not pure waste: the close-family grader flagged its own fixture narrowness
+(see the carried observations below), so a second observation there has value.
+
+**Brief the judge with all of the following:**
+
+1. **Rounds 1 and 2 found no behavioral non-conformance at all** — every finding to date is a
+   verification gap, a frozen `Then` no test could lose. Round 1's rollup was 101 fully bound / 20
+   partially / 1 wholly unbound, all remediated (`37f9bbde`, `74b792fe`).
+2. **Account for dead graders — never synthesize over the survivors.** If a grader dies, re-spawn it
+   or report its slice as ungraded, and **state the covered scenario count in the verdict**. This is
+   not hypothetical: four of round 2's graders died on session limits and, because the parent died
+   too, nothing noticed the hole. A living but careless parent could have emitted a confident verdict
+   covering a quarter of the suite — the same defect this whole mission keeps finding, one level up.
+3. **The two traps below** (built-CLI mutations, harness-signal presence). Both produced a false
+   result during this mission.
+4. It may not edit anything under `.agents/spec/` — the suites are frozen. `align-spec` catches it.
+
+**Before spawning it, run `git status`.** Judges mutate source to test bindings. One round-2 grader
+died at "setting up a mutation harness"; it happened to leave nothing behind, but a judge killed
+mid-mutation **can** leave the tree dirty, and a stray mutation reads as a real finding. Confirm
+clean — and reset if not — before trusting any result.
+
+Then handoff: PR, and file the 13 items in `## Follow-ups`. Tree clean at `55f86e54`;
 `pnpm verify` 35/35; 513 tests.
 
 **Do not re-run the spec gate.** It is ratified (`e446192d`, ledger seq 3, root spec
@@ -250,9 +280,13 @@ What the completed graders returned:
   bound: `process.exitCode = 1` on the successful register, or inside its best-effort catch, left
   the entire suite green while every hook call from a real live pane would fail the harness turn.
 
-**Still ungraded by any completed grader:** `mail/surface` 19–35, and `unit/lifecycle` outside the
+**Never reached by any completed grader:** `mail/surface` 19–35, and `unit/lifecycle` outside the
 close family — spawn resolution, worktree/label, `--cwd` and first-turn, and the four live-target
-verbs. Round 2 must be re-run over those.
+verbs.
+
+**That list is context, not scope.** The re-run covers all 122 — see *The next action*. These two
+grader results are orphaned (their parent never synthesized them), so they inform what to expect,
+not what to skip. Read them as leads, not as findings already banked.
 
 Two carried observations from the round-2 graders, neither blocking:
 
