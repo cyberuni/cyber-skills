@@ -26,8 +26,11 @@ todos:
     status: completed
     note: Commit d224512a. 8 scenarios, closed form stated before the CFG was drawn, each conjunct its own decision node. All three open questions closed and all four carried defects cleared — see "Resolved decisions". check:spec + pnpm verify green; align-spec reports no drift (additive, self-clears).
   - id: spec-gate-c
-    status: in_progress
-    note: Cold sdd-spec-judge. Pre-flight declared: spec-producer, suite-format, spec-format, oracle-spec, builder-spec, architect-spec, lifecycle, combat-log, resolve-governances.
+    status: completed
+    note: PASSED. Cold sdd-spec-judge, ALIGNED true, oracle/builder/architect all PASS, no blocker, no failing scenario, no content gap. Round 1 on the ruled rule (the two prior rounds' rules were struck). Self-asserted by:agent within the auto-spec leash; durable gate line at ledger seq:2; status NOT written. First dispatch blocked at pre-flight over a missing gate-validation-governance declaration — logged as a judge-iteration correction (combat log seq:5, off-enum cause flagged cause-candidate).
+  - id: council-ratification
+    status: pending
+    note: BLOCKING — a human gate write. The self-assertion is provisional and sits in the review queue. Council either ratifies (rewrites by:agent -> by:<name> in approval.spec and appends a ratified gate line) or kicks back. Cannot be relayed or self-asserted; needs the in-session position holding the user channel.
 ---
 
 # CR-6 — a shared-primitive CR files a sibling followup
@@ -41,13 +44,23 @@ Do **not** re-litigate the keep, and do **not** re-open the `D` question — Cou
 
 ## NEXT — resume here
 
-**Next action:** run the **cold `sdd-spec-judge`** over the C spec + suite. The spec is authored and
-committed (`bf9310bb` retraction, `d224512a` the C derivation); nothing is frozen beyond the
-pre-existing file freeze, no gate line is written, and no verdict is self-asserted.
+**Next action:** **Council ratification of the spec gate.** Everything inside the leash is done and
+the mission is parked on a human gate write that cannot be relayed or self-asserted.
 
-If the judge blocks: this is **round 3 on the node but round 1 on the C rule** — the R2 loop's
-regression stop does not carry over, because the rule under test changed. Remediate under
-`remediation-governance` as a fresh loop.
+The spec gate **passed and is self-asserted provisionally**: cold `sdd-spec-judge` returned
+ALIGNED true with all three lenses PASS, no blocker and no failing scenario; `approval.spec` on the
+root `spec.md` reads `by: agent` with its `why` derivation, and the durable gate line sits at ledger
+seq:2. **`status` was deliberately not written** and stays `implemented`. The suite stayed `@frozen`
+throughout — the net diff against `main` is ADDITIVE (8 added / 0 modified / 0 removed, confirmed by
+`classify-edit-class`), so it self-cleared and owes no Clearance.
+
+Council ratifies by rewriting `approval.spec.by: agent` to `by: <name>` and appending a ratified
+`gate` line — or kicks back with findings, which re-enter under `remediation-governance`.
+
+**After ratification, the deliver phase is still owed and is OUT of this dispatch's scope:** the
+shipped `start-mission` SKILL.md step 4 and the `automaton` agent do not yet enact the rule. File
+that as its own mission, together with the two siblings this CR deliberately deferred — the sweep
+engine, and where the declared vocabulary is stored.
 
 **The C rule as shipped, closed form:**
 
