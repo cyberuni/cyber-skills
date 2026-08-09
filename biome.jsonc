@@ -18,8 +18,6 @@
 			"includes": [
 				"packages/cyberplace/src/**/*.ts",
 				"packages/cyberplace/src/**/*.mts",
-				"packages/universal-plugin/src/**/*.ts",
-				"packages/universal-plugin/src/**/*.mts",
 				"packages/cyberfleet/src/**/*.ts",
 				"packages/cyberfleet/src/**/*.mts",
 				"packages/cyberlegion/src/**/*.ts",

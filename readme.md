@@ -27,7 +27,6 @@ See [`packages/cyberplace`](packages/cyberplace/readme.md) for the full command 
 | Package                                                   | Description                                                            |
 | --------------------------------------------------------- | --------------------------------------------------------------------- |
 | [`cyberplace`](packages/cyberplace)                       | Opinionated skills, hooks, and workflows for AI agents + the CLI      |
-| [`universal-plugin`](packages/universal-plugin)           | Build tool for plugins that work across Claude Code, Cursor, and Codex |
 | [`cyberlegion`](packages/cyberlegion)                     | Harness-agnostic agent session spawning, messaging, and dispatch      |
 | [`cyberfleet`](packages/cyberfleet)                       | Harness-agnostic, MCP-free inter-agent sessions and messaging         |
 
