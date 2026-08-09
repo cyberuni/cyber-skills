@@ -155,13 +155,25 @@ Also: `spawnAndWake`'s brief-path guard is unreachable (`spawn` always sets a no
 its only caller) despite a comment claiming it "is not defensive padding"; and `decommission`
 bypasses `removeWorktreeSafely`, so on herdr the workspace binding is never released.
 
-### BLOCKING — the scope call this reopens
+### SETTLED — close all 40 here; blast goes medium → high
 
-The owner granted Clearance on resume to "fix everything the redo finds". That grant was given
-before the size was known. 40 holes is a **node-wide re-spec of two nodes**, and most of it is
-pre-existing and unrelated to this CR's subject — label derivation, `read --lines`, the `clear`
-refusal taxonomy, `close` tolerance. Closing it all here abandons the medium blast the spec gate
-ratified. **Decide before touching either suite** (see `## Resolved decisions` once settled).
+The size concern was put to the owner (40 holes is a node-wide re-spec of two nodes, most of it
+pre-existing and off this CR's subject) and the owner **reaffirmed the grant as given: close every
+hole in both nodes, fix the vacuous scenarios in place.** That is now the scope. Consequences:
+
+- **Blast is `high`, not `medium`.** The ratified `approval.spec.why.blast` in the root `spec.md`
+  says medium and must be rewritten before the gate re-passes; the spec-judge re-judges two nodes
+  end to end, not a two-node delta.
+- **Clearance covers the in-place fixes.** Amending a vacuous Given, sharpening S2/S36/S24, and
+  fixing the Conflict pair are all narrowings of already-ratified frozen scenarios. The grant is
+  recorded in the combat log ahead of the edits; the durable `floor: clearance` lands on the
+  re-ratified gate line.
+- **Expect more judge rounds.** Two suites roughly doubling in size is not a delta review.
+
+**The three implementation defects are follow-ups, not this CR** — owner's call. None is on the
+spawn/wake/brief path, and each needs its own scenario before a fix can be judged. File all three
+at handoff with the evidence in `## Three implementation defects` above; the dirty-check one is a
+silent-data-loss class and should be filed first.
 
 ### Why — the defect this redo existed to correct
 
