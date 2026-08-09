@@ -8,11 +8,13 @@ tier: opus
 todos:
   - content: "explore — re-spec brief delivery: wake carries the instruction, hook-inject retired"
     status: done
-  - content: "spec gate — RATIFIED by owner; status approved, ledger seq 2, commit 81f4d38c"
+  - content: "spec gate (1st pass) — RATIFIED by owner; ledger seq 2"
     status: done
   - content: "deliver — doorbell/session/inject-inbox change + per-scenario verification"
     status: done
-  - content: "impl gate — rebased; R1-R9 remediated; R10 verifying; owner ratifies"
+  - content: "impl gate — 13 rounds, all remediated; SUSPENDED pending the spec redo below"
+    status: in_progress
+  - content: "spec conformance — CFG + scenario map on both touched nodes; REDO COLD (was retrofitted)"
     status: in_progress
   - content: "handoff — superseding ADR + PR; file CR-B/CR-C follow-ups"
     status: pending
@@ -94,55 +96,94 @@ is a re-spec of what the wake says and the retirement of a now-dead pickup path,
 Keep the boot-race budget the doorbell already carries; keep the wake best-effort so a ring failure
 never fails a spawn.
 
-## NEXT
+## NEXT — resume here
 
-**Impl gate, round 10 in flight. Deliver is committed and rebased onto `origin/main`.**
+### The next action
 
-Implementation landed as specced; every gate round since has been about **verification**, not about
-the shipped behavior — no round has found the implementation wrong. `pnpm verify` green throughout
-(35/35 tasks, 450 tests, up from 405 at the start of deliver).
+**Re-derive both nodes' scenario sets COLD from their CFGs, then diff against the frozen suites.**
+Work in a scratch file, not in the READMEs. For each node in turn — `packages/cyberlegion/.agents/spec/mail/surface/`, then `unit/lifecycle/`:
 
-### The finding that shaped this gate
+1. Read only the implementation (`src/runtime/inject-inbox.ts`; `src/session.ts`, `src/cli-input.ts`,
+   `src/decommission.ts`, `src/console/doorbell.ts`) and the node's `## What` / `## Use Cases`.
+   **Do not open the `.feature` or the existing `## Scenario map` while deriving.**
+2. Enumerate every `(path class, edge)` pair the CFG requires — one per pair, every guard paired
+   with a positive companion.
+3. **Only then** open the frozen suite and diff three ways: pairs with no scenario (coverage holes),
+   scenarios with no pair (orphans / co-owned / not-acceptance), pairs whose scenario exists but
+   under a different path class than derived.
+4. Bring the diff back as the finding. The map is then rewritten from the derivation, not from the
+   suite.
 
-Every round found the same defect class: **a frozen clause bound at a seam where the real behavior
-stays mutable**. Concretely — a value compared against itself (the expected value derived from the
-subject), a wire whose call site no test drives, or a multi-clause `Then` where only the first clause
-is asserted. The count per round went 8 → 3 → 5 → 5 → 5, and R8's judge diagnosed why it was not
-converging: **each round bound one verb and left its siblings.** One round fixed spawn's ring target
-and left nudge's; the next fixed nudge's and left read's; a regex loosened in one place stayed tight
-in its co-located twin.
+### Why — the defect this redo exists to correct
 
-R8 and R9 therefore swept the **class** rather than the reported points:
-- every verb that drives a pane asserts *where*, not only *what* (spawn ring, both nudge paths, read,
-  clear, focus) — and `close`, which drives a *worktree*, asserts which path it removes;
-- every guard with an "and nothing happened" clause is driven against a live backend, so it can
-  distinguish *refused before acting* from *could not have acted*;
-- constants are bound to an independent semantic shape, never to themselves.
+The conformance work (`c6525a22` → `ea4930bb`) **retrofitted** the map: the CFGs were drawn from the
+code correctly, but the map was then built by taking each existing scenario and finding an edge for
+it. That makes it 1:1 **by construction**, so it cannot surface a coverage hole — which is the one
+thing it was added to do.
 
-**Calibration is two-directional and must stay that way.** Each bar is checked both that the mutant
-dies *and* that a contract-satisfying reword survives. R9 caught three bars that had become too
-tight (clause-order coupling, a blanket `not` rejection, a blanket "no exec at all"), each of which
-would have failed a conforming reimplementation. When adding a bar here, run both halves.
+`sdd:suite-format-governance` and ADR-0029 require the opposite for a backfill: re-derive the whole
+scenario set from the CFG's edges; the pre-existing `.feature` is **reference only**, each entry a
+claim to verify, never the baseline to patch. Reading the standing suite and filling the gaps a diff
+notices is named explicitly as *not* the procedure.
 
-### Owner decisions taken during deliver
+The evidence it was retrofitted: every gap that surfaced (`G -- no`, `CL -- no`, `CLH -- no`) was
+found by a *judge walking the graph*, not by the derivation. A cold derivation would have produced
+them before any judge ran. So `check-suite` green means **binding verified, adequacy not**.
 
-1. **Scope (R5).** Re-freezing both suites pulled 14 pre-existing unbound scenarios into this gate.
-   Owner ruled: **close all 14 before ratifying** rather than scope them out. Done, plus everything
-   rounds 6–9 surfaced on top.
+### Blocking decisions — for the owner, do not guess past
 
-### Remaining known residual (declared, not a blocker)
+1. **A `Conflict`-floor contradiction sits in the already-ratified frozen suite.** In `mail/surface`,
+   `a registered, active caller with an empty inbox injects nothing` contradicts `an unbound root
+   pane gets a Legion setup nudge`, and `a SessionStart hook auto-registers a live-pane session that
+   has no identity yet` contradicts `a non-multiplexer root session with no standing owner gets the
+   setup nudge`. Each pair shares its `When` and admits a snapshot satisfying both `Given`s while
+   demanding opposite verdicts; they cross on orthogonal axes, so neither is a specialization. Three
+   fixtures already work around it with comments saying so. **Currently disclosed, not fixed** —
+   fixing narrows a frozen scenario and fires **Clearance**. Options: (a) leave disclosed, (b) grant
+   Clearance and fix the `Given`s in this CR, (c) split into its own CR.
+2. **The cold redo may find more holes in the frozen suites.** Closing a hole is *additive* and
+   self-clears; changing an existing scenario is a narrowing and fires Clearance. Decide which the
+   redo is authorized to do before it runs.
+3. **Two declared gaps are unclosed**: `CL -- no` (default harness binary) and `CLH -- no`
+   (`unit spawn` with neither `--harness` nor a resolving def — a real throw with **no coverage
+   anywhere in the corpus**). Both closable additively.
 
-`cli.ts` flag→seam forwarding is unbound: `cli.ts` is a module-scope `parseAsync` with no exports,
-and `unit spawn` needs a live multiplexer, so the e2e harness cannot drive it. **Pre-existing and
-equivalently exposed on `origin/main`** — the same `noWake: opts.wake === false` wire existed before.
-A judge round noted a `tmux` shim on `PATH` in `cli.e2e` would close the whole class; that is a
-follow-up CR, not this one.
+### Findings the commits will not show
 
-### Then
+- **Thirteen impl-gate rounds never found the implementation wrong.** Every finding was a check that
+  passed while the behavior it named stayed mutable. The root cause was structural: `check-suite`
+  *skips* a spec with no `## Scenario map` rather than failing it, so the map-binding lint had never
+  run on either node, and coverage was hand-judged one sibling at a time.
+- **The CFG earned its keep despite being retrofitted** — it found a real implementation defect
+  (`c2498ce4`: the primary-checkout guard ran after the worktree was created, and on the atomic
+  branch after a session was opened, so the frozen *"no session is opened"* was false on herdr), a
+  self-contradicting ordering claim inherited from the retired ADR-0027 design, and the contradiction
+  in decision 1 above.
+- **The producer failure mode across rounds 3–4 was closed-world claims** — "it is the only one",
+  "the happy-path pass-throughs", "it never builds one" — each asserted without checking against the
+  artifact, each false. `ea4930bb` struck the quantifiers instead of re-verifying them, and doing so
+  immediately surfaced `CLH -- no`. Keep lists open when resuming.
+- **Eight of twelve behavioral nodes still lack the four sections** (`admin`, `agent`, `attach`,
+  `init`, `mail/core`, `mail/doorbell`, `mail/wait`, `unit/registry`), so `check-suite`'s map lint is
+  still silently skipped on them — the same blind spot, live. Separate corpus-wide CR.
 
-On R10 pass: **owner ratifies the impl gate** (leash `auto-none`), write `approval.impl` + a
-`gate: impl` ledger line, advance `status: implemented`, then handoff — PR, and file the CR-B/CR-C
-follow-ups plus the ones below.
+### Working method — do not relearn
+
+Resolved decisions are in `## Resolved decisions` and the sections below; the impl-gate remediation
+history is in the commit messages on this branch (24 commits ahead of `origin/main`). Two standing
+rules earned this mission, both load-bearing on resume:
+
+- **Calibrate every bar in both directions** — the mutant must die *and* a contract-satisfying reword
+  must survive. Rounds 7–10 each traded one defect for another by only checking the first half.
+- **Fix the class, not the named site** — findings recurred for five rounds because each round bound
+  one verb and left its siblings. Sweep the axes as a matrix in one commit.
+
+### State
+
+Branch is rebased onto current `origin/main`; `pnpm verify` green (35/35, 467 tests); all six
+`check:spec` checks ok. Root `spec.md` is **`status: draft`** — deliberately re-opened for this
+conformance work, so the spec gate must re-pass and be re-ratified before the impl gate resumes.
+Impl-gate round 13's findings are all remediated and committed; no impl round is outstanding.
 
 ### Deliver — what has to land
 
