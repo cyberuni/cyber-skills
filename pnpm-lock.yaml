@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@changesets/cli': 09c7695394aebe913574cc2db2e4203b4aa6188b9b5dbc63d69c297f64f65230
+
 importers:
 
   .:
@@ -13,7 +16,7 @@ importers:
         version: 2.4.15
       '@changesets/cli':
         specifier: ^2.29.4
-        version: 2.31.0(@types/node@24.12.4)
+        version: 2.31.0(patch_hash=09c7695394aebe913574cc2db2e4203b4aa6188b9b5dbc63d69c297f64f65230)(@types/node@24.12.4)
       '@commitlint/cli':
         specifier: ^21.0.1
         version: 21.0.1(@types/node@24.12.4)(conventional-commits-parser@6.4.0)(typescript@6.0.3)
@@ -4666,7 +4669,7 @@ snapshots:
     dependencies:
       '@changesets/types': 6.1.0
 
-  '@changesets/cli@2.31.0(@types/node@24.12.4)':
+  '@changesets/cli@2.31.0(patch_hash=09c7695394aebe913574cc2db2e4203b4aa6188b9b5dbc63d69c297f64f65230)(@types/node@24.12.4)':
     dependencies:
       '@changesets/apply-release-plan': 7.1.1
       '@changesets/assemble-release-plan': 6.0.10
