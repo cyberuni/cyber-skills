@@ -454,3 +454,26 @@ updated. Plus the superseding ADR for 0027 — in this CR, not a follow-up.
    ships, that signal needs rebuilding.
 9. **CR-B** (`cyberlegion-plugin` lifecycle abstraction) and **CR-C** (`cyberfleet-plugin` Operator
    adoption, plus its stale hook prose and `--no-wake`'s changed meaning).
+
+Added by the impl gate (round 1):
+
+10. **The scenario bridge is inert — it binds 0 of 122.**
+    `packages/cyberlegion/.agents/sdd/scenario-bridge.toml` exists, but no test carries a
+    `describe('spec:cyberlegion/mail/surface')` wrapper, the `unit/lifecycle` wrappers carry title
+    suffixes that break the node key, and `check:spec` never runs the bridge at all. The project has
+    opted into an instrument that reports nothing. Not a conformance failure — test naming is not
+    frozen contract — but it is a second dead coverage instrument in the same package, after the
+    backward-built maps this CR spent six rounds repairing. **Fix or remove; do not leave it
+    reporting silence.**
+11. **The fixed-name tmp fixture trap.** Several `session.test.ts` fixtures (`atomic-unit`,
+    `default-ws-unit`, `labeled-unit`) build paths as a fixed name directly under the shared tmp
+    dir, so a previous run's artifact can satisfy an assertion. It already produced one false green
+    in this CR (the atomic-marker test), caught only because a mutation survived. They are safe
+    today **only** because they assert call arguments rather than the filesystem — one filesystem
+    assertion added to any of them reintroduces the bug. Make the paths unique per run.
+12. **`doorbell.ts`'s success path can return a spurious `warning`** that nothing notices —
+    over-permission; no frozen `Then` requires it.
+13. **`file-store.test.ts`'s tmux characterization is deliberately absent.** The reverse lookup is
+    now bound only on sanitization-invariant (herdr) pane ids, so it stays green through the
+    follow-up in item 2. Whoever fixes item 2 should *add* the tmux binding at that point — it was
+    left out rather than forgotten.
