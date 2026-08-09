@@ -196,7 +196,33 @@ workspace" was unrepresentable, not unbound.)
   supersession was "absent from the diff" is resolved. 0027 correctly retains turn-delivery and
   overturns only the payload/context split.
 
-### The impl gate is the next action
+### Impl conformance LANDED (`dcb9026f`) — cold impl-judge running
+
+Tests **467 → 498**. **No implementation change was required** — every frozen scenario already
+conformed, which is what you expect when a re-derivation finds holes in the spec rather than in the
+code. Test-only diff; no frozen suite touched (`align-spec` green).
+
+Every non-trivial test was mutation-checked: 26 mutations, 26 kills. Independently reproduced the
+load-bearing one: hardcoding `hookEventName` to `SessionStart` and dropping `PostToolUse` from
+`EVENTS` passed **all 24 original scenarios and all 467 original tests**, and now dies. That is the
+redo's thesis demonstrated end to end.
+
+One mutation initially survived, and the defect was in the new test: the atomic-marker fixture used
+a **fixed directory name directly under the shared tmp dir**, so a previous run's marker satisfied
+the assertion. Now unique per run. **Several pre-existing `session.test.ts` fixtures share that
+pattern** (`atomic-unit`, `default-ws-unit`, `labeled-unit`) — claimed safe only because they assert
+call arguments rather than the filesystem. Worth a follow-up regardless; it is a live trap.
+
+Two open items handed to the impl-judge to rule on:
+
+1. **`--task -` (stdin) has no spawn-level binding** — `readFileSync(0)` cannot be driven from vitest
+   without a real fd-0 redirect. Bound at the seam; the seam-to-brief-file join is bound by the
+   `--brief-file` test; the composition is not.
+2. **`copilot` is unspecified but still implemented and tested** — the frozen `clear` Examples table
+   dropped the row as unreachable, but `RESET_MAP` still carries it and two tests still assert it.
+   Nothing is out of conformance; the mapping is tested while unspecified.
+
+### (superseded) the impl gate is the next action
 
 `pnpm --filter cyberlegion test` is 467/467 green, but that reflects **only the pre-existing suite**.
 The 38 scenarios this CR added have no tests. Before spawning the cold `sdd:sdd-impl-judge`:
