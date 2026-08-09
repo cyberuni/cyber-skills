@@ -47,14 +47,17 @@ Do **not** re-litigate the keep, and do **not** re-open the `D` question — Cou
 **This dispatch is complete.** The spec gate passed (cold `sdd-spec-judge`, ALIGNED true, all three
 lenses PASS) and was **ratified by unional in-session**. The contract is agreed and `@frozen`.
 
-**Next action: land it, then open the deliver mission.** Handoff for this dispatch is the branch
-`cyberlegion/unit-c1932c3b4794a682` -> a PR. Nothing else here is owed.
+**Handoff is done.** Branch pushed; **PR #413** open against `main`. The deliver follow-up was
+recorded to the ledger (seq:4, `class: backlog`) before being drained to the forge as **issue #414**
+— record-before-file, the ordering this node's own contract makes load-bearing.
+
+Nothing further is owed on this dispatch. It closes when #413 merges.
 
 **What is owed NEXT, as separate missions — none of it in this dispatch's scope:**
 
-1. **The deliver phase for this rule.** The contract is frozen but nothing enacts it: the shipped
-   `start-mission` SKILL.md step 4 and the `automaton` agent do not identify the sibling follow-up.
-   This is the direct follow-on and should be filed first.
+1. **The deliver phase for this rule** — FILED as issue **#414**. The contract is frozen but nothing
+   enacts it: the shipped `start-mission` SKILL.md step 4 and the `automaton` agent do not identify
+   the sibling follow-up. #414 also carries items 2 and 3 below as its named dependencies.
 2. **The sweep engine.** The matcher that walks tracked suites for declared terms. CR-5's
    `check-retired-terms` (declared registry + corpus-wide sweep over tracked files) is the shape.
    Run its guards against the **tracked** tree — CR-5 self-fired twice on exactly that.
