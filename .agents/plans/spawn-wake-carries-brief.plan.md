@@ -18,9 +18,13 @@ todos:
     status: done
   - content: "spec gate (2nd pass) — RATIFIED e446192d; 6 rounds, suites frozen at 35 and 87"
     status: done
-  - content: "impl gate — conformance for the 38 new scenarios, then cold impl-judge"
+  - content: "impl conformance — 38 new scenarios bound; tests 467 -> 513, no impl change needed"
+    status: done
+  - content: "impl gate R1 change (21 verification gaps) — all remediated in 37f9bbde + 74b792fe"
+    status: done
+  - content: "impl gate R2 — INCOMPLETE, judge died on a session limit; ~30 of 122 graded, re-run the rest"
     status: in_progress
-  - content: "handoff — superseding ADR + PR; file CR-B/CR-C + the 3 impl-defect follow-ups + 2 relocations"
+  - content: "handoff — PR; file the 13 follow-ups (ADR-0032 already landed, not owed)"
     status: pending
 ---
 
@@ -101,6 +105,34 @@ Keep the boot-race budget the doorbell already carries; keep the wake best-effor
 never fails a spawn.
 
 ## NEXT — resume here
+
+### The next action
+
+**Re-run impl-gate round 2 over the ungraded scenarios only.** Spawn `sdd:sdd-impl-judge` cold and
+scope it to what no completed grader covered: `mail/surface` scenarios **19–35**, and all of
+`unit/lifecycle` **except** the close family (feature lines 371–471, already graded PASS with every
+conjunct severably mutation-killed). That is roughly 92 of 122. Brief it that rounds 1 and 2 found
+**no behavioral non-conformance at all** — every finding to date is a verification gap — and hand it
+the two traps in *Traps that cost real time* below.
+
+Then handoff: PR, and file the 13 items in `## Follow-ups`. Tree is clean at `84a6c2d7`;
+`pnpm verify` 35/35; 513 tests.
+
+**Do not re-run the spec gate.** It is ratified (`e446192d`, ledger seq 3, root spec
+`status: approved`) and **no spec artifact has changed since** — every commit after it touches
+`src/**` tests only, which is why `align-spec` is green. Re-running re-opens a frozen contract for
+nothing.
+
+**Do not "start implementation".** Deliver landed long ago (`17cf8eac`, `c2498ce4`); ADR-0032 exists
+and ADR-0027 is marked superseded; conformance is bound at 513 tests. Impl-gate round 1 graded all
+122 by hand and found **zero** behavioral non-conformance. The only outstanding work is *judging*.
+
+### Blocking decisions
+
+**None open.** The three owner decisions this mission took — drop `spawning` and register `active`;
+close all 40 holes in this CR rather than splitting them out; file the three implementation defects
+as follow-ups rather than fixing them here — are settled and recorded in the ledger and below. Do
+not relitigate them.
 
 ### The cold redo RAN. It found what the retrofit could not. — 2026-08-09
 
