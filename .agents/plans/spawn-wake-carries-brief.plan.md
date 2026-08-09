@@ -1,7 +1,7 @@
 ---
 cr-ref: spawn-wake-carries-brief
 target-project: cyberlegion
-blast: medium
+blast: high
 hitl: true
 leash: auto-none
 tier: opus
