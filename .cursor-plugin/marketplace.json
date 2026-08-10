@@ -36,6 +36,15 @@
 			"description": "Spec-Driven Development. Scaffold, validate, and maintain behavioral specs (spec.md + .feature files) for software features.",
 			"tags": ["spec-driven", "workflow"],
 			"source": "./plugins/sdd"
+		},
+		{
+			"name": "buddy-codecov",
+			"description": "Codecov coverage comparison skill for AI coding agents.",
+			"tags": ["codecov", "coverage", "testing"],
+			"source": {
+				"source": "npm",
+				"package": "buddy-codecov"
+			}
 		}
 	]
 }
