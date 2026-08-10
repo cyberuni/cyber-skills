@@ -26,10 +26,10 @@ todos:
     status: done
   - content: "impl gate R3 — PASS 122/122, IMPLEMENTATION_PASS true; remediation independently re-verified"
     status: done
-  - content: "impl gate ratification — owner's call; leash auto-none, verdict emitted, NOT self-asserted"
-    status: in_progress
-  - content: "handoff — PR; file the 15 follow-ups (ADR-0032 already landed, not owed)"
-    status: pending
+  - content: "impl gate ratification — RATIFIED by owner; ledger seq 4"
+    status: done
+  - content: "handoff — PR #415; 15 follow-ups filed as #416-#430"
+    status: done
 ---
 
 # CR spawn-wake-carries-brief — the spawn wake carries the brief instruction
@@ -112,12 +112,33 @@ never fails a spawn.
 
 ### The next action
 
-**The impl gate PASSED. It awaits the owner's ratification — do not self-assert it.** Leash is
-`auto-none` and blast is `high`; the verdict is emitted and the gate line is the owner's write, not
-the conductor's. The verdict packet is recorded verbatim below.
+**None — the mission is COMPLETE and handed off.** Both gates ratified by the owner, PR
+[#415](https://github.com/cyberuni/cyberplace/pull/415) open against `main`, all 15 follow-ups filed
+as #416-#430. Nothing is owed by this CR.
 
-Once ratified: record the gate line in the ledger, then handoff — PR, and file the 15 items in
-`## Follow-ups`. ADR-0032 already landed and is **not** owed.
+If the PR needs changes in review, that is ordinary PR work against a ratified contract — the frozen
+suites stay frozen, and any scenario change re-opens the spec gate under Clearance.
+
+**Do not resume this plan for the follow-ups.** They are independent issues now; each needs its own
+scenario before a fix can be judged. The plan is a candidate for retirement at the next doctrine loop.
+
+### HANDED OFF — 2026-08-09
+
+- **PR [#415](https://github.com/cyberuni/cyberplace/pull/415)** — rebased onto current `main`
+  (the 14 incoming commits touched only `.agents/specs/sdd` and `.research`, never
+  `packages/cyberlegion`, so the rebase could not invalidate the graded tree). `pnpm verify` 35/35,
+  513 tests, all six `check:spec` checks green.
+- **Impl gate ratified — ledger seq 4**, `verdict: approve`, `by: unional`, `cause: dimension`,
+  `floor: clearance`. `touches` derived from the diff, not estimated.
+- **Follow-ups filed #416-#430**, led by #416 (the `decommission` dirty-check silent-data-loss
+  class). Two are about the *instruments* rather than the code and outlive this CR: #419 (the
+  scenario bridge binds 0 of 122) and #427 (`check-suite` skips rather than fails on an absent map,
+  so eight of twelve nodes were never linted).
+
+**The mission's one-line verdict:** across three impl-gate rounds and 122 hand-graded scenarios, the
+implementation was never wrong. All 22 findings were verification gaps. The cost of this CR was
+almost entirely in discovering that its *instruments* — a backward-built scenario map, a dead
+scenario bridge, a skip-on-absent lint — reported coverage they did not have.
 
 ### IMPL GATE PASSED — `IMPLEMENTATION_PASS: true`, 122/122. — 2026-08-09
 
