@@ -24,9 +24,11 @@ todos:
     status: done
   - content: "impl gate R2 re-run — 122/122 graded by one living judge; `change`, 1 verification gap, remediated in 1265d0bc"
     status: done
-  - content: "impl gate R3 — judge re-verifying the 521 remediation; awaiting the re-emitted verdict packet"
+  - content: "impl gate R3 — PASS 122/122, IMPLEMENTATION_PASS true; remediation independently re-verified"
+    status: done
+  - content: "impl gate ratification — owner's call; leash auto-none, verdict emitted, NOT self-asserted"
     status: in_progress
-  - content: "handoff — PR; file the 13 follow-ups (ADR-0032 already landed, not owed)"
+  - content: "handoff — PR; file the 15 follow-ups (ADR-0032 already landed, not owed)"
     status: pending
 ---
 
@@ -110,13 +112,42 @@ never fails a spawn.
 
 ### The next action
 
-**Await / re-request the impl-judge's re-emitted verdict on the `unit/lifecycle:521` remediation
-(`1265d0bc`), then hand off.** The judge holding all 122 results is resumable — send it the
-remediation rather than spawning a fresh judge, which would owe a full 122 re-grade and recreate
-the orphaned-result seam. If it is gone, a fresh judge may scope to 521 **only if** it is told the
-prior 121 were graded by a since-dead judge and it re-derives enough to stand behind the rollup.
+**The impl gate PASSED. It awaits the owner's ratification — do not self-assert it.** Leash is
+`auto-none` and blast is `high`; the verdict is emitted and the gate line is the owner's write, not
+the conductor's. The verdict packet is recorded verbatim below.
 
-Then handoff: PR, and file the follow-ups in `## Follow-ups` (now 15 — two added by R2).
+Once ratified: record the gate line in the ledger, then handoff — PR, and file the 15 items in
+`## Follow-ups`. ADR-0032 already landed and is **not** owed.
+
+### IMPL GATE PASSED — `IMPLEMENTATION_PASS: true`, 122/122. — 2026-08-09
+
+Round 3 verified the `unit/lifecycle:521` remediation (`1265d0bc`) **independently** — the judge
+re-derived the oracle and ran its own mutation cycle rather than accepting the conductor's
+calibration report. It reproduced all three checks: the foreign-pane mutant kills 521
+(`expected '%99' to be '%9'`); the reverse-direction incidental-argv change (`-J`) survives; the
+dependency restored byte-identical; 513/513 green, tree clean.
+
+It also cleared the one thing that looked like a regression: the two `unit/read` scenarios
+(`session.test.ts:1471`, `:1483`) that go red under the same mutant do so because they share the
+`adapter.read()` seam and **already carried their own pane-target assertions**, untouched by
+`1265d0bc` (whose diff spans only lines 1387–1398). Shared seam behaving consistently, not breakage.
+
+```
+STATUS:              complete
+IMPLEMENTATION_PASS: true
+SCENARIOS_GRADED:    122 of 122 (mail/surface 35/35, unit/lifecycle 87/87)
+SCENARIOS_FAILING:   []
+ABSORPTION_FINDINGS:    []
+ABSORPTION_ESCALATIONS: []
+BLOCKER:              null
+CHANGES_MADE:         none by the judge; 1265d0bc verified, test-only
+```
+
+**The mission's headline, across all three impl-gate rounds: zero behavioral non-conformance, ever.**
+Every finding at every round — 21 in R1, 1 in R2 — was a verification gap, a frozen `Then` no test
+could lose. Not one was wrong behavior. That is what you expect when a cold re-derivation finds the
+holes in the *spec's coverage* rather than in the code, and it is the strongest evidence this CR
+produced that the re-cut was worth its cost.
 
 ### IMPL GATE ROUND 2 (re-run) — COMPLETE. 122/122, verdict `change`, remediated. — 2026-08-09
 
