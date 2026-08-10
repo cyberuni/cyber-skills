@@ -27,7 +27,7 @@ approval:
 
 The universal plugin builds, composes, and distributes **agent configuration** — skills, governances, agent definitions, commands, and discipline hooks — so one authored source set can target many harnesses (Claude Code, Cursor, Codex, Copilot). It ships as the `universal-plugin` package (a CLI plus pure domain logic) and the skills that drive authoring and distribution. As the **project** spec it stays high-level: it names the capabilities the plugin delivers and the **feature specs** that own each one, rather than restating their rules.
 
-The plugin's capabilities span build (emit per-harness output from one source), governance composition (embed required governance inline at build time), preparation and sync (stage and reconcile distributable assets), source/vendor registries (track where assets come from and go), publishing and marketplace surfaces, and reusable tooling shared across plugins. Detailed package architecture lives in `packages/universal-plugin/AGENTS.md`; detailed behaviors live in the feature specs.
+The plugin's capabilities span build (emit per-harness output from one source), governance composition (embed required governance inline at build time), preparation and sync (stage and reconcile distributable assets), source/vendor registries (track where assets come from and go), publishing and marketplace surfaces, and reusable tooling shared across plugins. Detailed package architecture lives in the [universal-plugin repository](https://github.com/cyberuni/universal-plugin); detailed behaviors live in the feature specs.
 
 ---
 
@@ -49,7 +49,7 @@ Cross-plugin reusable logic (for example, graph/DAG operations) is delivered as 
 
 ### Distribution targets are detected, not assumed
 
-The plugin emits output per target harness and embeds governance at build time so the agent has it from the first message. The build, governance-composition, and distribution rules are owned by their feature specs and the package domains under `packages/universal-plugin/src/`.
+The plugin emits output per target harness and embeds governance at build time so the agent has it from the first message. The build, governance-composition, and distribution rules are owned by their feature specs and the package domains in the [universal-plugin repository](https://github.com/cyberuni/universal-plugin).
 
 ---
 
@@ -62,7 +62,7 @@ This project composes the feature specs below; each owns its detailed rules and 
 | `dag-tooling` | reusable graph/DAG primitives (cycle detection, topological order, single-parent tree validation, parent-from-children resolution, Mermaid rendering) as a skill-run script with an agent fallback |
 | `governance-composition` | build-time embedding of contract/interface governance into worker agent configuration via `requires_governances` |
 
-Capabilities still tracked only in `packages/universal-plugin/src/` (no dedicated feature spec yet): `build`, `governance` (resolution/`show`), `prepare`, `sync`, `source-registry`, `vendor-registry`, `marketplace`, `publish`, `self-update`.
+Capabilities still tracked only in the [universal-plugin source](https://github.com/cyberuni/universal-plugin/tree/main/packages/universal-plugin/src) (no dedicated feature spec yet): `build`, `governance` (resolution/`show`), `prepare`, `sync`, `source-registry`, `vendor-registry`, `marketplace`, `publish`, `self-update`.
 
 ---
 
@@ -83,7 +83,7 @@ Each use case is verified by one-or-more scenarios in [universal-plugin.feature]
 
 ## Surface
 
-No new public interface is defined by this project spec; surfaces belong to the feature specs and to the `universal-plugin` package CLI documented in `packages/universal-plugin/`. The plugin exposes skills (authoring and distribution) and a `universal-plugin` CLI.
+No new public interface is defined by this project spec; surfaces belong to the feature specs and to the [`universal-plugin` package CLI](https://github.com/cyberuni/universal-plugin). The plugin exposes skills (authoring and distribution) and a `universal-plugin` CLI.
 
 ---
 
@@ -95,7 +95,7 @@ No new public interface is defined by this project spec; surfaces belong to the 
 
 - `artifacts/specs/dag-tooling/spec.md` — reusable graph/DAG tooling feature
 - `artifacts/specs/governance-composition/spec.md` — build-time governance embedding feature
-- `packages/universal-plugin/AGENTS.md` — package architecture (screaming + clean architecture)
+- [universal-plugin repository](https://github.com/cyberuni/universal-plugin) — package architecture (screaming + clean architecture)
 
 ---
 
@@ -105,4 +105,4 @@ No new public interface is defined by this project spec; surfaces belong to the 
 |---|---|
 | Spec | `artifacts/specs/universal-plugin/spec.md` |
 | Scenarios | `artifacts/specs/universal-plugin/universal-plugin.feature` |
-| Package | `packages/universal-plugin/` |
+| Package | [`cyberuni/universal-plugin`](https://github.com/cyberuni/universal-plugin) |

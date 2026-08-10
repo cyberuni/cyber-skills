@@ -1,9 +1,9 @@
 # Universal Plugin Format
 
-This governance has moved to `packages/universal-plugin/governances/plugin-design.md` in this repo.
+This governance is maintained by the [`universal-plugin`](https://github.com/cyberuni/universal-plugin) repository.
 
 Load it:
 
 ```bash
-npx cyberplace@<version> governance show universal-plugin
+npx universal-plugin@<version> governance show plugin-design
 ```

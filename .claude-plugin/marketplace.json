@@ -39,6 +39,15 @@
 				"source": "npm",
 				"package": "cyber-sdd"
 			}
+		},
+		{
+			"name": "buddy-codecov",
+			"description": "Codecov coverage comparison skill for AI coding agents.",
+			"tags": ["codecov", "coverage", "testing"],
+			"source": {
+				"source": "npm",
+				"package": "buddy-codecov"
+			}
 		}
 	]
 }

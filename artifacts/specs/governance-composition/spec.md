@@ -132,4 +132,4 @@ The existing inspection CLI is unchanged: `universal-plugin governance show <plu
 |---|---|
 | Spec | `artifacts/specs/governance-composition/spec.md` |
 | Scenarios | `artifacts/specs/governance-composition/governance-composition.feature` |
-| Build domain | `packages/universal-plugin/src/build/`, `packages/universal-plugin/src/governance/` |
+| Build domain | [`cyberuni/universal-plugin`](https://github.com/cyberuni/universal-plugin/tree/main/packages/universal-plugin/src) (`build/`, `governance/`) |
