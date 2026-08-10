@@ -1,5 +1,11 @@
 # cyberplace
 
+## 0.2.1
+
+### Patch Changes
+
+- 09ae959: Direct universal-plugin governance requests to the standalone `universal-plugin` package.
+
 ## 0.2.0
 
 ### Minor Changes
