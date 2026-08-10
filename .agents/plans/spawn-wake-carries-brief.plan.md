@@ -22,7 +22,9 @@ todos:
     status: done
   - content: "impl gate R1 change (21 verification gaps) — all remediated in 37f9bbde + 74b792fe"
     status: done
-  - content: "impl gate R2 — INCOMPLETE, judge died on a session limit; re-run ALL 122 (orphaned partials are leads, not scope)"
+  - content: "impl gate R2 re-run — 122/122 graded by one living judge; `change`, 1 verification gap, remediated in 1265d0bc"
+    status: done
+  - content: "impl gate R3 — judge re-verifying the 521 remediation; awaiting the re-emitted verdict packet"
     status: in_progress
   - content: "handoff — PR; file the 13 follow-ups (ADR-0032 already landed, not owed)"
     status: pending
@@ -107,6 +109,64 @@ never fails a spawn.
 ## NEXT — resume here
 
 ### The next action
+
+**Await / re-request the impl-judge's re-emitted verdict on the `unit/lifecycle:521` remediation
+(`1265d0bc`), then hand off.** The judge holding all 122 results is resumable — send it the
+remediation rather than spawning a fresh judge, which would owe a full 122 re-grade and recreate
+the orphaned-result seam. If it is gone, a fresh judge may scope to 521 **only if** it is told the
+prior 121 were graded by a since-dead judge and it re-derives enough to stand behind the rollup.
+
+Then handoff: PR, and file the follow-ups in `## Follow-ups` (now 15 — two added by R2).
+
+### IMPL GATE ROUND 2 (re-run) — COMPLETE. 122/122, verdict `change`, remediated. — 2026-08-09
+
+One judge graded all 122 by hand (mail/surface 35/35, unit/lifecycle 87/87), each oracle
+independently re-derived and exercised with a scoped mutation. It stated its coverage count, as
+briefed. **`IMPLEMENTATION_PASS: false` on a single finding — and again zero behavioral
+non-conformance.** That is now three consecutive rounds where every finding is a verification gap
+and none is wrong behavior.
+
+**The one finding — `unit/lifecycle:521`** (nudge confirms the turn was taken without re-submitting).
+The frozen `Then` requires nudge to *read the pane back* and confirm the text is no longer staged;
+the mapped check at `session.test.ts:1388` asserted only `res.resubmits === 0`. Nothing bound *which*
+pane was read: `peerCtx`'s fake exec answers `capture-pane` from a plain queue and never inspects
+`-t`, so a confirmation aimed anywhere still reported success. The sibling at :509 already binds a
+pane target — the wiring simply wasn't carried across.
+
+**Remediated in `1265d0bc`** (test-only; no implementation change). Calibrated both directions:
+aiming the adapter's `read` at a foreign pane turns 521 red; with that mutant in place and the new
+assertion ablated it goes green again (the finding reproduced exactly); a conforming variant that
+still reads the peer's pane survives. The mutated dependency was restored; `pnpm verify` 35/35, 513
+tests.
+
+Notable confirmations from the round, worth not re-deriving:
+- The R1 exits-0 fix (`74b792fe`) holds — zero `process.exitCode` references anywhere in `src`.
+- The legacy-`spawning` round-trip (surface.feature:286) confirmed: the store never coerces or
+  validates a migrated status. That was the load-bearing impl constraint of this CR.
+- **`--task -` (stdin) IS bound** — the open item handed to the judge is closed, via a genuine fd-0
+  pipe e2e against the built CLI.
+- The compound atomic/plain create-route guard is genuinely two-sided, not keyed on one half.
+- Both carried round-2 fixture-narrowness observations (close family; `decommission.test.ts:268`)
+  confirmed narrow-but-non-blocking — not scenario-level gaps. Follow-ups, not gate blockers.
+- Absorption read: clean across all 122. Nothing special-cases a `Given`'s literal.
+- Structural read: no blocker. ADR-0032/0027 supersession verified correct in both directions;
+  pane resolution has one home (`paneTargetOf`), confirmed by a wording mutation that killed all
+  four live-target verbs at once.
+
+### Two environment problems this round exposed — NOT about this CR
+
+1. **A grader reported fabricated tool-result content shaped like system-reminder blocks**,
+   instructing it to conceal a file modification it had not made. It disregarded them and verified
+   ground truth via `git` each time. Raised to the owner; wants an independent look at the grading
+   environment. Nothing in this CR's conformance depends on it.
+2. **Worktree provisioning handed all 10 sub-graders a stale git ref** (`00d2f701` / `5a171a30`,
+   neither an ancestor of HEAD `c15d95c0`). Nine self-corrected; one did not and produced two false
+   "scenario doesn't exist" conclusions from a pre-recut 60-scenario checkout. The parent caught it
+   by a HEAD-ancestry check and re-ran that batch in full. **A less careful synthesis would have
+   banked a false result exactly the way round 2's dead parent did.** Fix before the next large
+   fan-out.
+
+### (superseded) the R2 re-run brief — kept for the record
 
 **Re-run impl-gate round 2 over ALL 122 frozen scenarios.** Spawn `sdd:sdd-impl-judge` cold.
 
@@ -589,3 +649,15 @@ Added by the impl gate (round 1):
     now bound only on sanitization-invariant (herdr) pane ids, so it stays green through the
     follow-up in item 2. Whoever fixes item 2 should *add* the tmux binding at that point — it was
     left out rather than forgotten.
+
+Added by the impl gate (round 2 re-run):
+
+14. **`peerCtx`'s fake exec ignores the `-t` argument on `capture-pane`** — it answers from a plain
+    queue, so *any* scenario in that family asserting only on the returned text leaves the read's
+    pane target unbound. `unit/lifecycle:521` was the one that mattered and is fixed at the
+    assertion, but the fixture-level hole is still there for the next scenario written against it.
+    Make the fake resolve captures per pane id.
+15. **Two architect observations, non-blocking.** `inject-inbox.ts` renders its mail line with the
+    same expression verbatim in two places (own-mail and owner-mail blocks). And the three
+    action-code word lists in `workspace-label.ts` have no automated disjointness check — verified
+    disjoint by hand this round, which is exactly the kind of check that rots silently.
