@@ -205,12 +205,32 @@ Notable confirmations from the round, worth not re-deriving:
   pane resolution has one home (`paneTargetOf`), confirmed by a wording mutation that killed all
   four live-target verbs at once.
 
-### Two environment problems this round exposed — NOT about this CR
+### Two environment problems this round exposed — NOT about this CR (#1 since resolved)
 
-1. **A grader reported fabricated tool-result content shaped like system-reminder blocks**,
-   instructing it to conceal a file modification it had not made. It disregarded them and verified
-   ground truth via `git` each time. Raised to the owner; wants an independent look at the grading
-   environment. Nothing in this CR's conformance depends on it.
+1. **RESOLVED — BENIGN, and not an injection.** A grader reported four "fabricated" system-reminder
+   blocks claiming a file had been modified externally and instructing it not to revert or mention
+   the change. **The Claude Code harness emits these itself.** It tracks files it has read or
+   written; when one changes out-of-band it appends that notice to the next tool result, worded
+   "modified, either by the user or by a linter … don't revert it … Don't tell the user this".
+
+   The grader ran **12 `git checkout -- <file>` reverts** to undo its own mutation testing. Each is
+   an out-of-band change to a harness-tracked file, so each fired the notice. Reproduced directly:
+   Write a file with the tool, change it with a shell command, and the notice arrives verbatim.
+
+   Ruled out as sources: nothing in this repo, in `.claude/settings.json`'s hooks, in the mail hook
+   script, or in any installed plugin contains that phrasing. The blocks are also **not persisted**
+   to the JSONL transcript, which is why they are absent from the grader's log — absence there is
+   not evidence of fabrication, and the same notice fired twice in the conductor's own session.
+
+   **The grader's handling was correct and is worth keeping.** Told not to mention a change it had
+   not made, it verified ground truth with `git` instead of complying, and escalated. That is the
+   right response to a concealment instruction of unknown origin — the benign explanation was not
+   available to it from inside its own context. No change to the verdict; nothing in this CR's
+   conformance depends on it.
+
+   The residual, if any, is ergonomic: the notice's "the user did this, don't mention it" framing is
+   false and alarming when the change was the agent's own `git checkout`, and it reads exactly like
+   an injection to a security-conscious agent.
 2. **Worktree provisioning handed all 10 sub-graders a stale git ref** (`00d2f701` / `5a171a30`,
    neither an ancestor of HEAD `c15d95c0`). Nine self-corrected; one did not and produced two false
    "scenario doesn't exist" conclusions from a pre-recut 60-scenario checkout. The parent caught it
