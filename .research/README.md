@@ -56,6 +56,7 @@ Not every dossier has all five. `conclusion.md` is the file other documents cite
 | [supply-chain-threat-model](supply-chain-threat-model/) | README install guidance, `init` / `init-commit-discipline` skills, hook register |
 | [terminal-multiplexers](terminal-multiplexers/) | cyberlegion multiplexer backend selection |
 | [universal-plugin](universal-plugin/) | `universal-plugin` governance, ADR-0007, `create-universal-plugin` skill |
+| [use-case-elicitation](use-case-elicitation/) | SDD `spec-format-governance` (`## Use Cases` naming), `spec-producer-governance` (discovery step design) |
 | [work-decomposition-cr-parallelism](work-decomposition-cr-parallelism/) | ADR-0025, ADR-0026, SDD `.agents/specs/sdd/mission-graph/` |
 
 ## Adding research
