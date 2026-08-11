@@ -42,10 +42,11 @@ What changes for spec authors:
 
 The three spec-gate actor bars each take a duty in their own domain rather than a shared copy:
 **Oracle** rules cut-or-justify on unbought surface and treats an actor or goal that restates the
-mechanism as an unanswered Why; **Builder** requires a scenario per stated extension and per
-forbidden combination, and judges `extensions: none` as a claim; **Architect** requires the
-control-flow graph to reach every stated extension, since an extension with no edge is a dangling
-branch read from the prose side. **Oracle** additionally grades the actor enumeration both ways.
+mechanism as an unanswered Why; **Builder** requires every stated extension to be a
+path in the control-flow graph, so the graph supplies the scenario rather than the prose, and judges
+`extensions: none` as a claim; **Architect** requires the graph to reach every stated extension,
+since an extension with no edge is a dangling branch read from the prose side. **Oracle**
+additionally grades the actor enumeration in both directions.
 
 **The CFG remains the single source scenarios derive from.** Extensions are a *discovery
 instrument*, not a parallel specification: a graph drawn from an implementation reproduces what the
