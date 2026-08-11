@@ -7,17 +7,17 @@ leash: auto-spec
 tier: opus
 todos:
   - content: "intake — plan scaffolded; target sdd; ledger leash line written"
-    status: in_progress
-  - content: "explore — restore the Use Cases definition (actor/goal/extensions) + grade duties on the 3 bars"
-    status: pending
-  - content: "spec gate — cold spec-judge; HITL ratification (owner holds the channel)"
-    status: pending
-  - content: "deliver — build the bar text + producer/judge duties; pnpm verify"
-    status: pending
-  - content: "impl gate — cold impl-judge over the frozen scenarios"
-    status: pending
-  - content: "handoff — PR against main, Closes #437; refs #436"
-    status: pending
+    status: done
+  - content: "explore — definition restored; one duty per bar in its own domain; 16 additive scenarios"
+    status: done
+  - content: "spec gate — R1 oracle+builder FAIL, remediated; R2 ALIGNED true 3/3, self-asserted in leash"
+    status: done
+  - content: "deliver — rebased onto main; changeset added; verify 29/29"
+    status: done
+  - content: "impl gate — R1 blocked on a closed-set contradiction; R2 PASS 16/16, no regression"
+    status: done
+  - content: "handoff — 6 follow-ups filed (#438-#443); PR against main, Closes #437"
+    status: done
 ---
 
 # CR github-437 — the `## Use Cases` definition is an invocation signature, not a use case
@@ -72,6 +72,14 @@ Entry-point rows stay — they remain correct and useful, they are just no longe
 
 ## NEXT
 
-Explore: write the ledger leash line, then draft the restored definition in
-`plugins/sdd/skills/spec-format-governance/` and the grading duties on the three spec bars, with
-scenarios on `authoring/spec-producer` and `authoring/spec-gate`.
+Landed. The `## Use Cases` definition carries actor, goal, and extensions, and every element a
+capability exposes traces to a use case that needs it. Each of the three bars took a duty in its own
+domain. 16 additive scenarios on the producer suite; the 85-node corpus is untouched by design.
+
+Both gates passed on their second round, each after a real block: the spec gate caught the CR
+failing to apply its own bar to the one behavioral node it revised, and the impl gate caught the
+producer procedure re-listing the extension kinds as a closed set in the very step that warns
+against hardcoded lists.
+
+Nothing remains for this CR. The six follow-ups are filed as #438-#443; #436 carries the corpus
+backfill.
