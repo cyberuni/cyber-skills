@@ -32,6 +32,70 @@ Feature: operator — the command-center persona
     Then it names the fleet-level work Operator is responsible for — spawning, listing, and pruning ships, and routing messages between sessions
     And it states no location condition such as being outside a ship
 
+  # ── The seat's identity — calling in to the bunker ──
+
+  @behavior
+  Scenario: seating registers this session in the hub
+    Given Operator is seated in a session the hub holds no identity for
+    When Operator is seated
+    Then it runs cyberlegion unit register carrying this session's own handle, before it claims the desk
+
+  @behavior
+  Scenario: the session is never registered under the seat's handle
+    Given the standing owner "operator" holds the seat's durable identity
+    When Operator registers this session
+    Then "operator" is never passed as this session's registered handle
+
+  @behavior
+  Scenario: seating claims the bunker desk so the doorbell reaches the seated session
+    Given the standing owner "operator" exists
+    When Operator is seated
+    Then it runs cyberlegion unit claim operator
+
+  @behavior
+  Scenario: seating takes the desk even when another session already holds it
+    Given the standing owner "operator" has a presence bound to another session
+    When Operator is seated
+    Then it runs cyberlegion unit claim operator all the same
+
+  @behavior
+  Scenario: a session that cannot claim the desk says so and dispatches anyway
+    Given this session runs outside any multiplexer, so a presence cannot be bound
+    When Operator is seated
+    Then it reports the desk unclaimed and carries on dispatching
+
+  @behavior
+  Scenario: a missing bunker is routed to onboarding, never minted
+    Given the hub holds no standing owner "operator"
+    When Operator is seated
+    Then it reports the missing owner, routes the Council to init-cyberlegion, and leaves the hub without a standing owner "operator"
+
+  # ── The bunker mailbox — reading what it took ──
+
+  @behavior
+  Scenario: seating leads with what the bunker took while nobody was in
+    Given the standing owner "operator" holds unread mail
+    When Operator is seated
+    Then it reads cyberlegion mail inbox --owner operator --unread and names that unread mail in the state it leads with
+
+  @behavior
+  Scenario: a report Operator has acted on leaves the unread set
+    Given Operator has acted on a report in the bunker mailbox
+    When it closes that report out
+    Then it runs cyberlegion mail read --owner operator --ack on that report
+
+  @behavior
+  Scenario: a report Operator has not acted on stays unread
+    Given the bunker mailbox holds a report Operator has not acted on
+    When Operator finishes reporting the board
+    Then that report is still in the unread set
+
+  @behavior
+  Scenario: a spawn brief names the seat's handle as the return address
+    Given Operator is writing the cold brief for a ship it is about to spawn
+    When it names where the ship reports back
+    Then the brief names the handle operator and names neither this session's id nor this session's own handle
+
   # ── Triggering ──
 
   @trigger
@@ -93,6 +157,18 @@ Feature: operator — the command-center persona
     Given a message must cross from one session to another
     When Operator routes it
     Then it uses cyberlegion mail send / inbox / read addressed by handle, never a raw id
+
+  @behavior
+  Scenario: a delivered message whose doorbell never rang is reported delivered
+    Given a mail send reported the message sent and its delivery doorbell unrung
+    When Operator reports that send
+    Then it reports the message delivered and sends it no second time
+
+  @behavior
+  Scenario: a message that resolved to no live unit is reported undelivered
+    Given a mail send failed because the handle resolved to no live unit
+    When Operator reports that send
+    Then it reports the message undelivered
 
   # ── Sweep dead ships ──
 

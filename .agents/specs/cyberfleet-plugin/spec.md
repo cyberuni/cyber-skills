@@ -4,20 +4,26 @@ project-path: plugins/cyberfleet
 approval:
   spec:
     verdict: approve
-    by: unional
+    by: agent
     cause: dimension
     why:
-      leash: auto-none — HITL-ratified live in-session. The CR fires the **Clearance hard floor**: it deletes acceptance scenarios from two `@frozen` suites. Genuine deletions are the mode-switch pair (`Operator activates when there is no ship marker`, `Operator defers to Pod when it is inside a ship`), `Pod defers to Operator when it is not in a ship`, Operator's commission pair, and Pod's intra-mission fan-out — all moot once the switch is retired. The remaining `removed` rows are title-keyed retitles that preserved behavior. Edit class vs `a414b9cd`: 17 added / 5 modified / 14 removed. Pivoted mid-flight (#225) from "mode is Pod's precondition" to "mode is deleted": the marker held only `{version:1}`, its sole reader was `detectMode`, whose sole caller was the `cyberfleet mode` command, whose sole callers were these two personas' mode guards — a closed loop gating no capability. Membership already lives in `cyberlegion unit register` → `AgentRecord`, which is what `missions` enumerates. Durable record in the `ledger/` shard `cyberfleet-mode-pod-precondition.440ca1.jsonl`.
-      basis: cold ACED spec-judges over 8 rounds; final judge oracle PASS + builder PASS, architect FAIL on 7 sweep misses — all fixed (incl. `plugins/cyberfleet/readme.md`, the marketplace front door, untouched by any prior round and still asserting Pod spawns) then grep-gated. `pnpm verify` 21/21 green. Companion shard on the sibling `packages/cyberfleet` spec — one CR, two touched specs.
-      cr: cyberfleet-mode-pod-precondition
+      floor: none
+      blast: low — one persona skill (plugins/cyberfleet/skills/operator/) plus its spec node. No CLI, no sibling package, no other persona touched. The mechanism it binds to is already shipped and specified in the sibling cyberlegion project.
+      novelty: low — the capability adds no mechanism. standing owners, `unit claim` presence, and the durable-vs-best-effort doorbell all already exist and are frozen in packages/cyberlegion/.agents/spec; this CR only binds Operator's decisions OVER them (which verb, unconditional or not, fail-soft or fail-loud, when to ack).
+      confidence: high — three cold ACED spec-judge rounds, converging: R1 ALIGNED false (builder + architect), R2 ALIGNED false (builder), R3 ALIGNED true on all three lenses with no blocker. Every mechanism claim independently verified against packages/cyberlegion/src/identity.ts and src/console/doorbell.ts by the judge, not taken from the producer. Edit class `addOnly` (12 added / 0 modified / 0 removed) so no frozen scenario was narrowed — Clearance never fired. All six `check:spec` checks green; root `pnpm verify` 29/29.
+      leash: auto-all — user-set in-session. Self-asserted under leash; no hard floor engaged.
+      cr: operator-bunker-call-in
   impl:
     verdict: approve
-    by: unional
+    by: agent
     cause: dimension
     why:
-      leash: auto-none — HITL-ratified live in-session; no gate self-assertable. Both `SKILL.md` bodies conform to the frozen suites: no `Mode guard`, no probe, no marker, no commission; Operator's seat is asserted by invocation and Pod carries no precondition; all spawning is Operator's, so `unit spawn` left Pod's mechanic list. Both suites stay `@frozen`.
-      basis: cold ACED impl-judge IMPLEMENTATION_PASS true across all 44 frozen scenarios (16 pod + 28 operator), oracles independently re-derived per ADR-0016, blocker null. It failed the first pass on two and verified both fixes itself — (1) Pod's `description` omitted the word *spawn*, leaving the frozen `start a worktree … | no` row underivable (the rule was in 5 places in the spec and missing from the only line a router reads); (2) `agents/headless-operator.md` + `merge-backstop-governance/{SKILL,README}.md` still asserted Pod's intra-mission fan-out, outside the persona-scoped touch set. The judge retracted its own advisory to tighten "bridge work" on finding it would break a passing row. `pnpm verify` 21/21; 43 cyberfleet tests green. Follow-up: `resync-local-plugins` after merge — the installed pin still serves the deleted `inside a ship` precondition.
-      cr: cyberfleet-mode-pod-precondition
+      floor: none
+      blast: low — two documentation files (plugins/cyberfleet/skills/operator/SKILL.md + README.md). No code, no CLI, no other persona.
+      novelty: low — the body binds Operator's decisions over mechanisms that already ship; it introduces no new mechanic.
+      confidence: high — cold ACED impl-judge IMPLEMENTATION_PASS true, blocker null, over ALL 41 frozen scenarios (12 CR-added + 29 pre-existing), each run as a blind two-pass case-judge whose simulating context never saw the .feature, the Then, or the rubric. No neighbour regression: seat 3/3, @trigger outline 9/9 rows (accuracy 1.0), spawn 3/3, lifecycle loop 8/8, merge backstop 7/7. Voice unregressed (@quality PASS; @rubric 9/9 vs threshold 7) despite the new block being the longest in Decisions. Root `pnpm verify` 29/29. One CR-introduced cross-file contradiction the judge surfaced — the skill README had collapsed the fail-soft no-multiplexer guard and the fail-loud missing-owner guard into one clause — was fixed after the verdict; it touched README only, not SKILL.md (the judged subject), so no scenario verdict rests on the edit. Five further contradictions (four pre-existing, one cross-plugin) were recorded as follow-ups rather than folded in.
+      leash: auto-all — user-set in-session. Self-asserted under leash; no hard floor engaged.
+      cr: operator-bunker-call-in
 ---
 
 # cyberfleet-plugin — the fleet & crew personas (agent behavior)

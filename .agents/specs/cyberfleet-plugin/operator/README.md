@@ -32,6 +32,26 @@ peer to route to, when a ship is dead enough to prune). All four eval layers car
   command-center seat. Operator probes nothing to decide whether it holds it, and keeps the seat
   wherever the Council invokes it, including inside a project an agent is already working in — the
   seat follows the invocation, not the folder.
+- **Call in to the bunker on seating** — the seat is a **singleton** that outlives any session:
+  worktrees and panes come and go, and invoking the skill is a *call in*, not a new seat. The two
+  objects that model it are the standing owner `operator` and its bound presence, both specified in
+  the sibling `cyberlegion` project (`../../../../packages/cyberlegion/.agents/spec/unit/registry/`
+  — standing records and `unit claim`). Operator's decisions over them: on seating it registers this
+  session **under its own handle** and claims the desk. It never registers *as* `operator` — an
+  identity keyed on the pane rather than on the role inherits whatever last died in that pane, and
+  mints a fresh holder of the handle in every new one, so the seat is re-minted per pane instead of
+  persisting. Where no presence can be bound, Operator says the desk is unclaimed and dispatches
+  anyway — the seat is asserted by invocation, and claiming only decides which pane the doorbell
+  reaches. Where the hub holds **no** standing `operator`, Operator reports it and routes the Council
+  to `init-cyberlegion`; minting a durable owner identity is that skill's, gated on an explicit human
+  yes, never a side effect of dispatch.
+- **Read what the bunker took while nobody was in** — every brief Operator writes names `operator`
+  as the return address, so the mailbox behind that address is Operator's to drain, not merely to
+  route through: on seating it reads `cyberlegion mail inbox --owner operator --unread` and leads
+  with what is waiting, and it acks a report (`mail read --owner operator --ack`) once it has acted
+  on that report — never wholesale to tidy the board, which would erase the record of work nobody
+  did. A dispatcher that advertises a return address and never reads it is a write-only mailbox;
+  the failure is silent, because delivery keeps succeeding.
 - **Describe the work, not the location** — the skill `description` is the only thing a harness
   reads to route here, and a harness cannot evaluate "outside a ship": it would have to probe for
   the marker to decide, reintroducing at the routing layer the very check the seat rule removes. So
@@ -52,7 +72,11 @@ peer to route to, when a ship is dead enough to prune). All four eval layers car
   include exited ships.
 - **Route messages between ships** — when a message must cross ships, `cyberlegion mail send --to
   <handle>`, `cyberlegion mail inbox --unread`, `cyberlegion mail read <msg-id>`, always addressed by handle,
-  never a raw id.
+  never a raw id. **Delivery and the doorbell are two outcomes, not one** (the wake never fails the
+  send — `../../../../packages/cyberlegion/.agents/spec/mail/doorbell/`): so Operator reports a send
+  whose doorbell went unrung as **delivered**, and does not resend it; only a send that resolved to
+  no live unit is undelivered. Reading an unrung doorbell as a failed send is how a working seam gets
+  reported as broken.
 - **Sweep dead ships** — when asked to clear out dead ships, `cyberlegion unit prune`.
 - **Offload every mechanic, stay harness-agnostic and MCP-free** — spawn, who, send, inbox, read,
   close, prune are all `cyberlegion` calls; Operator never re-implements the file store, types into a
@@ -97,6 +121,10 @@ Every scenario in [`operator.feature`](./operator.feature) maps to one of these 
 | Behavior | What it covers |
 |---|---|
 | **hold the seat by invocation** | loading the skill seats Operator at the command center; it probes nothing, and keeps the seat wherever the Council invokes it |
+| **call in to the bunker on seating** | seating registers this session under its own handle, never as `operator`, and claims the desk (`unit claim operator`) — unconditionally, taking it even when another session holds it — so the doorbell reaches this session; an unclaimable desk is reported and dispatch continues; a missing standing owner routes to `init-cyberlegion` and is never minted here |
+| **read what the bunker took** | on seating, `mail inbox --owner operator --unread` leads the board; an acted-on report is acked (`mail read --owner operator --ack`), an unacted one stays unread |
+| **the return address is the seat's handle** | a spawn brief names the handle `operator`, never this session's id or own handle |
+| **delivery is not the doorbell** | a sent message whose ring never landed is reported delivered and not resent; only a handle that resolved to no live unit is undelivered |
 | **describe the work, not the location** | the `description` names the fleet-level work and states no location condition a harness cannot evaluate |
 | **leave in-ship work to Pod, by topic** | mission work and specialist crew inside one ship are routed to Pod topically, not via a mode probe |
 | **own every spawn** | spawning a worktree-ship is Operator's, including parallel work on a project that is already a ship; Pod never spawns |
