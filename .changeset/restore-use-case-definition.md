@@ -18,6 +18,13 @@ pass it — coverage of what is present cannot detect what should not be present
 
 What changes for spec authors:
 
+- **Use cases are enumerated by actor, never by entry point.** Walking the interface returns only
+  the use cases that interface already implies, and is structurally blind to the one nobody built.
+  List the actors first — including whoever is affected by the outcome without invoking it — then
+  their goals, then map goals to entry points. Both mismatches are findings: a goal no entry point
+  serves, and an entry point no listed goal reaches. The enumeration is checkable in both
+  directions. On a backfill, source yields only the *served* use cases by construction, and an
+  inferred set is never reported as complete.
 - **A use case carries four parts** — actor / goal (one line each, not a persona), the entry point
   (trigger / inputs / outcome, unchanged), and its **extensions**. An extension is *any path from
   the trigger that does not reach the success outcome*, stated with its cause and outcome. The
@@ -38,7 +45,14 @@ The three spec-gate actor bars each take a duty in their own domain rather than 
 mechanism as an unanswered Why; **Builder** requires a scenario per stated extension and per
 forbidden combination, and judges `extensions: none` as a claim; **Architect** requires the
 control-flow graph to reach every stated extension, since an extension with no edge is a dangling
-branch read from the prose side.
+branch read from the prose side. **Oracle** additionally grades the actor enumeration both ways.
+
+**The CFG remains the single source scenarios derive from.** Extensions are a *discovery
+instrument*, not a parallel specification: a graph drawn from an implementation reproduces what the
+code already does and can never say a branch is missing, whereas asking what can go wrong for this
+actor finds it. So an extension earns its scenario by being a path in the graph — never by being
+drawn from the stated list, which would make the suite 1:1 with that list by construction and
+unable to surface a hole. A use case is therefore **not** 1:1 with a scenario.
 
 Existing specs are **not** swept — the restored shape applies to new and revised nodes, so no
 in-flight change inherits a bar its node has not adopted. Backfilling the existing corpus one node
