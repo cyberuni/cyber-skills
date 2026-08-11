@@ -214,17 +214,50 @@ mailbox — which is precisely what the hub shows.
 This, not addressing, is what actually broke: the pod's report *did* arrive and nobody was ever
 going to read it. The list inverted the defect.
 
-### B. Nothing binds a live presence to the standing handle (`unit claim`)
+### B. The skill never implements its own stated mental model — nobody ever calls in to the bunker
 
-`unit claim <handle>` binds the calling unit as a standing owner's live presence. When bound,
-`wakeRecipient` rings *that unit's pane*; when not bound, it falls back to the hub main pane —
-which is exactly the fallback that produced the `w3:p4` error. The Operator skill never mentions
-`claim`. A seated Operator session that wants its doorbell to ring *itself* has one correct verb
-available, and the skill does not name it.
+Operator is a **singleton at the bunker**: sessions and worktrees come and go, and invoking the
+skill is a call *in* to a seat that outlives any of them. That model is already built in
+`cyberlegion`, in two objects:
 
-**Invariant violated:** *a standing handle used as a return address needs a live presence bound, or
-its doorbell degrades to the human's main pane.* This is the correct, non-contradictory version of
-what claim 1 was groping at — and it is `claim`, not `register`.
+- **The bunker** — `standing-operator`, `kind: standing`. Never exits, session-independent, holds
+  the durable mailbox. Alive since 2026-07-14. It never died; there is nothing to resurrect.
+- **The desk** — `AgentRecord.presence`, bound by `unit claim <handle>`. `claimPresence` resolves
+  the standing record **by role handle**, then points it at the calling session. *"Last claim wins:
+  a plain overwrite, no merge."* `presenceOf` reads a presence whose unit has exited as **no
+  presence** — the desk is simply empty again, and mail still lands in the bunker.
+
+That is the singleton, exactly: one durable seat, a transient occupant, newest caller takes the
+desk, an empty desk degrades gracefully instead of erroring.
+
+**Nobody has ever called in.** Verified:
+
+```
+unit claim operator --show  →  presence: none
+unit claim homa     --show  →  presence: none
+```
+
+With no presence bound, `wakeRecipient` falls back to `store.getMainPane()` — the stale `w3:p4`.
+That is the entire doorbell story, and it recurs on *every* send to a standing owner regardless of
+addressee (reproduced live while filing this verdict: a send to `homa` printed the identical
+`pane w3:p4 no longer exists` alongside `sent:`).
+
+The Operator skill names neither object. It never mentions `claim`, never mentions the standing
+record it writes into every brief as a return address, and never drains that mailbox. The bunker,
+the desk, and the call-in are all built; Operator is never told to pick up the phone.
+
+**Invariant violated:** *a persona seated as a singleton must bind itself to the durable record
+that represents that seat — claim the desk on seating, and read what the seat took while it was
+empty.* This is the correct, non-contradictory version of what claim 1 was groping at — and the
+verb is `claim`, not `register`.
+
+**The call-in sequence:**
+
+```bash
+cyberlegion unit register                          # a session identity — as ITSELF, never --handle operator
+cyberlegion unit claim operator                    # take the desk; last claim wins
+cyberlegion mail inbox --owner operator --unread   # read what the bunker took while nobody was in
+```
 
 ### C. The Operator skill has no spec node
 
@@ -236,24 +269,36 @@ it without any bar to test the claims against. Findings A and B would each be on
 
 ## Harmful fixes — do not adopt
 
-### "Operator registers itself on seating" (claim 1's remedy) — **harmful, and inert**
+### "Operator registers itself on seating" (claim 1's remedy) — **wrong verb, right instinct**
 
-Not for the reason the brief supposed (it does not contradict ADR-0022 — see claim 1). For two
-worse reasons:
+The instinct is correct and is the project's actual model: Operator is a **singleton at the
+bunker**, and a session invoking the skill is calling in to a seat that outlives it. Identity
+*should* persist across sessions and worktrees. The objection is not to persistence — it is to what
+`register` keys persistence **on**.
 
-1. **It hijacks a corpse.** `register()` computes `id = existing?.id ?? existingId ?? randomId()`,
-   where `existingId` comes from `resolveSelfId` — which resolves **by pane index only**. The
-   incident session sat in a reused pane whose index still pointed at the exited `pod-op6-m5`
-   record. Running `unit register --handle operator` there would not have minted a new identity: it
-   would have **taken over id `4ea6038427c9d769`**, renamed a dead pod to `operator`, flipped it
-   back to `active`, and carried its `brief`/`spawnedBy` forward. A "seat yourself properly" rule
-   makes every Operator session in a recycled pane silently resurrect whatever died there.
-2. **It manufactures the collision claim 2 complains about.** It adds an Nth live holder of
-   `operator` (there are already two) while changing routing not at all, since `preferStanding`
-   still wins. It makes claim 2's ambiguity strictly worse in exchange for nothing.
+- **`claim` keys on the role handle.** `resolveStandingOwner(handle)` finds the one standing record
+  by name. Singleton by construction: there is exactly one standing `operator`, and it cannot be
+  confused with anything else.
+- **`register` keys on the pane.** `resolveSelfId` reads the **pane index**, and `register()`
+  honors it: `id = existing?.id ?? existingId ?? randomId()`. Continuity is bound to wherever the
+  terminal happens to be, not to the role.
 
-If a seating rule is wanted, the verb is **`unit claim operator`** — bind presence, leave identity
-alone.
+Both directions of that go wrong, and both are already visible in the hub:
+
+1. **Same pane → inherit whatever else died there.** The incident session sat in a pane whose index
+   still pointed at the exited `pod-op6-m5` — not a former Operator, a **pod**, with its own
+   `brief` and `spawnedBy`. `unit register --handle operator` there would have taken over id
+   `4ea6038427c9d769`, renamed that pod to `operator`, and flipped it active. Pane-keyed continuity
+   cannot tell the bunker from whoever else sat at that terminal.
+2. **New pane → mint yet another seat.** Which is exactly what has already happened **five times**:
+   five records named `operator`, four dead, across four panes and three repos. A singleton that
+   got re-minted per pane instead of persisting once. It also worsens claim 2's ambiguity while
+   changing routing not at all, since `preferStanding` still wins.
+
+The verb that gives the intended semantics is **`unit claim operator`** — bind the desk, keyed on
+the role, leaving session identity alone. See finding B for the sequence. Note the one step to
+avoid: a calling-in session registers **as itself**, never `--handle operator`; registering under
+the role handle is what manufactures the collisions.
 
 ### "Verify after spawn" (claim 4's remedy) — redundant
 
@@ -270,15 +315,15 @@ artifact whose stated boundary is to defer state changes to the Council's ask.
 
 ## If anything is to change in the skill
 
-Two lines, both from findings the list did not make:
+One `Decisions` entry, from findings the list did not make: **seating is calling in to the bunker.**
+Operator is a singleton; the session is the occupant, not the seat.
 
-- A `Decisions` entry: Operator drains its own standing mailbox — `mail inbox --owner operator
-  --unread`, `mail read <id> --ack` — because every brief it writes names `operator` as the return
-  address.
-- A `Decisions` entry: when a seated Operator expects to be rung, `unit claim operator` binds this
-  session as the standing owner's presence; without it the doorbell falls back to the hub's main
-  pane.
+- `unit register` — a session identity, **as itself**, never `--handle operator`.
+- `unit claim operator` — take the desk, so the doorbell rings this session instead of falling back
+  to the Council's main pane.
+- `mail inbox --owner operator --unread` / `mail read <id> --ack` — read what the bunker took while
+  nobody was in, because every brief Operator writes names `operator` as the return address.
 
-And one line outside it: the stale `attach` binding at `w3:p4` should be re-bound or cleared by the
-Council. That is `init-cyberlegion`'s surface, not Operator's, and it is the sole cause of the
-error string that started all of this.
+And one line outside the skill: the stale `attach` binding at `w3:p4` should be re-bound or cleared
+by the Council. That is `init-cyberlegion`'s surface, not Operator's — though once a presence is
+claimed, the doorbell stops depending on it.
