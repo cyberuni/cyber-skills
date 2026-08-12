@@ -22,10 +22,10 @@ todos:
     status: done
   - content: "re-plan — skill folder as a unit; 5 of 6 folders had an unmoved README; propagation finished"
     status: done
-  - content: "re-gate — spec gate R5 and impl gate R3 on the amended tree; prior passes do not carry"
-    status: pending
-  - content: "handoff — update PR #444 body to the folded scope; push"
-    status: pending
+  - content: "re-gate — spec gate R5 ALIGNED; impl gate R3/R4 blocked on duty-table drift, R5 PASS 22/22"
+    status: done
+  - content: "handoff — PR #444 updated to the folded scope; 8 follow-ups filed; awaiting impl ratification"
+    status: in_progress
 ---
 
 # CR github-437 — the `## Use Cases` definition is an invocation signature, not a use case
@@ -80,33 +80,24 @@ Entry-point rows stay — they remain correct and useful, they are just no longe
 
 ## NEXT
 
-**Not landed. Awaiting an owner decision on shape, then a re-gate.**
+**Both gates passed. Awaiting the owner's impl-gate ratification — the leash is `auto-spec`, so the
+impl gate is not mine to self-assert.**
 
-State: 14 commits, 26 files, 22 additive scenarios on the producer suite (`addOnly` confirmed
-structurally; suite 66 -> 88). `check:spec` 6/6, `pnpm verify` 29/29. PR #444 is open but its body
-still describes the pre-fold scope. 5 commits unpushed.
+Final: 22 additive scenarios (suite 66 -> 88, `addOnly` confirmed structurally), 26 files,
+`check:spec` 6/6, `pnpm verify` 29/29, rebased current with main.
 
-Gate history — the earlier passes **do not carry**, because the owner folded two changes in after
-them: the CFG amendment (Clearance granted in session, recorded before the edit) and actor-first
-discovery.
+| Gate | Rounds | Outcome |
+|---|---|---|
+| spec | 5 | R1 fail, R2 pass, *scope folded*, R3 fail, R4 **regression -> halt**, R5 ALIGNED true |
+| impl | 5 | R1 fail, R2 pass, *scope folded*, R3 fail, R4 fail, R5 **PASS 22/22, no blocker** |
 
-| Round | Verdict |
-|---|---|
-| spec R1 | oracle+builder FAIL — the CR failed to apply its own bar to the one behavioral node it revised |
-| spec R2 | ALIGNED true |
-| impl R1 | blocked — the producer re-listed the extension kinds as a closed set |
-| impl R2 | PASS 16/16 |
-| *scope folded* | CFG amendment + actor-first discovery |
-| spec R3 | architect+builder FAIL — 3 missed sweep sites (one wrap-hidden), one scenario inert |
-| spec R4 | **REGRESSION** — a finding on the paragraph R3 edited; loop halted |
+Every block was substantiated and each caught something that would otherwise have shipped: the CR
+failing to apply its own bar to the node that defines it; a closed-set contradiction in the very
+step warning against hardcoded lists; three missed sweep sites, one hidden by a line wrap; and two
+rounds of duty-table drift between a `SKILL.md` and its `README.md`.
 
-Root cause of the R3/R4 pattern, named by the owner: a skill folder's members are one unit and
-nothing says so. Measured — **5 of the 6 touched skill folders had an unmoved `README.md`**.
-Propagation is now finished across all three layers (shipped skill, spec-corpus node, public docs),
-swept wrap-safe. Investigation filed as #453.
+That last class recurred four times and is one root cause — a skill folder's members are one unit
+and nothing derives the review set. Filed as #453. The mechanical bar-to-table comparison that
+finally closed it is about fifteen lines and belongs there.
 
-**Open decision before re-gating:** finish as one CR, or split — land the restored definition + CFG
-routing (which passed both gates cleanly at R2) and give actor-first discovery its own CR and its
-own gates. Discovery is the part that kept failing the miss test.
-
-Follow-ups filed: #436 (corpus backfill), #438-#443, #453.
+Follow-ups: #436 (corpus backfill, widened to cover shipped skills), #438-#443, #453.
