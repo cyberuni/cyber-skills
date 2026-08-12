@@ -6,23 +6,23 @@ todos:
   - content: Intake — locate spec, scaffold plan, set leash
     status: completed
   - content: Get ratified re-open for the frozen operator.feature (rewrite class)
-    status: pending
+    status: completed
   - content: Load spec-gate bars (oracle/builder/architect) before authoring
-    status: pending
+    status: completed
   - content: Rewrite operator node README + operator.feature to the connect vocabulary
-    status: pending
+    status: completed
   - content: Update Pod counterpart line and cyberfleet-plugin spec.md
-    status: pending
+    status: completed
   - content: Companion shard — packages/cyberfleet spec.md command-center sentence
-    status: pending
+    status: completed
   - content: Spec gate — cold spec-judge, freeze, ledger gate line
-    status: pending
+    status: completed
   - content: Deliver — skill SKILL.md/README, manifests, website cyberfleet docs
-    status: pending
+    status: completed
   - content: Impl gate — cold impl-judge over frozen scenarios
-    status: pending
+    status: completed
   - content: Handoff — PR, follow-up records for the out-of-scope senses
-    status: pending
+    status: completed
 ---
 
 # operator-command-center-vocab
@@ -79,11 +79,28 @@ amendment puts it in **decision 3** (decision 8 was the retired mode switch).
 
 ## Hard floor
 
-The frozen `operator.feature` is **rewritten**, not extended — ~15 scenarios reworded. Meaning is
-preserved (a rename weakens no scenario), so this is a **freeze re-open**, not a narrowing. It still
-needs explicit ratification before the frozen file is touched.
+The frozen `operator.feature` was **rewritten**, not extended — 13 scenarios reworded.
+
+Both floors fired, and the first read of this was wrong. Substantively the rewrite preserves
+meaning, so nothing was narrowed. But `align-spec`'s scenario-diff is **title-keyed**, so it cannot
+tell a rename from a deletion: all 13 renamed titles read to it as removals and it classified the CR
+`narrowing (clearance)`. **Clearance is what gates, not the substantive read.** It was pre-authorized
+by unional, scoped to meaning-preserving renames only, on top of the separately ratified freeze
+re-open.
+
+The voice tightening is **not** covered by that Clearance and was never claimed to be — it is a real
+behavior change (a run performing the NieR human character was arguably conforming before and now
+fails), authorized separately by unional's instruction that Operator read as an AI agent. Two grants,
+deliberately not blurred.
 
 ## NEXT
 
-Get the user's ratified re-open of `operator/operator.feature` for a meaning-preserving vocabulary
-rewrite. Nothing touches the frozen file until that is granted and recorded.
+Landed. Spec gate and impl gate both ratified by unional; 41/41 frozen scenarios pass with
+@trigger accuracy 9/9. Nothing to resume.
+
+Six follow-ups are recorded in the ledger shard and drain to issues at handoff. One is classed
+**blocking**: the ACED impl-judge cannot collect its own case-judge results in this configuration —
+all 15 children completed correctly but none could address the parent, so the judge can never reach
+a verdict through its own harness. This CR reached its gate only by substituting an inline judge
+that does not fan out. That affects every CR whose artifact-type resolves to the ACED squad, not
+just this one.

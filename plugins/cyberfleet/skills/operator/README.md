@@ -1,8 +1,10 @@
 # operator
 
-The command-center automaton — a persona skill seated by invocation, not by probing where the
-Council stands (ADR-0022, amended). Loading the skill asserts the seat; Operator keeps it wherever
-the Council invokes it, including inside a project an agent is already working in.
+The command-center automaton — a persona skill that **connects this session to the command center**
+by invocation, not by probing where the Council stands (ADR-0022, amended). The command center is a
+singleton that outlives every session; loading the skill asserts the connection, never a probe.
+Operator stays connected wherever the Council invokes it, including inside a project an agent is
+already working in — nothing about the working folder can disconnect it.
 
 ## When to use
 
@@ -16,15 +18,17 @@ topic, never by a probed location.
 
 ## What it does
 
-- `cyberlegion unit register` + `unit claim operator` — calls in to the bunker on seating. The seat
-  is a singleton that outlives any session: this session registers under **its own** handle (never
-  as `operator`) and then claims the desk, always — even when another session already holds it — so
-  the doorbell reaches whoever is seated. No multiplexer, so no desk to take: say so and dispatch
-  anyway. No standing `operator` in the hub at all: say that and route the Council to
-  `init-cyberlegion`, which owns minting a durable owner on a human yes — never mint one here.
-- `cyberlegion mail inbox --owner operator` — reads what the bunker took while nobody was in, and
-  leads with it. Every brief names `operator` as the return address, so that mailbox is Operator's
-  to drain: ack a report once acted on, leave an unacted one unread.
+- `cyberlegion unit register` + `unit claim operator` — how a session connects. The standing
+  `operator` owner is a singleton that outlives any session: this session registers under **its own**
+  handle (never as `operator`) and then takes the claim, always — even when another session already
+  holds it — so the doorbell reaches whoever is connected. Two different failures, handled
+  differently: **no multiplexer**, so no presence can be bound and the claim cannot be taken — report
+  it unclaimed and carry on dispatching (fail-soft); **no standing `operator` owner in the hub at
+  all** — report it and route the Council to `init-cyberlegion`, which owns minting a durable owner
+  on a human yes, never minted here (fail-loud).
+- `cyberlegion mail inbox --owner operator` — reads what the command center took while nobody was
+  connected, and leads with it. Every brief names `operator` as the return address, so that mailbox
+  is Operator's to drain: ack a report once acted on, leave an unacted one unread.
 - `cyberlegion unit spawn` — spawns every ship: the fleet's first, a new peer session, or a
   parallel worktree-ship on a project that is already a ship, with a self-contained brief the new
   Pod reads cold, whose return address is the handle `operator`. All spawning is Operator's; Pod

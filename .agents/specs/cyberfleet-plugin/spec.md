@@ -1,5 +1,5 @@
 ---
-status: approved
+status: implemented
 project-path: plugins/cyberfleet
 approval:
   spec:
@@ -16,15 +16,16 @@ approval:
       cr: operator-command-center-vocab
   impl:
     verdict: approve
-    by: agent
+    by: unional
     cause: dimension
     why:
-      floor: none
-      blast: low — two documentation files (plugins/cyberfleet/skills/operator/SKILL.md + README.md). No code, no CLI, no other persona.
-      novelty: low — the body binds Operator's decisions over mechanisms that already ship; it introduces no new mechanic.
-      confidence: high — cold ACED impl-judge IMPLEMENTATION_PASS true, blocker null, over ALL 41 frozen scenarios (12 CR-added + 29 pre-existing), each run as a blind two-pass case-judge whose simulating context never saw the .feature, the Then, or the rubric. No neighbour regression: seat 3/3, @trigger outline 9/9 rows (accuracy 1.0), spawn 3/3, lifecycle loop 8/8, merge backstop 7/7. Voice unregressed (@quality PASS; @rubric 9/9 vs threshold 7) despite the new block being the longest in Decisions. Root `pnpm verify` 29/29. One CR-introduced cross-file contradiction the judge surfaced — the skill README had collapsed the fail-soft no-multiplexer guard and the fail-loud missing-owner guard into one clause — was fixed after the verdict; it touched README only, not SKILL.md (the judged subject), so no scenario verdict rests on the edit. Five further contradictions (four pre-existing, one cross-plugin) were recorded as follow-ups rather than folded in.
-      leash: auto-all — user-set in-session. Self-asserted under leash; no hard floor engaged.
-      cr: operator-bunker-call-in
+      floor: none — the Clearance floor was engaged and discharged at the spec gate; the implementation narrows nothing.
+      blast: low — three shipped agent-configuration files (plugins/cyberfleet/skills/operator/SKILL.md + README.md, plugins/cyberfleet/agents/headless-operator.md) and two published website pages. No code, no CLI, no other persona node. The plugin and marketplace manifests needed no change — they already described Operator as the command center, which is the term this CR keeps.
+      novelty: low — no mechanism added or changed. The implementation renames the vocabulary it uses to describe mechanisms that already ship, plus one voice-bar tightening.
+      confidence: high — cold SDD impl-judge IMPLEMENTATION_PASS true, blocker null, over all 41 frozen scenarios with @trigger accuracy 9/9. Judged inline in a single context with no fan-out, so every cell rests on what that judge personally observed. It re-verified rather than carried prior reports: `pnpm verify` re-run first-hand at 29/29; every backtick command span extracted at HEAD vs working tree, normalized and diffed as multisets rather than line-scoped to defeat re-wrap artifacts, confirming zero mechanism drift; retired-term grep re-run across plugins/cyberfleet and the cyberfleet website docs at zero hits; an absorption read over all 41 Givens finding no trigger-example apparatus leaked into the implementation. Both known recurrence sites came back clean — the fail-soft no-multiplexer guard and the fail-loud missing-owner guard are visibly distinct and labeled in both files (clearer than the retired wording), and headless-operator.md's "no seat to serve" to "no human channel to serve" preserves the referent because "human channel" was already established earlier in that same document.
+      note: the first impl-gate attempt failed on transport rather than judgment. The ACED impl-judge fanned out 15 blind two-pass case-judge runs; every run completed its protocol correctly but none could address its parent, so all 15 verdicts surfaced to the conductor and the judge correctly returned undetermined rather than emit unobserved cells. Those 15 runs were unanimous (8 of 9 trigger rows, 3 of 3 rubric runs at 9/9 / 8/9 / 9/9, 3 of 3 voice runs) but were deliberately NOT relayed back into the judge or folded into this gate — a verdict couriered by a third party is not a self-observed verdict. They are retained in the ledger as corroborating evidence only. This verdict rests solely on the inline judge's own reading. The harness defect is filed as a follow-up.
+      leash: auto-none — user-set at run start. Not self-asserted; ratified in-session by unional holding the user channel.
+      cr: operator-command-center-vocab
 ---
 
 # cyberfleet-plugin — the fleet & crew personas (agent behavior)
