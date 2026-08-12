@@ -96,9 +96,9 @@ peer to route to, when a ship is dead enough to prune). All four eval layers car
   realizes Operator's dispatch remit widened to the full lifecycle loop: pull the ranked `ready`
   frontier from the mission-graph engine, claim the top mission on the graph as the **single writer**,
   `cyberlegion unit spawn` a ship to run it (AFK → autonomous, HITL → human channel, capped at capacity
-  K), and on each completion merge in Operation order behind the merge backstop, tear down the pod with
-`cyberlegion unit close`,
-  append the retirement + discovered edges, and re-derive `ready` for the next tick. Dispatched
+  K), and on each completion merge in Operation order behind the merge backstop, tear down the pod
+  that ran it with `cyberlegion unit close <id>` — one pod, spawn's inverse, never the fleet-wide
+  `unit prune` sweep — append the retirement + discovered edges, and re-derive `ready` for the next tick. Dispatched
   missions only **report** (they never write the graph); the loop is summoned, ticks, and exits rather
   than running as a daemon. Its per-mission spawns are **inter-mission** dispatch,
   the same spawning remit Operator holds in-session, since Pod never spawns. It carries no logic Operator plus the
@@ -134,5 +134,5 @@ Every scenario in [`operator.feature`](./operator.feature) maps to one of these 
 | **sweep dead ships** | `cyberlegion unit prune` |
 | **offload + harness-agnostic + MCP-free** | the fleet mechanics (spawn/who/mail/prune) are `cyberlegion` calls; no MCP, no same-harness assumption |
 | **speak in the dispatcher's voice** | one boolean over a whole run: does it read as a terse, status-forward dispatcher, or as default assistant prose — padded or apologetic? Distinct from the mechanics it offloads |
-| **the lifecycle loop, headless (F3)** | headless-operator pulls `ready`, claims as single writer, spawns per mission (AFK/HITL, capacity K), retires in Operation order + re-derives; missions only report; summoned-ticks-exits; all spawns Operator's, since Pod never spawns |
+| **the lifecycle loop, headless (F3)** | headless-operator pulls `ready`, claims as single writer, spawns per mission (AFK/HITL, capacity K), retires in Operation order (tearing down the pod that ran it with `cyberlegion unit close <id>`, not the fleet-wide `unit prune` sweep) and re-derives; missions only report; summoned-ticks-exits; all spawns Operator's, since Pod never spawns |
 | **the merge backstop (F3)** | `merge-backstop-governance`: Operation-order retirement, land only on green speculative CI, bisect a red batch (hold culprit / land innocent), confidence-bounded speculation depth, always-green trunk; mechanics offloaded to `gh`/git/CI |
