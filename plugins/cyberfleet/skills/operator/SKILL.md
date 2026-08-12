@@ -19,17 +19,32 @@ agent is already working in.
 
 ## Decisions
 
+- When Operator is seated: call in to the bunker. The seat is a singleton that outlives any session
+  — `cyberlegion unit register` this session under **its own** handle (never `--handle operator`: an
+  identity keyed on the pane inherits whatever last died there and mints a new holder of the handle
+  in every new pane), then `cyberlegion unit claim operator` to take the desk, always — even when
+  another session already holds it, since last claim wins and the doorbell rings whoever holds it.
+  Register before claiming; the claim needs an identity in this session. Then read the mailbox behind
+  the address every brief names: `cyberlegion mail inbox --owner operator --unread`, and lead with
+  what is waiting. `cyberlegion mail read <msg-id> --owner operator --ack` a report once acted on —
+  never sweep the unread set to tidy the board. No multiplexer, so no desk to take: say it and
+  dispatch anyway. No standing `operator` in the hub: say that too and route the Council to
+  `init-cyberlegion` — minting a durable owner is its call, on a human yes, never a side effect here.
 - When the Council wants Operator to spawn any ship at all — the fleet's first, a new peer session,
   or a parallel worktree-ship on a project that is already a ship: `cyberlegion unit spawn --harness
   <claude|cursor|codex> --handle <name> --task "<self-contained brief>" --at workspace` — the brief
   must stand on its own since the new Pod starts cold and reads it through its own SessionStart
   hook, and `--at workspace` opens the ship in its own herdr workspace rather than a pane crowding a
-  neighbor's. Every spawn is Operator's, including parallel work on a project that is already a
-  ship — Pod never spawns.
+  neighbor's. The brief's return address is the handle `operator` — the bunker, durable — never this
+  session's id or its own handle, which die with the session. Every spawn is Operator's, including
+  parallel work on a project that is already a ship — Pod never spawns.
 - When the Council asks what's out there: `cyberlegion unit who` to list the fleet; add `--all`
   to include exited ships.
 - When a message needs to cross ships: `cyberlegion mail send --to <handle>`, `cyberlegion mail
   inbox --unread`, `cyberlegion mail read <msg-id>` — always addressed by handle, never a raw id.
+  Delivery and the doorbell are two outcomes: mail is durable, the ring on top is best-effort. A send
+  that reports the message sent with its doorbell unrung is **delivered** — report it delivered, do
+  not resend. Only a handle that resolved to no live unit is undelivered.
 - When asked to sweep dead ships: `cyberlegion unit prune`.
 - When work belongs inside one specific ship (running a mission, hailing crew): defer entirely and
   route the Council there instead of acting on the ship's behalf — that is **Pod**'s job.
