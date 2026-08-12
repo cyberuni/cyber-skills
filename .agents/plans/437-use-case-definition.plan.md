@@ -1,23 +1,31 @@
 ---
 cr-ref: github-437
 target-project: sdd
-blast: medium
+blast: high
 hitl: true
 leash: auto-spec
 tier: opus
 todos:
   - content: "intake — plan scaffolded; target sdd; ledger leash line written"
     status: done
-  - content: "explore — definition restored; one duty per bar in its own domain; 16 additive scenarios"
+  - content: "explore — definition restored; one duty per bar in its own domain"
     status: done
-  - content: "spec gate — R1 oracle+builder FAIL, remediated; R2 ALIGNED true 3/3, self-asserted in leash"
+  - content: "spec gate R1/R2 — R1 oracle+builder FAIL, remediated; R2 ALIGNED true 3/3"
     status: done
-  - content: "deliver — rebased onto main; changeset added; verify 29/29"
+  - content: "impl gate R1/R2 — R1 blocked on a closed-set contradiction; R2 PASS 16/16"
     status: done
-  - content: "impl gate — R1 blocked on a closed-set contradiction; R2 PASS 16/16, no regression"
+  - content: "SCOPE FOLDED by owner — CFG amendment (Clearance granted) + actor-first discovery"
     status: done
-  - content: "handoff — 6 follow-ups filed (#438-#443); PR against main, Closes #437"
+  - content: "spec gate R3 — architect+builder FAIL (missed sweep sites, inert scenario); remediated"
     status: done
+  - content: "spec gate R4 — REGRESSION declared, loop halted for re-plan"
+    status: done
+  - content: "re-plan — skill folder as a unit; 5 of 6 folders had an unmoved README; propagation finished"
+    status: done
+  - content: "re-gate — spec gate R5 and impl gate R3 on the amended tree; prior passes do not carry"
+    status: pending
+  - content: "handoff — update PR #444 body to the folded scope; push"
+    status: pending
 ---
 
 # CR github-437 — the `## Use Cases` definition is an invocation signature, not a use case
@@ -72,14 +80,33 @@ Entry-point rows stay — they remain correct and useful, they are just no longe
 
 ## NEXT
 
-Landed. The `## Use Cases` definition carries actor, goal, and extensions, and every element a
-capability exposes traces to a use case that needs it. Each of the three bars took a duty in its own
-domain. 16 additive scenarios on the producer suite; the 85-node corpus is untouched by design.
+**Not landed. Awaiting an owner decision on shape, then a re-gate.**
 
-Both gates passed on their second round, each after a real block: the spec gate caught the CR
-failing to apply its own bar to the one behavioral node it revised, and the impl gate caught the
-producer procedure re-listing the extension kinds as a closed set in the very step that warns
-against hardcoded lists.
+State: 14 commits, 26 files, 22 additive scenarios on the producer suite (`addOnly` confirmed
+structurally; suite 66 -> 88). `check:spec` 6/6, `pnpm verify` 29/29. PR #444 is open but its body
+still describes the pre-fold scope. 5 commits unpushed.
 
-Nothing remains for this CR. The six follow-ups are filed as #438-#443; #436 carries the corpus
-backfill.
+Gate history — the earlier passes **do not carry**, because the owner folded two changes in after
+them: the CFG amendment (Clearance granted in session, recorded before the edit) and actor-first
+discovery.
+
+| Round | Verdict |
+|---|---|
+| spec R1 | oracle+builder FAIL — the CR failed to apply its own bar to the one behavioral node it revised |
+| spec R2 | ALIGNED true |
+| impl R1 | blocked — the producer re-listed the extension kinds as a closed set |
+| impl R2 | PASS 16/16 |
+| *scope folded* | CFG amendment + actor-first discovery |
+| spec R3 | architect+builder FAIL — 3 missed sweep sites (one wrap-hidden), one scenario inert |
+| spec R4 | **REGRESSION** — a finding on the paragraph R3 edited; loop halted |
+
+Root cause of the R3/R4 pattern, named by the owner: a skill folder's members are one unit and
+nothing says so. Measured — **5 of the 6 touched skill folders had an unmoved `README.md`**.
+Propagation is now finished across all three layers (shipped skill, spec-corpus node, public docs),
+swept wrap-safe. Investigation filed as #453.
+
+**Open decision before re-gating:** finish as one CR, or split — land the restored definition + CFG
+routing (which passed both gates cleanly at R2) and give actor-first discovery its own CR and its
+own gates. Discovery is the part that kept failing the miss test.
+
+Follow-ups filed: #436 (corpus backfill), #438-#443, #453.
