@@ -1,18 +1,19 @@
 ---
-status: implemented
+status: approved
 project-path: plugins/cyberfleet
 approval:
   spec:
     verdict: approve
-    by: agent
-    cause: dimension
+    by: unional
+    cause: clearance
     why:
-      floor: none
-      blast: low — one persona skill (plugins/cyberfleet/skills/operator/) plus its spec node. No CLI, no sibling package, no other persona touched. The mechanism it binds to is already shipped and specified in the sibling cyberlegion project.
-      novelty: low — the capability adds no mechanism. standing owners, `unit claim` presence, and the durable-vs-best-effort doorbell all already exist and are frozen in packages/cyberlegion/.agents/spec; this CR only binds Operator's decisions OVER them (which verb, unconditional or not, fail-soft or fail-loud, when to ack).
-      confidence: high — three cold ACED spec-judge rounds, converging: R1 ALIGNED false (builder + architect), R2 ALIGNED false (builder), R3 ALIGNED true on all three lenses with no blocker. Every mechanism claim independently verified against packages/cyberlegion/src/identity.ts and src/console/doorbell.ts by the judge, not taken from the producer. Edit class `addOnly` (12 added / 0 modified / 0 removed) so no frozen scenario was narrowed — Clearance never fired. All six `check:spec` checks green; root `pnpm verify` 29/29.
-      leash: auto-all — user-set in-session. Self-asserted under leash; no hard floor engaged.
-      cr: operator-bunker-call-in
+      floor: clearance — pre-authorized in-session by unional, scoped to meaning-preserving vocabulary renames only. align-spec classifies the CR as `narrowing (clearance)` because its scenario-diff is title-keyed and cannot distinguish a rename from a deletion; all 13 reworded scenario titles read to it as removals. The re-open of the @frozen suite was separately ratified by unional before the file was touched (ledger `kind: reopen`).
+      blast: medium — one behavioral node (.agents/specs/cyberfleet-plugin/operator/) rewritten in place plus three collateral rename sites (this spec.md placement rule, the project README node index). No mechanism, no CLI, no sibling package, no other persona node touched. The implementation (plugins/cyberfleet/skills/operator/, agents/headless-operator.md, the plugin + marketplace manifests, the website cyberfleet docs) still carries the retired vocabulary by design and lands in this CR's deliver phase, so the spec is deliberately ahead of the impl at this gate.
+      novelty: low — no mechanism added or changed. `cyberlegion unit register` under this session's own handle, `unit claim operator` unconditionally, `mail inbox --owner operator --unread`, and `mail read --owner operator --ack` are all untouched; every cyberlegion command string in the suite is byte-identical to HEAD. The change is the vocabulary the node uses to describe them, plus one user-requested tightening of the voice bar.
+      confidence: high — three cold ACED spec-judge rounds, converging: R1 ALIGNED false (architect + builder, 3 blocking), R2 ALIGNED false (architect, 1 blocking — a list-structure regression the conductor's own scripted rewrap introduced), R3 ALIGNED true on all three lenses with no blocking finding. Meaning-preservation — the CR's central risk — was verified mechanically by the judge, not taken from the producer: 41 scenarios in / 41 out with 0 added, removed, merged, or split; every `cyberlegion` command string extracted two independent ways and diffed clean against HEAD; 9 of the 13 reworded scenarios carry byte-identical Then blocks and the other 4 changed only a noun inside an otherwise identical assertion; steps 130 → 131, the single addition being the authorized voice clause. Coverage maps 1:1 both directions (13 Subject bullets → 16 table rows → 41 scenarios, no orphans). Five of six `check:spec` checks green; align-spec fails only on the title-keyed Clearance signal above, which clears once committed since it diffs against HEAD.
+      note: the anti-probe invariant (ADR-0022 amendment item 3) was the CR's chief risk — the retired noun "seat" carried it implicitly. It is now stated as an explicit rule in the Feature narrative ("The connection is asserted by invocation, never by a probe") plus two @behavior scenarios, the node README, and this spec's placement map. The judge graded it preserved and strengthened. The voice clause is a deliberate strengthening rather than a rename — a run performing the NieR 6O/21O human character was arguably conforming before and now fails — separately authorized by unional's instruction that Operator read as an AI agent, not under the rename Clearance.
+      leash: auto-none — user-set at run start. Not self-asserted; ratified in-session by unional holding the user channel.
+      cr: operator-command-center-vocab
   impl:
     verdict: approve
     by: agent
@@ -79,9 +80,10 @@ Where a new concept lives — slot here, do not invent placement:
 - **a new fleet-level dispatch behavior** (**any** spawn, list the fleet, route between ships, prune
   — anything the Council calls Operator for) → `operator/` (the Operator persona).
 - **a "which persona am I" concern** → **nowhere — there is no such concern.** Neither persona probes
-  its folder. Operator's seat is asserted by invocation; Pod is reached by the Council's ask. The ship
-  marker and `cyberfleet mode` were deleted (#225) because the marker gated no capability and its only
-  reader was the command that reported it. Do not reintroduce a location check in either node.
+  its folder. Operator connects to the command center by invocation; Pod is reached by the Council's
+  ask. The ship marker and `cyberfleet mode` were deleted (#225) because the marker gated no
+  capability and its only reader was the command that reported it. Do not reintroduce a location
+  check in either node.
 - **a new crew-acquisition persona behavior** (recruit/discharge a crew type — browse the Tavern,
   install/register, uninstall/retire) → `recruitment/` (the Crimp persona).
 - **a new automaton-workshop persona behavior** (build a new automaton, or adjust an existing one's
