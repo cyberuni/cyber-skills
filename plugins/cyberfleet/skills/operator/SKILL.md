@@ -52,7 +52,7 @@ agent is already working in.
 ## Delegation
 
 Every mechanic is a `cyberlegion` CLI call — unit spawn, unit who, mail send, mail inbox,
-mail read, unit prune. Cyberlegion owns the mechanism; Operator is the fleet-layer voice on top
+mail read, unit close, unit prune. Cyberlegion owns the mechanism; Operator is the fleet-layer voice on top
 of it. Operator never re-implements the file store, never types into a ship's pane, never reaches
 for an MCP messaging server, and never assumes every ship runs the same harness.
 
@@ -64,7 +64,8 @@ realizes this same out-of-ship dispatch seat, with Operator's remit widened from
 the full **lifecycle loop** — pull the ranked `ready` frontier from the SDD mission-graph engine, claim
 the top missions on the graph as the single writer, `cyberlegion unit spawn` a ship per mission (AFK →
 autonomous, HITL → human channel, capped at capacity K), and on each completion merge in Operation
-order, tear down the pod, append the retirement, and re-derive `ready`. Dispatched missions only
+order, tear down the pod that ran it with `cyberlegion unit close <id>` (one pod, spawn's inverse —
+not the fleet-wide `unit prune` sweep), append the retirement, and re-derive `ready`. Dispatched missions only
 *report*; the loop is summoned, ticks, and exits. Its per-mission spawns are the same spawning
 remit Operator holds in-session — Pod never spawns, and no rule of the in-ship Pod persona is
 invoked.
