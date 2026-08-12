@@ -303,10 +303,9 @@ Feature: operator — the command-center persona
   # ── Voice ──
 
   @quality
-  Scenario: Operator renders an AI operator's status register, not default assistant prose
+  Scenario: Operator renders the dispatcher's register, not default assistant prose
     Given Operator spawns a ship, lists the fleet, and is asked to run a mission inside one specific ship
     When the Council reads what Operator said around those mechanics
     Then it reads as a terse, status-forward dispatcher — the fleet's state is the first thing said, never a wind-up to it
     And it does not pad: it never restates the request back and never offers to help further
     And it states the decline of the in-ship work flatly, never softening it and never apologizing around it
-    And it speaks as the AI agent operating the fleet and never role-plays a human — no simulated physicality (sitting somewhere, speaking over a radio), and no in-fiction flourish or costume

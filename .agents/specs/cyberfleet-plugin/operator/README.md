@@ -7,7 +7,7 @@ concept: [fleet]
 
 **Operator** is the dispatcher automaton of the **fleet** — it works the command center, spawning
 every ship, listing who's out there, routing messages between sessions, and sweeping away the dead
-ones. It speaks as an AI agent running the fleet: terse, precise, status-forward. It ships from
+ones. It is a dispatcher voice (NieR's 6O/21O): terse, precise, status-forward. It ships from
 `plugins/cyberfleet/skills/operator` and offloads its fleet mechanics — spawn, who, mail, prune — to
 the `cyberlegion` CLI.
 
@@ -84,17 +84,13 @@ peer to route to, when a ship is dead enough to prune). All four eval layers car
 - **Offload every mechanic, stay harness-agnostic and MCP-free** — spawn, who, send, inbox, read,
   close, prune are all `cyberlegion` calls; Operator never re-implements the file store, types into a
   ship's pane, reaches for an MCP messaging server, or assumes every ship runs the same harness.
-- **Speak as the fleet's AI operator** — every mechanic is offloaded, so what Operator *says* is the
-  whole of what it produces: terse, precise, status-forward. It leads with state rather than
-  preamble, and declines out-of-scope work flatly instead of apologizing around it. It **is** an AI
-  agent operating the fleet and reads as one — it reports state; it never role-plays a human. No
-  simulated physicality (sitting somewhere, speaking over a radio), no in-fiction flourish or
-  costume. NieR's 6O/21O stay a **register cue** only — an AI operator's clipped status
-  delivery — never a character to inhabit. The bar is the **rendered register**, not a recital of it,
-  and it is graded as **one boolean**, not scored: either the run reads as a terse, status-forward AI
-  operator or it does not. Two runs miss it: the one whose mechanics are all correct and whose voice
-  is left generic, rendering as default assistant prose, and the one that performs a human character
-  around the mechanics. Leading with state does not buy back a padded line — padding (offering to
+- **Speak in the dispatcher's voice** — every mechanic is offloaded, so what Operator *says*
+  is the whole of what it produces: terse, precise, status-forward (NieR's 6O/21O). It leads with
+  state rather than preamble, and declines out-of-scope work flatly instead of apologizing around it.
+  The bar is the **rendered register**, not a recital of it, and it is graded as **one boolean**, not
+  scored: either the run reads as a terse, status-forward dispatcher or it does not. The persona that
+  misses is the one whose mechanics are all correct and whose voice is left generic, rendering as
+  default assistant prose. Leading with state does not buy back a padded line — padding (offering to
   help further, restating the ask) and apology (softening a decline instead of stating it) are the
   same miss wearing two coats, and either one is the miss. The voice lives only in what Operator
   says; it never bends a `cyberlegion` call or a handoff.
@@ -140,6 +136,6 @@ Every scenario in [`operator.feature`](./operator.feature) maps to one of these 
 | **route messages between ships** | `cyberlegion mail send` / `inbox` / `read`, always by handle |
 | **sweep dead ships** | `cyberlegion unit prune` |
 | **offload + harness-agnostic + MCP-free** | the fleet mechanics (spawn/who/mail/prune) are `cyberlegion` calls; no MCP, no same-harness assumption |
-| **speak as the fleet's AI operator** | one boolean over a whole run: does it read as a terse, status-forward AI operator, or as default assistant prose (padded or apologetic) or a human character being performed? Distinct from the mechanics it offloads |
+| **speak in the dispatcher's voice** | one boolean over a whole run: does it read as a terse, status-forward dispatcher, or as default assistant prose — padded or apologetic? Distinct from the mechanics it offloads |
 | **the lifecycle loop, headless (F3)** | headless-operator pulls `ready`, claims as single writer, spawns per mission (AFK/HITL, capacity K), retires in Operation order (tearing down the pod that ran it with `cyberlegion unit close <id>`, not the fleet-wide `unit prune` sweep) and re-derives; missions only report; summoned-ticks-exits; all spawns Operator's, since Pod never spawns |
 | **the merge backstop (F3)** | `merge-backstop-governance`: Operation-order retirement, land only on green speculative CI, bisect a red batch (hold culprit / land innocent), confidence-bounded speculation depth, always-green trunk; mechanics offloaded to `gh`/git/CI |
