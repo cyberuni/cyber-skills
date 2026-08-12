@@ -29,8 +29,8 @@ topic, never by a probed location.
   parallel worktree-ship on a project that is already a ship, with a self-contained brief the new
   Pod reads cold, whose return address is the handle `operator`. All spawning is Operator's; Pod
   never spawns.
-- `cyberlegion unit who` / `mail send` / `mail inbox` / `mail read` / `unit prune` — lists,
-  messages, and sweeps the fleet.
+- `cyberlegion unit who` / `mail send` / `mail inbox` / `mail read` / `unit close` / `unit prune` —
+  lists, messages, tears down one finished pod, and sweeps the fleet.
 - Routes in-ship mission and crew work to `pod`, by topic — never by probing this working
   directory.
 
