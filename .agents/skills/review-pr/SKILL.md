@@ -45,9 +45,15 @@ their own work and it is the thing you are auditing.
 
 ```bash
 git fetch origin
-git rev-list --count <headRef>..origin/<baseRef>            # how far behind
-git diff --name-only <headRef> origin/<baseRef> -- <the paths this PR touches>
+MB=$(git merge-base origin/<headRef> origin/<baseRef>)
+git rev-list --count origin/<headRef>..origin/<baseRef>       # how far behind
+git diff --name-only "$MB" origin/<baseRef> -- <the paths this PR touches>
 ```
+
+Diff **from the merge-base**, not from the head. A two-dot `git diff <head> <base>` is symmetric, so
+it lists the PR's own added files as differences and reports "the base moved here" for every path the
+PR touches — the answer is never empty and the check is worthless. `$MB..<base>` asks the actual
+question: what did the base gain *since this branch was cut*.
 
 **Never rebase or force-push the branch you are reviewing.** A review is read-only. Rebasing writes
 to the author's branch, can conflict mid-review, and changes nothing you are reviewing anyway —
@@ -66,8 +72,8 @@ git ls-tree origin/<baseRef> .agents/plans/
 ```
 
 Being behind is not itself a finding — branches are behind constantly. It becomes one only when the
-base branch moved **in the paths this PR touches**, which is what the `git diff --name-only` above
-tells you. If that returns empty, say so and read from disk.
+base branch moved **in the paths this PR touches**, which is what the `$MB..<base>` diff above tells
+you. If that returns empty, say so and read from disk.
 
 ### 3. Read the new artifact whole, before the hunks
 
@@ -92,7 +98,11 @@ For each factual claim the PR makes about the system, find the source and check 
   "content changed" (`git checkout` rewrites it — verify with `stat` vs `git log -1 --format=%ci`).
   A regex over prose is not a structured signal. Name the proxy and the case where it diverges.
 - **Can the check be wrong in both directions?** Find a concrete false positive and a concrete false
-  negative. If you cannot construct either, the check is probably unfalsifiable — say so.
+  negative. If you cannot construct either, the check is probably unfalsifiable — say so. When the
+  new code exports a pure function, **execute it** on both cases rather than reasoning about it: the
+  most damning result a review can carry is the PR's own stated motivating example, fed to the PR's
+  own code, coming back clean. Reasoning gets you the false positive; running it gets you the false
+  negative, which is the direction that decides the verdict.
 - **Do the comments match the code?** A comment claiming a verification the code skips is a real
   defect and usually points at a path the author intended but didn't take.
 - **Do the tests test reachable paths?** Green tests over dead fields measure nothing.
