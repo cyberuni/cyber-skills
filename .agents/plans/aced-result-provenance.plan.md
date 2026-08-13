@@ -167,6 +167,17 @@ Subject, Non-goals, trust boundary, and `**Fit:**` line all sit under `## Use Ca
 pre-existing divergence across ACED nodes, not this CR's debt, so it was left alone rather than
 restructured unilaterally.
 
+## Incidental finding — not this CR's work
+
+`pnpm verify` fails at the root on `cyberfleet#check:spec` and `cyberlegion#check:spec`, and it is
+not this CR: `discover-specs` guards its filesystem walk with a name blocklist, so it descends into
+nested git checkouts and discovers the whole corpus once per agent-harness worktree (38 spec files
+found, 28 of them phantom). Filed as **#472** with the structural fix (skip any directory that is
+itself a checkout). Five clean leftover worktrees pruned; two carrying uncommitted work were left
+alone, so the two `check:spec` targets still fail until #472 lands or those two are resolved.
+`.claude/worktrees/` added to tracked `.gitignore` (`910b004f`) — cosmetic, the walk reads the
+filesystem rather than the index.
+
 ## NEXT
 
 Re-run the spec gate (cold spec-judge) against the **current** bars over both nodes, then freeze both
