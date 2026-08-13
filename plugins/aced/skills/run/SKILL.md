@@ -136,3 +136,10 @@ Run compare after editing the agent configuration.
 ```
 
 If pass rate is 100%, say so and suggest running `add-scenario` to expand edge case coverage.
+
+## Before citing an existing result instead of running
+
+When asked to report on a target without first running it, load `check-result-freshness` against the
+target's node before presenting anything from `results/` — the newest file there can still describe a
+subject that has since been edited, or carry passes the judge could not actually settle. A non-zero
+exit means run this skill instead of citing the old result.

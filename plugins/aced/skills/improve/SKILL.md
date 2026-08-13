@@ -30,9 +30,11 @@ full. If the artifact type or path is not clear from context, ask.
 Check for the target's node in the project spec — `.agents/specs/<project>/…/<node>/` (discovered
 through the SDD spec tree) — carrying a colocated `eval.md` for this target.
 
-- **ACED-tracked (eval suite exists):** ensure a recent result exists — run `run` first if the
-  latest `results/` file is stale or missing. Then load `aced-impl-producer` to identify failing
-  scenarios, classify them by pattern, and propose concrete before/after edits.
+- **ACED-tracked (eval suite exists):** load `check-result-freshness` against the target's node
+  before trusting anything in `results/` — run `run` first if it reports STALE, FAIL, or no result at
+  all; surface any WARN explicitly rather than treating the result as clean. Then load
+  `aced-impl-producer` to identify failing scenarios, classify them by pattern, and propose concrete
+  before/after edits.
 - **Not yet tracked (no eval suite):** there is nothing to diagnose failures against. Do a general
   review instead:
   1. Load the fit classifier (`aced-fit`) to check whether this subject benefits from scenario→rubric
