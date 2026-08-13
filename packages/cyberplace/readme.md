@@ -16,7 +16,7 @@ npx cyberplace <command>
 Or pin to an exact version for reproducible hooks:
 
 ```sh
-npx cyberplace@0.7.0 <command>
+npx cyberplace@0.2.1 <command>
 ```
 
 ## Commands
