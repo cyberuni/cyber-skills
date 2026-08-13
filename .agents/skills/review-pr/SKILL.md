@@ -41,19 +41,47 @@ gh pr diff <N> > "$SCRATCHPAD/pr<N>.diff"
 Read the body as a **hypothesis about the PR**, never as a finding. It is the author's account of
 their own work and it is the thing you are auditing.
 
-### 2. Read the new artifact whole, before the hunks
+### 2. Fetch the base — do not rebase
+
+```bash
+git fetch origin
+git rev-list --count <headRef>..origin/<baseRef>            # how far behind
+git diff --name-only <headRef> origin/<baseRef> -- <the paths this PR touches>
+```
+
+**Never rebase or force-push the branch you are reviewing.** A review is read-only. Rebasing writes
+to the author's branch, can conflict mid-review, and changes nothing you are reviewing anyway —
+`gh pr diff` is already merge-base-scoped, so the PR's own diff is byte-identical before and after.
+
+Fetching still matters, for one specific reason: the **Architect lens reads its baseline from the
+working tree**, which is the corpus as of the *branch point*. If a spec node, a placement-map entry,
+or a frozen scenario landed on the base branch after the branch was cut, you will report "no spec
+node exists" when one now does. So when the branch is behind, read Architect-lens references from
+the base ref rather than from disk:
+
+```bash
+git show origin/<baseRef>:.agents/specs/<project>/spec.md
+git show origin/<baseRef>:<node>/<node>.feature
+git ls-tree origin/<baseRef> .agents/plans/
+```
+
+Being behind is not itself a finding — branches are behind constantly. It becomes one only when the
+base branch moved **in the paths this PR touches**, which is what the `git diff --name-only` above
+tells you. If that returns empty, say so and read from disk.
+
+### 3. Read the new artifact whole, before the hunks
 
 For anything the PR adds, read the complete file — the SKILL.md, the README, the engine source.
 A diff hunk shows you what changed; it does not show you what the thing *is*. You cannot judge an
 approach from a hunk.
 
-### 3. Read the wiring hunks separately
+### 4. Read the wiring hunks separately
 
 Find every hunk that changes an **existing** caller. These are the obligations the PR imposes on the
 rest of the system, and they are where scope creep and spec drift live. Ask of each: what is a caller
 now required to do that it wasn't before, and is that requirement specified anywhere?
 
-### 4. Oracle lens — verify every load-bearing claim against a primary source
+### 5. Oracle lens — verify every load-bearing claim against a primary source
 
 For each factual claim the PR makes about the system, find the source and check it. In particular:
 
@@ -72,7 +100,7 @@ For each factual claim the PR makes about the system, find the source and check 
 Every claim you make in the review needs the command that established it. A source-read is a
 hypothesis until you have run something against it.
 
-### 5. Architect lens — layer, placement, and gate
+### 6. Architect lens — layer, placement, and gate
 
 This repo is SDD-governed. Run all five checks:
 
@@ -94,7 +122,7 @@ This repo is SDD-governed. Run all five checks:
   component usually means at least one of them is in the wrong place, and it is the reason a PR
   resists a clean verdict.
 
-### 6. Answer "this project or another?" on two axes
+### 7. Answer "this project or another?" on two axes
 
 Placement and layer are independent. Report them separately, because "right repo" is often true
 while "right node" is false:
@@ -103,7 +131,7 @@ while "right node" is false:
 - **Node / layer** — within the right package, is it in the capability folder its own spec's
   placement map names, and at the layer that owns the defect?
 
-### 7. Recommend
+### 8. Recommend
 
 State a verdict — merge, merge-with-fixes, split, or reject — and when splitting, give the ordered
 pieces with what each unblocks. Separate **fix regardless of scope decision** (comment/code

@@ -24,3 +24,8 @@ hunting use `/code-review`; for quality cleanups use `simplify`.
 The Architect lens is SDD-aware: it reads the owning project spec's placement map, looks for the
 `<node>/` + `eval.md` + `.feature` triple, checks `.agents/plans/` for a change request, and compares
 touched behavior against the `@frozen` suites. Findings are reported, never fixed.
+
+Because that baseline is read from the working tree — the corpus as of the branch point — the skill
+fetches the base ref and reads spec material from `origin/<base>` when the branch is behind in the
+paths the PR touches. It never rebases the branch under review: a review is read-only, and
+`gh pr diff` is merge-base-scoped already, so a rebase would change nothing being reviewed.
