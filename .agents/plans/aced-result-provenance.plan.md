@@ -52,10 +52,10 @@ becomes a deterministic comparison instead of four stacked heuristics.
 
 **Out — each its own CR, all recorded as follow-ups at handoff:**
 
-- **The untrusted-pass / unprovable-assertion problem** — a pass resting on an assertion a narrated
-  transcript cannot settle. Belongs to the judge protocol and the suite-authoring bars, not to an
+- **The untrusted-pass / unprovable-assertion problem** — **FILED as #477**. A pass resting on an
+  assertion a narrated transcript cannot settle. Belongs to the judge protocol and the suite-authoring bars, not to an
   eval-run reader.
-- **Consumer wiring for `run` and `improve`** — cut from this CR at the owner's scope reduction
+- **Consumer wiring for `run` and `improve`** — **FILED as #476**. Cut from this CR at the owner's scope reduction
   after the spec gate found the citing scenario unbindable. Needs two scenarios whose Givens each
   *name* a verdict, in the shape `only a current verdict exits zero` already uses correctly. Until
   it lands, `check-freshness` is specified and tested but consulted by nobody — a deliberate,
@@ -202,10 +202,9 @@ Build against the frozen suites, nothing else:
    `stale`, never as an error.
 3. **Impl gate** — cold impl-judge per frozen scenario. Bring it to the owner (the leash self-asserts
    the spec gate only).
-4. **Handoff** — PR, and file the follow-ups. Two are owed and one is load-bearing: the
-   **verified-read-set / tool-call-telemetry** CR, because both node specs claim it is "a recorded
-   follow-up" and it is currently recorded only in THIS brief, which the doctrine loop retires; and
-   the **consumer wiring** for `run` / `improve`.
+4. **Handoff** — PR only. All three follow-ups are FILED and durable: **#475** verified read set,
+   **#476** consumer wiring for `run` / `improve`, **#477** the untrusted-pass problem. Nothing
+   further is owed to the brief on retirement.
 
 Also outstanding: branch is behind `origin/main`; root `pnpm verify` still red on the nested-checkout
 bug (#472), unrelated to this CR.
