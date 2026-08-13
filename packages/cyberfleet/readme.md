@@ -16,7 +16,7 @@ npx cyberfleet <command>
 Or pin to an exact version:
 
 ```sh
-npx cyberfleet@0.1.0 <command>
+npx cyberfleet@0.0.4 <command>
 ```
 
 ## Commands

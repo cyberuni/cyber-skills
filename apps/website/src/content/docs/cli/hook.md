@@ -70,7 +70,7 @@ Always pin the CLI version in registered hooks — never use `@latest`:
 
 ```bash
 # Good — pinned
-npx cyberplace@0.3.0 hook run --extract AGENTS.md --heading "Commit Discipline"
+npx cyberplace@0.2.1 hook run --extract AGENTS.md --heading "Commit Discipline"
 
 # Bad — resolves at runtime
 npx cyberplace@latest hook run …

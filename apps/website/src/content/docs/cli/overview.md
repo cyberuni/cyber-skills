@@ -43,7 +43,7 @@ Skills should use `--format agent`. Non-LLM automation should use `--format json
 The `init-commit-discipline` skill resolves the current npm version and writes it into the SessionStart hook command. After upgrading, re-run `init-commit-discipline` to bump the pin:
 
 ```bash
-npx cyberplace@0.3.0 hook register \
+npx cyberplace@0.2.1 hook register \
   --name commit-discipline \
   --event SessionStart \
   --extract AGENTS.md \
