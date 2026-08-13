@@ -67,9 +67,11 @@ becomes a deterministic comparison instead of four stacked heuristics.
 ## Nodes
 
 - `.agents/specs/aced/eval-run/run/` — **revise**. New provenance scenarios are **additive** to a
-  frozen suite (nothing narrowed), so they self-clear; the two existing persistence scenarios
-  ("persisted as a timestamped record", "kept under the shared aced results directory") stay
-  untouched.
+  frozen suite (nothing narrowed), so they self-clear. **Superseded at the gate:** one of the two
+  existing persistence scenarios ("persisted as a timestamped record") named the suite-local results
+  directory, contradicting its own sibling and the path check-freshness pins — repaired under an
+  owner-granted Clearance, since the wrong destination sat in the Then and no additive repair
+  existed.
 - `.agents/specs/aced/eval-run/<freshness-node>/` — **new behavioral node**. Placement per the
   project spec's placement map: "a new way to run or report on evals → `eval-run/`". Name settled
   in the grill.
@@ -93,8 +95,9 @@ exists to remove. Disposition of that PR is the owner's call.
 - **Trust boundary:** `evaluated` is the run's self-report, not a verified trace. Over-reporting has
   a sound oracle; under-reporting does not, except for the mandatory-input case, which the two
   coherence scenarios catch by cross-checking the record against itself.
-- `run/` consults the check before citing a recorded result. `suite-authoring/improve/` wiring is a
-  follow-up in a different capability folder.
+- ~~`run/` consults the check before citing a recorded result.~~ **CUT at the spec gate** — the
+  citing scenario would not bind. Both `run/` and `improve/` wiring are now follow-ups; until they
+  land, `check-freshness` is consulted by nobody.
 
 ## RESOLVED — the stale-bar block is cleared (2026-08-13)
 
