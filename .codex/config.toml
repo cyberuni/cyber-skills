@@ -2,3 +2,9 @@
 url = "http://127.0.0.1:8765/mcp/"
 startup_timeout_sec = 30
 bearer_token_env_var = "MCP_AGENT_MAIL_BEARER_TOKEN"
+
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+CYBERLEGION_HOOK_PRIMARY_FALLBACK = "1"
