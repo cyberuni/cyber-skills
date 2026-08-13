@@ -102,13 +102,22 @@ exists to remove. Disposition of that PR is the owner's call.
 
 ## RESOLVED — the stale-bar block is cleared (2026-08-13)
 
-The `sdd` plugin now resolves from the **local directory marketplace** (`known_marketplaces.json`:
-`cyberplace → source: directory`), not from npm. Verified by content, not install metadata:
-`diff -rq ~/.claude/plugins/cache/cyberplace/sdd/0.0.0/skills plugins/sdd/skills` differs only in
-`*.test.mts` (not packaged), and the loaded `spec-format-governance` is 182 lines carrying the
-actor-first bar. Both bar commits (`92e5df32`, `5dec0d5f`) are ancestors of HEAD; only the
-`chore: version packages` bump (npm `cyber-sdd@0.2.0`) is not, and it carries no content. No
-reinstall or process restart was needed. The section below is kept as the record of what was owed.
+The restored bar **is** live in-session: `diff -rq` between the loaded plugin cache and
+`plugins/sdd/skills` differs only in `*.test.mts` (not packaged), and the loaded
+`spec-format-governance` is 182 lines carrying the actor-first bar. Both bar commits (`92e5df32`,
+`5dec0d5f`) are ancestors of HEAD.
+
+**Why it is live is npm, not the working tree — an earlier note in this brief got this wrong.**
+`sdd` is the one plugin whose own source is `{"source":"npm","package":"cyber-sdd"}` in
+`.claude-plugin/marketplace.json`; the other five are `./plugins/<name>`. The earlier note read
+`known_marketplaces.json` (`cyberplace → source: directory`) and concluded the *plugin* was
+directory-sourced. Those are two levels: a directory-source **marketplace** still contains per-plugin
+`source` declarations, and sdd's is npm. The bar is live because `cyber-sdd@0.2.0` was **released**
+carrying it, not because the working tree reaches the session.
+
+**Consequence for anything touching `plugins/sdd/`:** it does not reach a session without an npm
+release, and `/resync-local-plugins` cannot help. Verify by content diff plus
+`git merge-base --is-ancestor`, never by install metadata or the marketplace's own source.
 
 ## The debt that was owed — authored against a stale spec-format bar
 
