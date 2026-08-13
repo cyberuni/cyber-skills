@@ -2,28 +2,29 @@
 Feature: operator — the command-center persona
   Unit suite for the Operator persona skill: the dispatcher automaton the Council calls to work the
   command center — spawning every ship, listing who's out there, routing messages
-  between ships, and sweeping away the dead ones. Operator is always at the command center: the
-  Council reaches it by invoking this skill, and that invocation is what seats it. Its fleet
+  between ships, and sweeping away the dead ones. The command center is a singleton that outlives
+  every session: the Council reaches it by invoking this skill, and that invocation is what connects
+  this session to it. The connection is asserted by invocation, never by a probe. Its fleet
   mechanics — spawn, who, mail, prune — all offload to the cyberlegion CLI. Its in-ship counterpart
   is the Pod persona, reached by routing in-ship work to it rather than by probing where this folder
   sits. The file store, ordering, spawn, and hook mechanics live in the sibling cyberlegion CLI
   project (mail, unit, mux).
 
-  # ── The seat (ADR-0022, amended) ──
+  # ── Connecting to the command center (ADR-0022, amended) ──
 
   @behavior
-  Scenario: loading Operator asserts the command-center seat without a probe
+  Scenario: loading Operator connects this session to the command center without a probe
     Given the Council invokes the Operator skill and asks it to list every session running across the fleet
     When Operator takes that request
     Then it lists the fleet straight away
-    And it never probes this folder to decide whether it holds the seat
+    And it never probes this folder to decide whether this session is connected to the command center
 
   @behavior
-  Scenario: Operator holds the seat wherever the Council invokes it
+  Scenario: Operator stays connected wherever the Council invokes it
     Given the Council invokes the Operator skill from inside a project an agent is already working in
     When the Council asks it to prune the dead ships from the fleet
     Then it prunes them from the command center
-    And it does not hand the request to Pod, since nothing about this folder can take the seat away
+    And it does not hand the request to Pod, since nothing about this folder can disconnect this session from the command center
 
   @behavior
   Scenario: Operator's description names the work it does, never where the Council stands
@@ -32,66 +33,66 @@ Feature: operator — the command-center persona
     Then it names the fleet-level work Operator is responsible for — spawning, listing, and pruning ships, and routing messages between sessions
     And it states no location condition such as being outside a ship
 
-  # ── The seat's identity — calling in to the bunker ──
+  # ── The command center's identity — connecting ──
 
   @behavior
-  Scenario: seating registers this session in the hub
-    Given Operator is seated in a session the hub holds no identity for
-    When Operator is seated
-    Then it runs cyberlegion unit register carrying this session's own handle, before it claims the desk
+  Scenario: connecting registers this session in the hub
+    Given the hub holds no identity for this session
+    When Operator connects to the command center
+    Then it runs cyberlegion unit register carrying this session's own handle, before it claims the standing operator owner
 
   @behavior
-  Scenario: the session is never registered under the seat's handle
-    Given the standing owner "operator" holds the seat's durable identity
+  Scenario: the session is never registered under the standing owner's handle
+    Given the standing owner "operator" holds the command center's durable identity
     When Operator registers this session
     Then "operator" is never passed as this session's registered handle
 
   @behavior
-  Scenario: seating claims the bunker desk so the doorbell reaches the seated session
+  Scenario: connecting claims the standing operator owner so the doorbell reaches this session
     Given the standing owner "operator" exists
-    When Operator is seated
+    When Operator connects to the command center
     Then it runs cyberlegion unit claim operator
 
   @behavior
-  Scenario: seating takes the desk even when another session already holds it
+  Scenario: connecting takes the claim even when another session already holds it
     Given the standing owner "operator" has a presence bound to another session
-    When Operator is seated
+    When Operator connects to the command center
     Then it runs cyberlegion unit claim operator all the same
 
   @behavior
-  Scenario: a session that cannot claim the desk says so and dispatches anyway
+  Scenario: a session that cannot claim says so and dispatches anyway
     Given this session runs outside any multiplexer, so a presence cannot be bound
-    When Operator is seated
-    Then it reports the desk unclaimed and carries on dispatching
+    When Operator connects to the command center
+    Then it reports the standing operator owner unclaimed and carries on dispatching
 
   @behavior
-  Scenario: a missing bunker is routed to onboarding, never minted
+  Scenario: a missing standing owner is routed to onboarding, never minted
     Given the hub holds no standing owner "operator"
-    When Operator is seated
+    When Operator connects to the command center
     Then it reports the missing owner, routes the Council to init-cyberlegion, and leaves the hub without a standing owner "operator"
 
-  # ── The bunker mailbox — reading what it took ──
+  # ── The command center mailbox — reading what it took ──
 
   @behavior
-  Scenario: seating leads with what the bunker took while nobody was in
+  Scenario: connecting leads with what the command center took while nobody was connected
     Given the standing owner "operator" holds unread mail
-    When Operator is seated
+    When Operator connects to the command center
     Then it reads cyberlegion mail inbox --owner operator --unread and names that unread mail in the state it leads with
 
   @behavior
   Scenario: a report Operator has acted on leaves the unread set
-    Given Operator has acted on a report in the bunker mailbox
+    Given Operator has acted on a report in the command center mailbox
     When it closes that report out
     Then it runs cyberlegion mail read --owner operator --ack on that report
 
   @behavior
   Scenario: a report Operator has not acted on stays unread
-    Given the bunker mailbox holds a report Operator has not acted on
+    Given the command center mailbox holds a report Operator has not acted on
     When Operator finishes reporting the board
     Then that report is still in the unread set
 
   @behavior
-  Scenario: a spawn brief names the seat's handle as the return address
+  Scenario: a spawn brief names the standing owner's handle as the return address
     Given Operator is writing the cold brief for a ship it is about to spawn
     When it names where the ship reports back
     Then the brief names the handle operator and names neither this session's id nor this session's own handle
@@ -302,7 +303,7 @@ Feature: operator — the command-center persona
   # ── Voice ──
 
   @quality
-  Scenario: Operator renders the Bunker dispatcher's register, not default assistant prose
+  Scenario: Operator renders the dispatcher's register, not default assistant prose
     Given Operator spawns a ship, lists the fleet, and is asked to run a mission inside one specific ship
     When the Council reads what Operator said around those mechanics
     Then it reads as a terse, status-forward dispatcher — the fleet's state is the first thing said, never a wind-up to it

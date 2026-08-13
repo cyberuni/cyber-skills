@@ -7,17 +7,18 @@ concept: [fleet]
 
 **Operator** is the dispatcher automaton of the **fleet** — it works the command center, spawning
 every ship, listing who's out there, routing messages between sessions, and sweeping away the dead
-ones. It is a Bunker dispatcher voice (NieR's 6O/21O): terse, precise, status-forward. It ships from
+ones. It is a dispatcher voice (NieR's 6O/21O): terse, precise, status-forward. It ships from
 `plugins/cyberfleet/skills/operator` and offloads its fleet mechanics — spawn, who, mail, prune — to
 the `cyberlegion` CLI.
 
 Operator is one of the two **fleet** personas, split from the former `gateway/` node by the
 `split-gateway-personas` change (per ADR-0022 they were always two skills; this gives each its own
-node and design). Its counterpart is [`pod/`](../pod/README.md) — the in-ship bridge. Operator is
-always at the command center: the Council reaches it by **invoking this skill**, and that invocation
-is what seats it (ADR-0022 decision 8, as amended). It runs **no** mode probe — it never yields the
-seat because of where this folder sits. It does still route in-ship mission and crew work to Pod, but
-by **topic**, on what was asked, never on a probed location.
+node and design). Its counterpart is [`pod/`](../pod/README.md) — the in-ship bridge. The command
+center is a **singleton** that outlives every session: the Council reaches it by **invoking this
+skill**, and that invocation is what **connects this session to it** (ADR-0022 decision 3, as amended
+— amendment decision 3). It runs **no** mode probe — nothing about where this folder sits can
+disconnect it. It does still route in-ship mission and crew work to Pod, but by **topic**, on what
+was asked, never on a probed location.
 
 ## Use Cases
 
@@ -28,35 +29,37 @@ peer to route to, when a ship is dead enough to prune). All four eval layers car
 
 **Subject** — dispatching the fleet from the command center:
 
-- **Hold the seat by invocation, never by a probe** — loading the Operator skill asserts the
-  command-center seat. Operator probes nothing to decide whether it holds it, and keeps the seat
+- **Connect by invocation, never by a probe** — loading the Operator skill connects this session to
+  the command center. Operator probes nothing to decide whether it is connected, and stays connected
   wherever the Council invokes it, including inside a project an agent is already working in — the
-  seat follows the invocation, not the folder.
-- **Call in to the bunker on seating** — the seat is a **singleton** that outlives any session:
-  worktrees and panes come and go, and invoking the skill is a *call in*, not a new seat. The two
-  objects that model it are the standing owner `operator` and its bound presence, both specified in
-  the sibling `cyberlegion` project (`../../../../packages/cyberlegion/.agents/spec/unit/registry/`
-  — standing records and `unit claim`). Operator's decisions over them: on seating it registers this
-  session **under its own handle** and claims the desk. It never registers *as* `operator` — an
-  identity keyed on the pane rather than on the role inherits whatever last died in that pane, and
-  mints a fresh holder of the handle in every new one, so the seat is re-minted per pane instead of
-  persisting. Where no presence can be bound, Operator says the desk is unclaimed and dispatches
-  anyway — the seat is asserted by invocation, and claiming only decides which pane the doorbell
-  reaches. Where the hub holds **no** standing `operator`, Operator reports it and routes the Council
-  to `init-cyberlegion`; minting a durable owner identity is that skill's, gated on an explicit human
-  yes, never a side effect of dispatch.
-- **Read what the bunker took while nobody was in** — every brief Operator writes names `operator`
-  as the return address, so the mailbox behind that address is Operator's to drain, not merely to
-  route through: on seating it reads `cyberlegion mail inbox --owner operator --unread` and leads
-  with what is waiting, and it acks a report (`mail read --owner operator --ack`) once it has acted
-  on that report — never wholesale to tidy the board, which would erase the record of work nobody
-  did. A dispatcher that advertises a return address and never reads it is a write-only mailbox;
-  the failure is silent, because delivery keeps succeeding.
+  connection follows the invocation, not the folder.
+- **Register and take the claim on connecting** — the command center is a **singleton** that
+  outlives any session: worktrees and panes come and go, and invoking the skill *connects* this
+  session to the standing command center rather than standing up a new one. The two objects that
+  model it are the standing owner `operator` and its bound presence, both specified in the sibling
+  `cyberlegion` project (`../../../../packages/cyberlegion/.agents/spec/unit/registry/` — standing
+  records and
+  `unit claim`). Operator's decisions over them: on connecting it registers this session **under its
+  own handle** and takes the claim. It never registers *as* `operator` — an identity keyed on the
+  pane rather than on the role inherits whatever last died in that pane, and mints a fresh holder of
+  the handle in every new one, so the command center is re-minted per pane instead of persisting.
+  Where no presence can be bound, Operator says the standing owner is unclaimed and dispatches
+  anyway — the connection is asserted by invocation, and claiming only decides which pane the
+  doorbell reaches. Where the hub holds **no** standing `operator`, Operator reports it and routes
+  the Council to `init-cyberlegion`; minting a durable owner identity is that skill's, gated on an
+  explicit human yes, never a side effect of dispatch.
+- **Read what the command center took while nobody was connected** — every brief Operator writes
+  names `operator` as the return address, so the mailbox behind that address is Operator's to drain,
+  not merely to route through: on connecting it reads `cyberlegion mail inbox --owner operator
+  --unread` and leads with what is waiting, and it acks a report (`mail read --owner operator
+  --ack`) once it has acted on that report — never wholesale to tidy the board, which would erase the
+  record of work nobody did. A dispatcher that advertises a return address and never reads it is a
+  write-only mailbox; the failure is silent, because delivery keeps succeeding.
 - **Describe the work, not the location** — the skill `description` is the only thing a harness
   reads to route here, and a harness cannot evaluate "outside a ship": it would have to probe for
-  the marker to decide, reintroducing at the routing layer the very check the seat rule removes. So
-  the description names the fleet-level work Operator owns (spawn, list, prune ships; route messages
-  between sessions) and states no location condition.
+  the marker to decide, reintroducing at the routing layer the very check the connect-by-invocation
+  rule removes. So the description names the fleet-level work Operator owns (spawn, list, prune
+  ships; route messages between sessions) and states no location condition.
 - **Spawn any ship with a self-contained brief** — when the Council wants Operator to spawn any ship
   at all — the fleet's first, a new peer session, or a parallel worktree-ship on a project that is
   already a ship — `cyberlegion unit spawn` with a brief that stands on its own (the new Pod starts
@@ -81,7 +84,7 @@ peer to route to, when a ship is dead enough to prune). All four eval layers car
 - **Offload every mechanic, stay harness-agnostic and MCP-free** — spawn, who, send, inbox, read,
   close, prune are all `cyberlegion` calls; Operator never re-implements the file store, types into a
   ship's pane, reaches for an MCP messaging server, or assumes every ship runs the same harness.
-- **Speak in the Bunker dispatcher's voice** — every mechanic is offloaded, so what Operator *says*
+- **Speak in the dispatcher's voice** — every mechanic is offloaded, so what Operator *says*
   is the whole of what it produces: terse, precise, status-forward (NieR's 6O/21O). It leads with
   state rather than preamble, and declines out-of-scope work flatly instead of apologizing around it.
   The bar is the **rendered register**, not a recital of it, and it is graded as **one boolean**, not
@@ -120,10 +123,10 @@ Every scenario in [`operator.feature`](./operator.feature) maps to one of these 
 
 | Behavior | What it covers |
 |---|---|
-| **hold the seat by invocation** | loading the skill seats Operator at the command center; it probes nothing, and keeps the seat wherever the Council invokes it |
-| **call in to the bunker on seating** | seating registers this session under its own handle, never as `operator`, and claims the desk (`unit claim operator`) — unconditionally, taking it even when another session holds it — so the doorbell reaches this session; an unclaimable desk is reported and dispatch continues; a missing standing owner routes to `init-cyberlegion` and is never minted here |
-| **read what the bunker took** | on seating, `mail inbox --owner operator --unread` leads the board; an acted-on report is acked (`mail read --owner operator --ack`), an unacted one stays unread |
-| **the return address is the seat's handle** | a spawn brief names the handle `operator`, never this session's id or own handle |
+| **connect by invocation** | loading the skill connects this session to the command center; it probes nothing, and stays connected wherever the Council invokes it |
+| **register and take the claim on connecting** | connecting registers this session under its own handle, never as `operator`, and claims the standing `operator` owner (`unit claim operator`) — unconditionally, taking the claim even when another session holds it — so the doorbell reaches this session; a claim that cannot be taken is reported and dispatch continues; a missing standing owner routes to `init-cyberlegion` and is never minted here |
+| **read what the command center took** | on connecting, `mail inbox --owner operator --unread` leads the board; an acted-on report is acked (`mail read --owner operator --ack`), an unacted one stays unread |
+| **the return address is the standing owner's handle** | a spawn brief names the handle `operator`, never this session's id or own handle |
 | **delivery is not the doorbell** | a sent message whose ring never landed is reported delivered and not resent; only a handle that resolved to no live unit is undelivered |
 | **describe the work, not the location** | the `description` names the fleet-level work and states no location condition a harness cannot evaluate |
 | **leave in-ship work to Pod, by topic** | mission work and specialist crew inside one ship are routed to Pod topically, not via a mode probe |
