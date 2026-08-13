@@ -60,7 +60,8 @@ becomes a deterministic comparison instead of four stacked heuristics.
   *name* a verdict, in the shape `only a current verdict exits zero` already uses correctly. Until
   it lands, `check-freshness` is specified and tested but consulted by nobody — a deliberate,
   recorded gap, not an oversight.
-- **A verified read set** — `run`'s self-report cannot be audited by any consumer. Closing it needs
+- **A verified read set** — **FILED as #475** (durable, so the specs' "recorded follow-up" claim
+  outlives this brief). `run`'s self-report cannot be audited by any consumer. Closing it needs
   harness-level tool-call telemetry reconciled against the recorded `evaluated` set, which would
   also answer "did the agent do what it says it did" well beyond freshness.
 
