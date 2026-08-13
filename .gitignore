@@ -10,3 +10,7 @@ factory.mcp.json
 gemini.mcp.json
 windsurf.mcp.json
 .agents/sdd/statusline
+# Agent-harness worktree isolation checks the repo out inside itself. Ignoring
+# these keeps them out of `git status`; it does NOT keep the SDD corpus guards
+# out of them — those walk the filesystem. See the nested-checkout follow-up.
+.claude/worktrees/
