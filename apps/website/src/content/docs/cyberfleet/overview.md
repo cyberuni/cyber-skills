@@ -14,7 +14,7 @@ A **ship** is a workspace: a folder, a repository, or a worktree. Your fleet is 
 | Automaton | Reached by | What it does |
 |---|---|---|
 | [**Pod**](/cyberfleet/pod/) | The work asked — bridge work on a project | The bridge-companion of a ship — greets you, clears the inbox, and runs the mission. Never spawns. |
-| [**Operator**](/cyberfleet/operator/) | Invocation — asserts the command-center seat | The dispatcher — spawns every ship, lists who's out there, routes messages between ships, and sweeps away the dead ones |
+| [**Operator**](/cyberfleet/operator/) | Invocation — connects your session to the command center | The dispatcher — spawns every ship, lists who's out there, routes messages between ships, and sweeps away the dead ones |
 | [**Crimp**](/cyberfleet/crimp/) | The Tavern storefront | Recruits **crews** — installable specialist personas — signs them on, and discharges them |
 | [**Mechanic**](/cyberfleet/mechanic/) *(coming soon)* | The bench, over any automaton | Builds a new automaton and reconfigures existing ones — guidance, model, effort, loadout, and leash |
 

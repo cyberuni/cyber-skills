@@ -42,8 +42,8 @@ Units:
   its mechanics — `cyberlegion` for identity and mail, `cyberfleet` for missions.
 - [**`operator`**](./operator/README.md) *(behavioral)* — the **Operator** persona (the `fleet`
   command-center dispatcher): **any spawn**, list the fleet, route messages between ships, and prune
-  dead ones. Seated by invocation, never by a mode probe. Offloads its fleet mechanics — spawn, who,
-  mail, prune — to the `cyberlegion` CLI.
+  dead ones. Connected to the command center by invocation, never by a mode probe. Offloads its
+  fleet mechanics — spawn, who, mail, prune — to the `cyberlegion` CLI.
 - [**`recruitment`**](./recruitment/README.md) *(behavioral)* — the **Crimp** persona: recruit or
   discharge a crew type from the Tavern (browse, install, register; uninstall, retire).
 - [**`mechanic`**](./mechanic/README.md) *(behavioral)* — the **Mechanic** persona: build a new
