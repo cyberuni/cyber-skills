@@ -45,6 +45,15 @@
 				"source": "npm",
 				"package": "buddy-codecov"
 			}
+		},
+		{
+			"name": "universal-plugin",
+			"description": "Universal AI agent plugin build tool.",
+			"tags": ["agent-plugin", "claude-code", "cursor", "codex", "copilot-cli"],
+			"source": {
+				"source": "npm",
+				"package": "universal-plugin"
+			}
 		}
 	]
 }
