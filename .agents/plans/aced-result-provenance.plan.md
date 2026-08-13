@@ -19,9 +19,11 @@ todos:
   - content: "re-author both ## Use Cases against the restored actor-first bar"
     status: completed
   - content: "spec gate r2: remediate F1/F2, re-judge, freeze both suites"
-    status: in_progress
+    status: completed
+  - content: "spec gate r3-r5: 3 cold judges, 2 nodes, ALIGNED true, both suites FROZEN, approved"
+    status: completed
   - content: "deliver: run writes provenance; freshness engine reads it"
-    status: pending
+    status: in_progress
   - content: "impl gate: cold impl-judge per frozen scenario"
     status: pending
   - content: "handoff: PR, follow-up for the judge-trust CR"
@@ -180,7 +182,26 @@ filesystem rather than the index.
 
 ## NEXT
 
-Re-run the spec gate (cold spec-judge) against the **current** bars over both nodes, then freeze both
-suites. The r1 findings F1 (non-binding negative) and F2 (gloss) still need confirming as remediated
-in that same pass. Branch is 2 commits behind `origin/main` (the `cyber-sdd` version bump) — rebase
-before the handoff PR.
+**Spec gate PASSED and both suites are FROZEN** (`eval-run/run/run.feature`,
+`eval-run/check-freshness/check-freshness.feature`); `status: approved`, gate line in the shard,
+`by: unional, cause: clearance`. Deliver is the live frontier.
+
+Build against the frozen suites, nothing else:
+
+1. **`run` records the evaluated set** — the skill body writes `{path, sha256}` per input it reports
+   consuming. A listed directory needs BOTH a directory entry hashing the returned names AND a
+   per-file entry per file it yielded — the round-3 finding: a directory-name hash is invariant under
+   a content edit, so a directory-only recorder kills `check-freshness`'s `stale` verdict silently.
+2. **`check-freshness` engine** — a deterministic `.mts` + `node:test` (it is recused from ACED
+   grading; its suite binds to its own tests). **Share one hashing routine with `run`, do not write a
+   second that currently agrees** — the architect finding; a divergence would surface as a permanent
+   `stale`, never as an error.
+3. **Impl gate** — cold impl-judge per frozen scenario. Bring it to the owner (the leash self-asserts
+   the spec gate only).
+4. **Handoff** — PR, and file the follow-ups. Two are owed and one is load-bearing: the
+   **verified-read-set / tool-call-telemetry** CR, because both node specs claim it is "a recorded
+   follow-up" and it is currently recorded only in THIS brief, which the doctrine loop retires; and
+   the **consumer wiring** for `run` / `improve`.
+
+Also outstanding: branch is behind `origin/main`; root `pnpm verify` still red on the nested-checkout
+bug (#472), unrelated to this CR.
