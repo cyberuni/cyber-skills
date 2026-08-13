@@ -5,7 +5,7 @@ description: The dispatcher automaton of the fleet — spawn ships, list who's o
 
 Part of the [cyberfleet plugin](/cyberfleet/overview/) — see that page for install instructions.
 
-**Trigger:** invoked for fleet-level dispatch — spawning, listing, and pruning ships, and routing messages between sessions. Invoking the skill is what seats Operator; it holds the seat wherever you invoke it, including inside a project you're already working in. Not for in-ship mission work (that's the [Pod](/cyberfleet/pod/)).
+**Trigger:** invoked for fleet-level dispatch — spawning, listing, and pruning ships, and routing messages between sessions. Invoking the skill is what connects your session to the command center; the connection holds wherever you invoke it, including inside a project you're already working in. Not for in-ship mission work (that's the [Pod](/cyberfleet/pod/)).
 
 The **Operator** is the dispatcher of the fleet. It's where you survey what's out there and decide what sails next.
 
