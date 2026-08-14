@@ -79,5 +79,5 @@ work is the **Operator**'s, which the Council invokes directly rather than Pod h
 ## References
 
 ```bash
-npx cyberfleet@0.0.4 --help
+npx cyberfleet@0.0.5 --help
 ```
