@@ -23,11 +23,11 @@ todos:
   - content: "spec gate r3-r5: 3 cold judges, 2 nodes, ALIGNED true, both suites FROZEN, approved"
     status: completed
   - content: "deliver: run writes provenance; freshness engine reads it"
+    status: completed
+  - content: "impl gate: 2 cold impl-judges, 8/8 + 22/22, PASS both nodes"
+    status: completed
+  - content: "handoff: PR (follow-ups #475/#476/#477 already filed)"
     status: in_progress
-  - content: "impl gate: cold impl-judge per frozen scenario"
-    status: pending
-  - content: "handoff: PR, follow-up for the judge-trust CR"
-    status: pending
 ---
 
 # CR: eval-result provenance + freshness
@@ -195,25 +195,12 @@ filesystem rather than the index.
 
 ## NEXT
 
-**Spec gate PASSED and both suites are FROZEN** (`eval-run/run/run.feature`,
-`eval-run/check-freshness/check-freshness.feature`); `status: approved`, gate line in the shard,
-`by: unional, cause: clearance`. Deliver is the live frontier.
+**Both gates PASSED. Spec `implemented`, both suites frozen, implementation landed.**
 
-Build against the frozen suites, nothing else:
+Remaining: open the PR, and close #467 (the un-gated first attempt this CR replaces) as superseded.
 
-1. **`run` records the evaluated set** — the skill body writes `{path, sha256}` per input it reports
-   consuming. A listed directory needs BOTH a directory entry hashing the returned names AND a
-   per-file entry per file it yielded — the round-3 finding: a directory-name hash is invariant under
-   a content edit, so a directory-only recorder kills `check-freshness`'s `stale` verdict silently.
-2. **`check-freshness` engine** — a deterministic `.mts` + `node:test` (it is recused from ACED
-   grading; its suite binds to its own tests). **Share one hashing routine with `run`, do not write a
-   second that currently agrees** — the architect finding; a divergence would surface as a permanent
-   `stale`, never as an error.
-3. **Impl gate** — cold impl-judge per frozen scenario. Bring it to the owner (the leash self-asserts
-   the spec gate only).
-4. **Handoff** — PR only. All three follow-ups are FILED and durable: **#475** verified read set,
-   **#476** consumer wiring for `run` / `improve`, **#477** the untrusted-pass problem. Nothing
-   further is owed to the brief on retirement.
+All three follow-ups are filed and durable — **#475** verified read set, **#476** consumer wiring for
+`run` / `improve`, **#477** the untrusted-pass problem — so retiring this brief loses no commitment.
 
-Also outstanding: branch is behind `origin/main`; root `pnpm verify` still red on the nested-checkout
-bug (#472), unrelated to this CR.
+Two limits ship knowingly, both stated in the specs rather than hidden: under-reporting cannot be
+bound by any scenario here, and `check-freshness` is consulted by nobody until #476 lands.
