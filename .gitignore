@@ -14,3 +14,8 @@ windsurf.mcp.json
 # these keeps them out of `git status`; it does NOT keep the SDD corpus guards
 # out of them — those walk the filesystem. See the nested-checkout follow-up.
 .claude/worktrees/
+
+# ACED eval results. `run` records a hash manifest per run; these are machine-local
+# measurements, not source. SKILL.md calls this directory git-ignored — this is what
+# makes that true.
+.agents/aced/results/
