@@ -1,6 +1,6 @@
 ---
 title: The Four Actors
-description: Around abundant generation sit four actors — Oracle, Builder, Architect, Strategist — each defined by a distinct motive. The generalize ladder keeps the three product roles apart.
+description: Around abundant generation sit four actors — Oracle, Builder, Architect, Strategist — each defined by a distinct motive. The generalize ladder describes the three product roles; loop placement tells them apart.
 ---
 
 import { Card, CardGrid, Aside } from '@astrojs/starlight/components'
@@ -54,6 +54,13 @@ Three of the actors are most often confused, so state the difference up front. *
 | **features within one product** | the product (a shared abstraction) | **Architect** | *architecture* — how it's organized |
 | **products, over time** | the corpus (template, skill, plugin) | **Strategist** | *curation* — knowledge that outlives the product |
 
+<Aside type="caution" title="The ladder describes; it does not classify">
+Each rung names the scope a kind of work *characteristically* reaches — it is not a test you run on
+an artifact to find its owner. An act is not Strategist work because its result turns out to be
+widely reusable, and the corpus column names where curation's result typically lives, not a set of
+artifact kinds whose authorship is Strategist. The test is **[loop placement](#loop-placement--the-test)**.
+</Aside>
+
 What keeps the rungs apart is the *mechanism* each uses to add value:
 
 - **Design changes behavior directly** — write better logic.
@@ -102,6 +109,24 @@ Partly — and worth saying plainly. Organizing the corpus *is* architecture-of-
 
 These are *accumulate* — grow a compounding, reusable asset — not *structure*. That is the motive architecture lacks.
 
+### Loop placement — the test
+
+The objection above has a sibling that catches more people: *isn't any reusable artifact Strategist work?* A prose style guide with no project specifics, a lint rule, a scaffold — each generalizes across products, so the ladder appears to hand it to the Strategist.
+
+It doesn't, and the thing that settles it is **when the act fires**, not how far its result travels:
+
+- **Oracle, Builder, and Architect fire inside the loop that delivers the thing in hand** — and they also own work deferred to later in that same product.
+- **The Strategist fires between deliveries**, at lifecycle boundaries: a pattern solved several times, a retro, an effort that ships or is killed. The trigger is *lifecycle granularity* — not every gate, not every iteration.
+
+The test runs harder in one direction than the other, and it is worth being precise about which:
+
+> Firing **inside** the delivery loop **rules the Strategist out** — whatever the reach of the result.
+> Firing **between** deliveries is **necessary but not sufficient**: the result must also be lifted out to outlive the product, which is the Architect\|Strategist boundary above.
+
+So the style guide written to ship this documentation set is Builder work, however portable it reads. Ask the counterfactual: *would this artifact still have been built if the thing in hand hadn't needed it?* No means it kept its delivery actor. It becomes Strategist work the day someone lifts it out, between deliveries, as a lesson for products that don't exist yet.
+
+This is also why a **skill or a plugin** is not Strategist-by-kind. Authored to deliver a product, it is that product's Builder or Architect work — the artifact kind never names the actor on its own.
+
 ### Two tiers
 
 The Strategist's output *feels* like a layer because every other actor's delegate reads from it — exactly the position of a platform team, whose product is a layer made available for others to consume. So the model has two tiers:
@@ -121,8 +146,8 @@ The Strategist's output *feels* like a layer because every other actor's delegat
     classDef actor stroke-width:2px`}
 />
 
-- **Delivery actors** — Oracle, Builder, Architect — operate on the *product*.
-- **Foundation actor** — Strategist — operates on the team's *capacity to deliver*: the corpus the other three's delegates draw from.
+- **Delivery actors** — Oracle, Builder, Architect — operate on the *product*, inside the loop that delivers it and on work deferred to later in that same product.
+- **Foundation actor** — Strategist — operates on the team's *capacity to deliver*: the corpus the other three's delegates draw from. It runs between deliveries, never inside that loop.
 
 <Aside type="tip" title="A prediction falls out of the tiering">
 Infrastructure is the first thing a team neglects, and a decaying corpus forces every delegate, in every role, to start cold.
