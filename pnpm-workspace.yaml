@@ -5,9 +5,3 @@ packages:
 allowBuilds:
   esbuild: true
   sharp: true
-patchedDependencies:
-  # Unversioned on purpose: pinning to an exact version means a routine bump
-  # silently drops the patch and reintroduces the crash. Keyed by name, pnpm
-  # fails loudly if upstream changes these lines — which is the signal to check
-  # whether the fix landed and drop this patch.
-  '@changesets/cli': patches/@changesets__cli.patch
