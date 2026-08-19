@@ -10,6 +10,15 @@
 			"source": "./plugins/aced"
 		},
 		{
+			"name": "cyber-asana",
+			"description": "Asana CLI and MCP server for AI agents.",
+			"tags": ["asana", "mcp", "cli", "productivity"],
+			"source": {
+				"source": "npm",
+				"package": "cyber-asana"
+			}
+		},
+		{
 			"name": "cyberfleet",
 			"description": "Fleet persona layer for the cyberfleet CLI. Pod (ship's bridge) and Operator (command center) gateway skills — harness-agnostic, MCP-free.",
 			"tags": ["fleet", "persona", "crew"],
