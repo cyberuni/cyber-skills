@@ -68,6 +68,15 @@
 			}
 		},
 		{
+			"name": "repobuddy",
+			"description": "Repository management skills for AI coding agents — issues, dependency PRs, GitHub Pages, repo setup, npm trusted publishing, and harness permission audits.",
+			"tags": ["repository", "github", "automation", "cli"],
+			"source": {
+				"source": "npm",
+				"package": "repobuddy"
+			}
+		},
+		{
 			"name": "universal-plugin",
 			"description": "Universal AI agent plugin build tool.",
 			"tags": ["agent-plugin", "claude-code", "cursor", "codex", "copilot-cli"],
