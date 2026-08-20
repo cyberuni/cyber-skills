@@ -18,8 +18,8 @@ todos:
     status: completed
   - content: "Impl gate — IMPLEMENTATION_PASS true, 9/9; its content gap fixed; root pnpm verify 29/29"
     status: completed
-  - content: "Handoff — branch + PR, changeset, followups recorded"
-    status: pending
+  - content: "Handoff — PR #497 opened; no changeset (private pkg); 2 followups in the ledger, unfiled"
+    status: completed
 ---
 
 # aced-judge-model-provenance — record which model scored an ACED run
@@ -79,6 +79,6 @@ after the owner cut the failing band; the impl gate returned `IMPLEMENTATION_PAS
 frozen scenarios, and its one content gap (the `unknown` bullet had restored the fold as a
 conjunction) is fixed.
 
-Awaiting the owner's call on delivery shape only — branch + PR, or direct onto `main` as this repo
-does for a self-contained plugin chore. Two follow-ups are recorded in the ledger shard and **not**
-filed as issues; filing needs permission.
+Landed as **PR #497** (`feat/aced-judge-model-provenance` → `main`). No source issue, so the PR body
+carries no closing reference. Two follow-ups are recorded in the ledger shard and **not** filed as
+issues; filing needs permission.
