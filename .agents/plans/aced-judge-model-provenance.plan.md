@@ -3,14 +3,14 @@ name: aced-judge-model-provenance
 cr: local-aced-judge-model-provenance
 status: active
 node: eval-run/run
-touch-set: aced/eval-run/run, aced/eval-run/compare, aced/eval-run/report
+touch-set: aced/eval-run/run, aced/eval-run/compare
 blast: medium
 todos:
   - content: "Intake: CR opened, plan scaffolded, leash recorded"
     status: completed
   - content: "Validate premise: confirmed, with two corrections — compare cannot reach a cross-model state; report is the real reader"
     status: completed
-  - content: "Explore: additive scenarios in run.feature (record) + report.feature (mark) + compare.feature (record)"
+  - content: "Explore: additive scenarios in run.feature + compare.feature (record only; report band cut by owner scope call)"
     status: completed
   - content: "Spec gate — 3 rounds run, all ALIGNED false; round-3 findings fixed but unjudged; HELD for owner call"
     status: in_progress
@@ -63,11 +63,17 @@ answered with a re-plan rather than a third patch: the rule is now stated in clo
 each graph — `run` records the model it can name and `unknown` exactly when it cannot; `report`
 calls a trend comparable iff both records name a **known** model and the same one.
 
-All four round-3 findings are fixed (commit above) but **unjudged** — the owner capped judging at 3
-rounds.
+All four round-3 findings were fixed but unjudged (the owner capped judging at 3 rounds). The owner
+then **cut cross-model comparison from this phase entirely** — `report/` is reverted to the CR base,
+and with it go the two findings that were never resolved (the comparability rule's domain gating and
+the unknown-vs-unknown crosswalk, both of which existed only inside that band).
+
+**What remains is recording only:** `run` writes the scoring model per record, `compare` writes it on
+a persisted comparison. Nothing reads it — the same deliberate consumer cut this node already made
+for the evaluated set. Nine scenarios across two suites; every mechanical check green.
 
 ## NEXT
 
-**Held for the owner at the spec gate.** Three choices: accept as-is and freeze; spend a 4th round
-judging the round-3 fixes; or change direction. Nothing is frozen, no gate line is written, and
-deliver has not started.
+**Held for the owner at the spec gate**, on a surface roughly half the size the three rounds judged.
+Either freeze now, or spend one confirming round on the reduced band. Nothing is frozen, no gate line
+is written, and deliver has not started.
