@@ -12,12 +12,12 @@ todos:
     status: completed
   - content: "Explore: additive scenarios in run.feature + compare.feature (record only; report band cut by owner scope call)"
     status: completed
-  - content: "Spec gate — 3 rounds run, all ALIGNED false; round-3 findings fixed but unjudged; HELD for owner call"
-    status: in_progress
-  - content: "Deliver: run/compare/report SKILL.md + READMEs; results JSON shape"
-    status: pending
-  - content: "Impl gate — cold aced-impl-judge, max 3 rounds; pnpm verify green"
-    status: pending
+  - content: "Spec gate — 3 rounds all ALIGNED false; owner cut the failing band; self-asserted within leash, both suites frozen"
+    status: completed
+  - content: "Deliver: run + compare SKILL.md, scoring_model in the results JSON shape"
+    status: completed
+  - content: "Impl gate — IMPLEMENTATION_PASS true, 9/9; its content gap fixed; root pnpm verify 29/29"
+    status: completed
   - content: "Handoff — branch + PR, changeset, followups recorded"
     status: pending
 ---
@@ -74,6 +74,11 @@ for the evaluated set. Nine scenarios across two suites; every mechanical check 
 
 ## NEXT
 
-**Held for the owner at the spec gate**, on a surface roughly half the size the three rounds judged.
-Either freeze now, or spend one confirming round on the reduced band. Nothing is frozen, no gate line
-is written, and deliver has not started.
+**Both gates passed; landing is the only step left.** The spec gate was self-asserted within leash
+after the owner cut the failing band; the impl gate returned `IMPLEMENTATION_PASS: true` over all 9
+frozen scenarios, and its one content gap (the `unknown` bullet had restored the fold as a
+conjunction) is fixed.
+
+Awaiting the owner's call on delivery shape only — branch + PR, or direct onto `main` as this repo
+does for a self-contained plugin chore. Two follow-ups are recorded in the ledger shard and **not**
+filed as issues; filing needs permission.
