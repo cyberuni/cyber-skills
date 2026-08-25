@@ -8,12 +8,6 @@
 	],
 	"ignoreDependencies": ["husky"],
 	"workspaces": {
-		"plugins/sdd": {
-			"entry": ["skills/*/scripts/*.mts"]
-		},
-		"plugins/aced": {
-			"entry": ["skills/*/scripts/*.mts"]
-		},
 		"apps/website": {
 			"ignore": ["src/styles/global.css"],
 			"ignoreDependencies": ["tailwindcss", "@astrojs/starlight-tailwind", "@fontsource-variable/inter"]

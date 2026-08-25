@@ -27,7 +27,6 @@ See [`packages/cyberplace`](packages/cyberplace/readme.md) for the full command 
 | Package                                                   | Description                                                            |
 | --------------------------------------------------------- | --------------------------------------------------------------------- |
 | [`cyberplace`](packages/cyberplace)                       | Opinionated skills, hooks, and workflows for AI agents + the CLI      |
-| [`cyberlegion`](packages/cyberlegion)                     | Harness-agnostic agent session spawning, messaging, and dispatch      |
 | [`cyberfleet`](packages/cyberfleet)                       | Harness-agnostic, MCP-free inter-agent sessions and messaging         |
 
 ## Plugins
@@ -36,13 +35,21 @@ The repo doubles as a plugin marketplace (`.claude-plugin/marketplace.json`). No
 
 | Plugin              | Description                                                              |
 | ------------------- | ------------------------------------------------------------------------ |
-| `sdd`               | Spec-Driven Development — behavioral specs (spec.md + .feature)           |
-| `aced`              | Agent Config Evaluation & Development — spec, evaluate, improve configs   |
-| `quill`             | Documentation SDD plugin — verify guides and reference docs against specs |
 | `cyberspace`        | Research and design toolkit for universal plugins                        |
 | `cyberfleet`        | Fleet persona layer (Pod, Operator) for the cyberfleet CLI              |
-| `cyberlegion`       | Agent session spawning, messaging, and dispatch — the Legion and Legate  |
 | `commit-discipline` | Commit-discipline hooks and workflow                                     |
+
+### Plugins hosted elsewhere
+
+These moved to their own repos and are still installable from this marketplace, which
+references them by `git-subdir`:
+
+| Plugin        | Home                                                              |
+| ------------- | ----------------------------------------------------------------- |
+| `sdd`         | [cyberuni/cyber-sdd](https://github.com/cyberuni/cyber-sdd) (npm `cyber-sdd`) |
+| `aced`        | [cyberuni/cyber-sdd](https://github.com/cyberuni/cyber-sdd)       |
+| `quill`       | [cyberuni/cyber-sdd](https://github.com/cyberuni/cyber-sdd)       |
+| `cyberlegion` | [cyberuni/cyberlegion](https://github.com/cyberuni/cyberlegion)   |
 
 ## Development
 

@@ -11,7 +11,7 @@ const bin = path.resolve('bin/cyberplace.mjs')
 interface MarketplacePluginFixture {
 	name: string
 	description: string
-	source: string | { source: 'npm'; package: string }
+	source: string | { source: 'npm'; package: string } | { source: 'git-subdir'; url: string; path: string }
 	tags: string[]
 }
 
@@ -324,6 +324,30 @@ test('an npm-sourced plugin is read with an npm source display and link', () => 
 		const aced = plugins.find((p) => p.name === 'aced')
 		expect(aced?.source).toBe('./plugins/aced')
 		expect(aced?.sourceUrl).toBe('https://github.com/cyberuni/cyberplace/tree/main/plugins/aced')
+	} finally {
+		fs.rmSync(root, { recursive: true, force: true })
+	}
+})
+
+// Scenario: a git-subdir plugin (extracted to its own repo) links to that repo's directory
+test('a git-subdir plugin is read with a git source display and links to the other repo', () => {
+	const root = makeMarketplace([
+		{
+			name: 'aced',
+			description: 'Extracted to cyber-sdd',
+			source: { source: 'git-subdir', url: 'https://github.com/cyberuni/cyber-sdd.git', path: 'plugins/aced' },
+			tags: ['sdd'],
+		},
+	])
+	try {
+		const plugins = readMarketplacePlugins(root)
+		const aced = plugins.find((p) => p.name === 'aced')
+		expect(aced?.source).toBe('git:plugins/aced')
+		// the .git suffix is stripped so the link resolves in a browser
+		expect(aced?.sourceUrl).toBe('https://github.com/cyberuni/cyber-sdd/tree/main/plugins/aced')
+		// hosted outside this repo → nothing local to enrich from
+		expect(aced?.skillCount).toBe(0)
+		expect(aced?.version).toBeUndefined()
 	} finally {
 		fs.rmSync(root, { recursive: true, force: true })
 	}
