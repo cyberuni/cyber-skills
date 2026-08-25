@@ -1,13 +1,19 @@
 {
 	"$schema": "https://json.schemastore.org/claude-code-marketplace.json",
 	"name": "cyberplace",
-	"owner": { "name": "unional" },
+	"owner": {
+		"name": "unional"
+	},
 	"plugins": [
 		{
 			"name": "aced",
 			"description": "Agent Config Evaluation System. Evaluate, test, and improve agent configurations: skills, AGENTS.md sections, subagent definitions, and commands.",
 			"tags": ["eval", "agent-config"],
-			"source": "./plugins/aced"
+			"source": {
+				"source": "git-subdir",
+				"url": "https://github.com/cyberuni/cyber-sdd.git",
+				"path": "plugins/aced"
+			}
 		},
 		{
 			"name": "cyber-asana",
@@ -27,7 +33,11 @@
 		{
 			"name": "cyberlegion",
 			"description": "Agent session spawning, messaging, and dispatch — the Legion and its Legate.",
-			"source": "./plugins/cyberlegion"
+			"source": {
+				"source": "git-subdir",
+				"url": "https://github.com/cyberuni/cyberlegion.git",
+				"path": "plugins/cyberlegion"
+			}
 		},
 		{
 			"name": "cyberspace",
@@ -38,7 +48,11 @@
 			"name": "quill",
 			"description": "Documentation SDD plugin. Verifies guides, tutorials, articles, and reference docs against specs — existence, required headings, completeness, and reader-path continuity.",
 			"tags": ["docs", "sdd"],
-			"source": "./plugins/quill"
+			"source": {
+				"source": "git-subdir",
+				"url": "https://github.com/cyberuni/cyber-sdd.git",
+				"path": "plugins/quill"
+			}
 		},
 		{
 			"name": "sdd",

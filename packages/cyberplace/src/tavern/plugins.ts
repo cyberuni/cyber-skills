@@ -7,15 +7,22 @@ const GITHUB_OWNER = 'cyberuni'
 const GITHUB_REPO = 'cyberplace'
 
 /**
- * A plugin's `source` in the marketplace manifest is either a local-directory
- * path string (e.g. "./plugins/aced") or an npm source descriptor object
- * (e.g. { source: "npm", package: "cyber-sdd" }).
+ * A plugin's `source` in the marketplace manifest is a local-directory path
+ * string (e.g. "./plugins/cyberfleet"), an npm source descriptor object
+ * (e.g. { source: "npm", package: "cyber-sdd" }), or a git-subdir descriptor
+ * pointing at a directory inside another repo (e.g. plugins/aced in cyber-sdd).
  */
-type PluginSource = string | NpmSource
+type PluginSource = string | NpmSource | GitSubdirSource
 
 interface NpmSource {
 	source: 'npm'
 	package: string
+}
+
+interface GitSubdirSource {
+	source: 'git-subdir'
+	url: string
+	path: string
 }
 
 interface MarketplacePluginEntry {
@@ -97,9 +104,9 @@ function readPluginManifest(pluginRoot: string): PluginManifest | null {
 }
 
 /**
- * Normalizes a plugin's `source` (a local-directory string or an npm source
- * descriptor) into the fields the roster needs: the local directory to enrich
- * from (null for npm-hosted plugins, which have no directory in this repo), a
+ * Normalizes a plugin's `source` (a local-directory string, an npm source
+ * descriptor, or a git-subdir descriptor) into the fields the roster needs: the
+ * local directory to enrich from (null for anything hosted outside this repo), a
  * display string, and the "Source" link target.
  */
 function resolveSource(
@@ -111,6 +118,16 @@ function resolveSource(
 			localDir: source.replace(/^\.\//, ''),
 			display: source,
 			sourceUrl: `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/tree/main/plugins/${name}`,
+		}
+	}
+	if (source.source === 'git-subdir') {
+		// The plugin lives in another repo. Point at that directory on its default
+		// branch: `.git` is stripped so the URL resolves in a browser.
+		const repo = source.url.replace(/\.git$/, '')
+		return {
+			localDir: null,
+			display: `git:${source.path}`,
+			sourceUrl: `${repo}/tree/main/${source.path}`,
 		}
 	}
 	return {

@@ -6,14 +6,6 @@
 			"cache": false,
 			"outputs": []
 		},
-		"//#check:skills": {
-			"cache": false,
-			"outputs": []
-		},
-		"//#check:specs": {
-			"cache": false,
-			"outputs": []
-		},
 		"//#knip": {
 			"cache": false,
 			"outputs": []
@@ -34,21 +26,7 @@
 			"persistent": true
 		},
 		"verify": {
-			"dependsOn": [
-				"//#check:ci",
-				"//#check:skills",
-				"//#check:specs",
-				"//#knip",
-				"build",
-				"typecheck",
-				"lint",
-				"test",
-				"check:spec"
-			]
-		},
-		"check:spec": {
-			"cache": false,
-			"outputs": []
+			"dependsOn": ["//#check:ci", "//#knip", "build", "typecheck", "lint", "test"]
 		}
 	}
 }

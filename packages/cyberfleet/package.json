@@ -30,7 +30,6 @@
 	],
 	"scripts": {
 		"build": "tsdown",
-		"check:spec": "sdd-check-specs",
 		"dev": "tsx src/cli.ts",
 		"prepack": "pnpm build",
 		"test": "vitest run src",
@@ -39,7 +38,7 @@
 	},
 	"dependencies": {
 		"commander": "^14.0.3",
-		"cyberlegion": "workspace:*"
+		"cyberlegion": "^0.3.1"
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.1",

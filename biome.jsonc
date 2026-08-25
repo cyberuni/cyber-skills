@@ -19,9 +19,7 @@
 				"packages/cyberplace/src/**/*.ts",
 				"packages/cyberplace/src/**/*.mts",
 				"packages/cyberfleet/src/**/*.ts",
-				"packages/cyberfleet/src/**/*.mts",
-				"packages/cyberlegion/src/**/*.ts",
-				"packages/cyberlegion/src/**/*.mts"
+				"packages/cyberfleet/src/**/*.mts"
 			],
 			"linter": {
 				"rules": {
