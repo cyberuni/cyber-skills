@@ -68,6 +68,15 @@
 				"source": "npm",
 				"package": "universal-plugin"
 			}
+		},
+		{
+			"name": "buddy-changesets",
+			"description": "Changesets skills for AI agents — set up releases and write changeset files.",
+			"tags": ["changesets", "release", "versioning"],
+			"source": {
+				"source": "github",
+				"repo": "repobuddy/buddy-changesets"
+			}
 		}
 	]
 }
