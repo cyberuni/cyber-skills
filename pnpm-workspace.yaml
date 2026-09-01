@@ -5,3 +5,8 @@ packages:
 allowBuilds:
   esbuild: true
   sharp: true
+# Supply-chain soak: refuse any version published less than 24h ago.
+# `minimumReleaseAgeStrict: true` is what makes it refuse rather than silently
+# auto-append the offending package to `minimumReleaseAgeExclude`.
+minimumReleaseAge: 1440
+minimumReleaseAgeStrict: true
