@@ -1,5 +1,13 @@
 # cyberfleet
 
+## 0.0.6
+
+### Patch Changes
+
+- ca8f9ab: Depend on the published `cyberlegion@^0.3.1` instead of the workspace copy. `cyberlegion`
+  was extracted to its own repository, so the `workspace:*` link no longer exists and the
+  runtime dependency now resolves from the registry.
+
 ## 0.0.5
 
 ### Patch Changes

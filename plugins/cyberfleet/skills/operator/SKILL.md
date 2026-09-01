@@ -98,5 +98,5 @@ routes to the **Pod** persona in that ship, by topic, never by a probed location
 ## References
 
 ```bash
-npx cyberfleet@0.0.5 --help
+npx cyberfleet@0.0.6 --help
 ```
